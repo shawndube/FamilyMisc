@@ -87,14 +87,14 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 3px;
-  padding: 8px 12px;
+  padding: 8px 8px;
   border: none;
   background: none;
   color: var(--text2);
   cursor: pointer;
   border-radius: var(--radius-sm);
   transition: all 0.2s;
-  min-width: 56px;
+  min-width: 52px;
 }
 .nav-btn.active { color: var(--primary-light); }
 .nav-btn .nav-icon { font-size: 22px; line-height: 1; }
@@ -223,14 +223,124 @@ body {
 }
 .quick-btn:active { transform: scale(0.97); background: var(--bg3); }
 .quick-btn .q-icon { font-size: 28px; }
-.quick-btn .q-title { font-size: 14px; font-weight: 700; }
+.quick-btn .q-title { font-size: 14px; font-weight: 700; color: var(--text); }
 .quick-btn .q-sub { font-size: 11px; color: var(--text2); }
+/* ===== LEARN SCREEN ===== */
+.learn-header { padding: 16px; display: flex; align-items: center; gap: 12px; }
+.learn-topics-scroll {
+  display: block;
+  padding: 0 12px 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.learn-topic-section {
+  margin-bottom: 14px;
+}
+.learn-topic-heading {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text2);
+  padding: 8px 2px 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+.learn-topics-scroll::-webkit-scrollbar { display: none; }
+.learn-topic-btn {
+  display: block;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  white-space: normal;
+  margin-bottom: 8px;
+}
+.learn-topic-btn:active { transform: scale(0.98); }
+.learn-topic-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.learn-module {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.learn-content {
+  padding: 0 16px 16px;
+  overflow-y: auto;
+}
+.learn-title {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--primary-light);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.learn-story {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: var(--bg3);
+  border-radius: var(--radius-sm);
+  border-left: 4px solid var(--primary);
+}
+.learn-section {
+  margin-bottom: 20px;
+  padding: 14px;
+  background: var(--card);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.learn-section-title {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--primary-light);
+  margin-bottom: 8px;
+}
+.learn-section-text {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+}
 /* ===== FLASHCARDS ===== */
 .fc-header {
   padding: 16px;
   display: flex;
   align-items: center;
   gap: 12px;
+}
+.fc-tts-row {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 12px 10px;
+}
+.tts-btn {
+  width: auto;
+  min-width: 44px;
+  padding: 8px 12px;
+  font-size: 18px;
+  line-height: 1;
+}
+.learn-tts-row {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 10px;
+}
+.case-tts-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
 }
 .back-btn {
   width: 38px; height: 38px;
@@ -441,7 +551,8 @@ body {
   display: none;
   flex-direction: column;
   height: calc(100vh - var(--nav-h));
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .speed-game.active { display: flex; }
 .speed-timer-row {
@@ -486,8 +597,15 @@ body {
   display: none;
   padding: 40px 24px;
   text-align: center;
+  max-height: calc(100vh - var(--nav-h));
+  overflow-y: auto;
 }
 .speed-result.active { display: block; }
+@media (max-height: 760px) {
+  .speed-q { font-size: 18px; padding-bottom: 10px; }
+  .speed-opts { grid-template-columns: 1fr; }
+  .speed-opt { padding: 12px; font-size: 13px; }
+}
 /* ===== FEEDBACK OVERLAY ===== */
 #feedback-overlay {
   position: fixed;
@@ -646,9 +764,9 @@ body {
 <div id="app">
   <!-- NAV -->
   <nav id="nav">
-    <button class="nav-btn active" onclick="showScreen('home')" id="nav-home">
-      <span class="nav-icon">🏠</span>
-      <span class="nav-label">Home</span>
+    <button class="nav-btn active" onclick="showScreen('learn')" id="nav-learn">
+      <span class="nav-icon">📚</span>
+      <span class="nav-label">Learn</span>
     </button>
     <button class="nav-btn" onclick="showScreen('flashcards')" id="nav-flashcards">
       <span class="nav-icon">🃏</span>
@@ -658,15 +776,62 @@ body {
       <span class="nav-icon">📝</span>
       <span class="nav-label">Quiz</span>
     </button>
-    <button class="nav-btn" onclick="showScreen('cases')" id="nav-cases">
-      <span class="nav-icon">⚖️</span>
-      <span class="nav-label">Cases</span>
-    </button>
     <button class="nav-btn" onclick="showScreen('speed')" id="nav-speed">
       <span class="nav-icon">⚡</span>
       <span class="nav-label">Speed</span>
     </button>
+    <button class="nav-btn" onclick="showScreen('timeline')" id="nav-timeline">
+      <span class="nav-icon">⏳</span>
+      <span class="nav-label">Timeline</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('home')" id="nav-home">
+      <span class="nav-icon">🏆</span>
+      <span class="nav-label">Progress</span>
+    </button>
   </nav>
+
+  <!-- LEARN SCREEN (NEW PRIMARY MODE) -->
+  <div id="screen-learn" class="screen active">
+    <div class="learn-header">
+      <div class="screen-title">Learn 📚</div>
+    </div>
+    <div class="learn-topics-scroll" id="learn-topics-scroll"></div>
+    <div id="learn-module-view" style="display:none;">
+      <div class="learn-module">
+        <button class="btn btn-outline btn-sm" onclick="backToLearnTopics()" style="margin: 16px; width: auto;">← Back to Topics</button>
+        <div class="learn-content">
+          <div class="learn-tts-row">
+            <button class="btn btn-outline btn-sm tts-btn" id="learn-tts-btn" onclick="speakLearnModule()" title="Read lesson aloud">🔊</button>
+          </div>
+          <div class="learn-title" id="learn-title">Loading...</div>
+          <div class="learn-story" id="learn-story"></div>
+          <div class="learn-section">
+            <div class="learn-section-title">⚡ The Big Idea</div>
+            <div class="learn-section-text" id="learn-big-idea"></div>
+          </div>
+          <div class="learn-section">
+            <div class="learn-section-title">📖 The Story</div>
+            <div class="learn-section-text" id="learn-narrative"></div>
+          </div>
+          <div class="learn-section">
+            <div class="learn-section-title">🎯 What It Actually Does</div>
+            <div class="learn-section-text" id="learn-what-it-does"></div>
+          </div>
+          <div class="learn-section">
+            <div class="learn-section-title">🤔 Real Life Example</div>
+            <div class="learn-section-text" id="learn-example"></div>
+          </div>
+          <div class="learn-section">
+            <div class="learn-section-title">🔗 Connects To</div>
+            <div class="learn-section-text" id="learn-connects"></div>
+          </div>
+          <div style="padding: 0 16px 16px;">
+            <button class="btn btn-primary" onclick="teachBackPrompt()">🎤 Explain It Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- HOME SCREEN -->
   <div id="screen-home" class="screen active">
@@ -770,6 +935,9 @@ body {
     </div>
     <div class="fc-cat-scroll" id="fc-cats"></div>
     <div class="fc-counter" id="fc-counter">Card 1 of 1</div>
+    <div class="fc-tts-row">
+      <button class="btn btn-outline btn-sm tts-btn" id="fc-tts-btn" onclick="toggleCardSpeech()" title="Read card aloud">🔊</button>
+    </div>
     <div class="flip-scene" id="flip-scene" onclick="flipCard()">
       <div class="flip-card" id="flip-card">
         <div class="flip-face flip-front">
@@ -820,6 +988,9 @@ body {
       <div class="quiz-progress-bar">
         <div class="quiz-progress-fill" id="quiz-progress-fill" style="width:10%"></div>
       </div>
+      <div class="fc-tts-row" style="padding-top:10px;padding-bottom:0;">
+        <button class="btn btn-outline btn-sm tts-btn" id="quiz-tts-btn" onclick="speakQuizQuestion()" title="Read question aloud">🔊</button>
+      </div>
       <div class="quiz-question" id="quiz-question">Question text</div>
       <div class="quiz-options" id="quiz-options"></div>
       <div class="quiz-explanation" id="quiz-explanation"></div>
@@ -848,6 +1019,17 @@ body {
     <div class="cases-list" id="cases-list"></div>
     <button class="btn btn-primary cases-quiz-btn" onclick="startCasesQuiz()">⚖️ Quiz Me on Cases</button>
     <div style="height:8px"></div>
+  </div>
+
+  <!-- TIMELINE SCREEN -->
+  <div id="screen-timeline" class="screen">
+    <div class="fc-header">
+      <div class="screen-title">Timeline ⏳</div>
+    </div>
+    <div style="padding:0 16px;">
+      <div style="font-size:13px;color:var(--text2);margin-bottom:16px;">See when everything happened and why it mattered:</div>
+    </div>
+    <div id="timeline-container" style="padding:0 16px 16px;"></div>
   </div>
 
   <!-- SPEED ROUND SCREEN -->
@@ -889,11 +1071,553 @@ body {
   <div class="feedback-text" id="feedback-text">Correct!</div>
 </div>
 <!-- Level up banner -->
-<div id="levelup-banner" id="levelup-banner">🎉 LEVEL UP! You are now a <span id="levelup-name"></span>!</div>
+<div id="levelup-banner">🎉 LEVEL UP! You are now a <span id="levelup-name"></span>!</div>
 <!-- Confetti container -->
 <div id="confetti-container"></div>
 
 <script>
+// =============================================
+// COMPREHENSIVE LEARNING CONTENT
+// =============================================
+
+const LEARN_CONCEPTS = [
+  {
+    id: 'sep-powers',
+    title: 'Separation of Powers',
+    category: 'Core Ideas',
+    bigIdea: 'Power is split three ways so nobody gets too much',
+    story: 'Americans just got done fighting a king who had ALL the power. They said "never again" and invented a system where power is divided into three branches. Congress makes laws, the President enforces them, courts decide if they\'re legal. It\'s like having three CEOs of a company who all have to agree on big decisions.',
+    whatItDoes: 'The government can\'t just do whatever it wants because the branches check each other. President wants to start a war → Congress has to approve it. Congress passes a law → President might veto it, or courts might say it\'s unconstitutional.',
+    example: 'Trump wanted to ban TikTok → He couldn\'t just do it. Congress had to vote. Courts had to say if it was legal. That\'s separation of powers in action right now.',
+    connects: 'This is why amendments and the Constitution matter - they set up these power-sharing rules.',
+    timeline: '1787 (Constitution)'
+  },
+  {
+    id: 'checks-balances',
+    title: 'Checks and Balances',
+    category: 'Core Ideas',
+    bigIdea: 'Each branch has superpowers to stop the other branches from cheating',
+    story: 'If separation of powers is the three-branch system, checks and balances are the specific superpowers each branch has. Congress can veto the President\'s veto (needs 2/3 vote). President appoints judges. Courts can throw out laws said to be unconstitutional. It\'s rock-paper-scissors with government branches.',
+    whatItDoes: 'Makes sure each branch stays in its lane. President can\'t rule like a king because Congress and courts can stop him. Congress can\'t pass whatever crazy law it wants because courts can say "nope, that violates the Constitution."',
+    example: 'Congress passed a law banning certain speech. A guy got arrested, took it to court. The court said "That breaks the 1st Amendment." LAW = BLOCKED. That\'s a check working.',
+    connects: 'This is what the entire Constitution is designed around. Every amendment basically says "and this is one more check on government power."',
+    timeline: '1789 (Constitution ratified)'
+  },
+  {
+    id: 'a1',
+    title: '1st Amendment: Speech & Religion',
+    category: 'Amendments',
+    bigIdea: 'You can say what you want, practice your religion, protest the government. The government can\'t control your thoughts.',
+    story: 'Before America, people got in trouble for criticizing the king or practicing the "wrong" religion. Americans said that\'s garbage - we came here to be FREE. So the 1st Amendment says the government can\'t tell you what to think, say, or believe. This amendment is basically "Leave us alone - we\'re free now."',
+    whatItDoes: 'Protects freedom of speech (you can say it), freedom of press (media can publish it), freedom of religion (believe what you want), freedom of assembly (protest with friends), freedom to petition (complain to the government).',
+    example: 'You can make a TikTok saying the government is terrible. The government can\'t arrest you. A newspaper can criticize the President. Muslims can build a mosque. These are all 1st Amendment protections happening RIGHT NOW.',
+    connects: 'This is the first thing on the Bill of Rights because it\'s the most important - all other rights don\'t matter if you can\'t talk about them.',
+    timeline: '1791'
+  },
+  {
+    id: 'a2',
+    title: '2nd Amendment: Right to Bear Arms',
+    category: 'Amendments',
+    bigIdea: 'You have the right to own a gun (but it can be regulated)',
+    story: 'America fought a revolution partly because the British had guns and colonists couldn\'t defend themselves. So 2nd Amendment says people can own guns. BUT - debate today is how much can the government regulate it. Can they ban certain guns? Require background checks? Both sides argue about what the amendment really means.',
+    whatItDoes: 'Protects the right to own firearms. The government can regulate guns (background checks, licensing) but can\'t take away the right entirely. It\'s had a ton of court cases trying to define exactly what this means.',
+    example: 'You can buy a gun (with background check in most states). But you probably can\'t buy a machine gun designed for war. People argue about this constantly.',
+    connects: 'Part of the Bill of Rights - your right to defend yourself.',
+    timeline: '1791'
+  },
+  {
+    id: 'a4',
+    title: '4th Amendment: No Unreasonable Search',
+    category: 'Amendments',
+    bigIdea: 'Police need a warrant signed by a judge before searching your stuff',
+    story: 'The British secret police used to raid people\'s homes randomly looking for stuff. Americans hated this. The 4th Amendment says police can\'t just barge into your house - they need a warrant, which means a judge has to believe they have a good reason to search.',
+    whatItDoes: 'Police need probable cause and a judicial warrant to search your home, car, or personal belongings. Without it, evidence isn\'t valid in court. This protects your privacy from government overreach.',
+    example: 'Cops see you walking down the street and want to search your backpack. They can\'t just do it - they need probable cause (reason to believe you have something illegal). Your phone can\'t be searched without a warrant either.',
+    connects: 'Works with the 5th Amendment to protect you from injustice.',
+    timeline: '1791'
+  },
+  {
+    id: 'a5',
+    title: '5th Amendment: Your Legal Protection',
+    category: 'Amendments',
+    bigIdea: 'You have the right to stay quiet, not testify against yourself, and can\'t be punished twice for the same thing',
+    story: 'If you\'ve ever heard someone in a movie say "I plead the Fifth" - this is it. The police can\'t force you to say stuff that makes you look guilty. And they can\'t try you twice for the same crime. This stops the government from pressuring innocent people into confessions.',
+    whatItDoes: 'Protects right against self-incrimination (you don\'t have to testify against yourself), protects against double jeopardy (can\'t be tried twice for same crime), guarantees due process (fair treatment), and you get compensation if government illegally takes your property.',
+    example: 'Cop says "Confess or I\'ll arrest you anyway." You can say "I\'m pleading the Fifth - I\'m not saying anything." That\'s your legal right. They can\'t force it.',
+    connects: 'Combined with 4th and 6th Amendment, these create a full legal defense system.',
+    timeline: '1791'
+  },
+  {
+    id: 'a6',
+    title: '6th Amendment: Right to a Fair Trial',
+    category: 'Amendments',
+    bigIdea: 'You get a lawyer, a jury, and a fair court process',
+    story: 'Imagine being accused of a crime you didn\'t do and having no way to defend yourself - no lawyer, no jury, just the government deciding if you\'re guilty. The 6th Amendment says that\'s not allowed. You get a lawyer, you get to hear the charges, you get a jury of regular people, not just judges.',
+    whatItDoes: 'Guarantees right to a lawyer (court provides one free if you can\'t afford it), speedy public trial (not secret), jury trial, to know charges against you, and to face your accusers.',
+    example: 'If you get arrested, you get a lawyer. The trial is public so people can watch. A jury of your peers (12 regular people) decides if you\'re guilty, not just a judge. Thanks to Gideon v. Wainwright case, you get a FREE lawyer if you\'re poor.',
+    connects: 'Part of the "nobody is above the law" system - even poor people get legal defense.',
+    timeline: '1791'
+  },
+  {
+    id: 'a13',
+    title: '13th Amendment: Slavery Abolished',
+    category: 'Amendments',
+    bigIdea: 'Slavery is illegal everywhere in America (ratified 1865)',
+    story: 'America fought the Civil War over slavery. After the North won, they passed the 13th Amendment to make slavery permanently illegal. The amendment said "No person shall be enslaved" - period. This fundamentally changed what America stood for.',
+    whatItDoes: 'Abolished slavery and involuntary servitude throughout the United States. This is why slavery cannot happen anymore.',
+    example: 'Before 1865, millions of people were enslaved. After the 13th Amendment, slavery became unconstitutional and illegal forever.',
+    connects: 'Followed by 14th Amendment (citizenship) and 15th Amendment (voting rights) - the "Civil War Amendments" that freed people and gave them rights.',
+    timeline: '1865 (Civil War just ended)'
+  },
+  {
+    id: 'a14',
+    title: '14th Amendment: Citizenship & Equal Protection',
+    category: 'Amendments',
+    bigIdea: 'Everyone born in America is a citizen with equal rights (that\'s the most important one)',
+    story: 'After slavery ended, the government needed to say "formerly enslaved people are now citizens with the same rights." The 14th Amendment does that. It says if you\'re born in the US, boom - you\'re a citizen. It also says the government has to treat everyone equally under the law.',
+    whatItDoes: 'Grants citizenship to all people born in the US, guarantees equal protection under the law (government can\'t discriminate), and says due process applies to states too (not just federal government).',
+    example: 'This is the amendment that allows you to be a citizen just by being born here. It\'s also how Brown v. Board of Education overturned segregation - the equal protection clause said separate schools aren\'t equal, so segregation is unconstitutional.',
+    connects: 'This is probably the most-used amendment ever. It\'s behind civil rights cases, women\'s rights cases, disability rights cases. When someone says the Constitution promises equal protection, that\'s the 14th Amendment.',
+    timeline: '1868'
+  },
+  {
+    id: 'a15',
+    title: '15th Amendment: Voting Rights (No Race Discrimination)',
+    category: 'Amendments',
+    bigIdea: 'Government can\'t stop you from voting because of your race',
+    story: 'After slavery and citizenship, the third part of the Civil War Amendments promised voting rights. Before this, states would find tricky ways to stop Black people from voting (poll taxes, literacy tests). The 15th Amendment said "that\'s illegal - government can\'t discriminate on voting based on race."',
+    whatItDoes: 'Says the right to vote cannot be denied based on race or color or previous slavery status.',
+    example: 'In the South, people tried to stop Black voters with poll taxes (pay money to vote) and literacy tests (read something impossible to "pass"). The 15th Amendment made those illegal even though states kept trying until the Voting Rights Act of 1965.',
+    connects: 'These three amendments (13, 14, 15) are the Civil War Amendments. 13 = Freedom, 14 = Citizenship, 15 = Vote. That\'s the progression.',
+    timeline: '1870'
+  },
+  {
+    id: 'a19',
+    title: '19th Amendment: Women Can Vote',
+    category: 'Amendments',
+    bigIdea: 'Women have the right to vote just like men (1920)',
+    story: 'Women had been fighting for voting rights since the 1800s. The 19th Amendment finally granted it. Before 1920, American women couldn\'t vote in federal elections - that\'s insane by today\'s standards. This amendment finally gave women a voice in government.',
+    whatItDoes: 'Guarantees women have the right to vote - cannot be denied based on sex.',
+    example: 'Before 1920, your mom wouldn\'t have been able to vote. That changed in 1920. The fight for women\'s voting rights took DECADES of protests. Susan B. Anthony was arrested for voting illegally before the amendment even passed.',
+    connects: 'Part of the slow expansion of who gets to participate in democracy - from just rich men → all men → women.',
+    timeline: '1920'
+  },
+  {
+    id: 'a26',
+    title: '26th Amendment: Vote at 18',
+    category: 'Amendments',
+    bigIdea: 'You can vote at 18 instead of 21 (ratified 1971)',
+    story: 'During Vietnam War, 18-year-olds could be drafted into war but couldn\'t vote. People said "that\'s unfair - if you can fight, you should vote." The 26th Amendment lowered the voting age from 21 to 18. YOU will be able to vote at 18.',
+    whatItDoes: 'Sets the voting age at 18. Before 1971 it was 21.',
+    example: 'Because of this amendment, you\'ll be able to vote as soon as you\'re 18. When you fill out that voter registration, thank the 26th Amendment.',
+    connects: 'Part of the voting rights progression - expanding democracy to more people.',
+    timeline: '1971'
+  },
+  {
+    id: 'due-process',
+    title: 'Due Process',
+    category: 'Core Ideas',
+    bigIdea: 'The government has to follow fair rules before taking away your freedom, property, or life',
+    story: 'Imagine the police arrest you without investigating, a judge sentences you without a trial, and you lose everything. That\'s tyranny. Due process means the government has to follow a fair process - you get a trial, a lawyer, you hear the evidence. You can\'t be punished randomly.',
+    whatItDoes: 'Requires the government to use fair procedures before punishing someone. You get notice of charges, a chance to defend yourself, and a fair hearing.',
+    example: 'If cops arrest you, they have to read you your rights (Miranda rights). They can\'t just put you in jail forever without a trial. That\'s due process in action.',
+    connects: 'Guaranteed by the 5th Amendment (federal) and 14th Amendment (states). It\'s a core protection against government abuse.',
+    timeline: '1791 / 1868'
+  },
+  {
+    id: 'federalism',
+    title: 'Federalism',
+    category: 'Core Ideas',
+    bigIdea: 'Power is shared between the national government and state governments',
+    story: 'After independence, Americans worried about creating another distant, powerful central government (like the British king). So they created a system where the federal government handles some things (military, money, laws), states handle others (schools, local laws, police). Some powers are shared. It\'s like two governments that both have authority but in different areas.',
+    whatItDoes: 'Federal government (Congress, President, Supreme Court) has some powers. States have their own governments with their own laws. Some powers are shared or concurrent. This avoids all power concentrating in one place.',
+    example: 'The federal government controls the military and creates laws about interstate commerce. Florida controls its own school system and can have different state laws than California (within limits).',
+    connects: 'This is why the 14th Amendment was so important - it made the Constitution apply to states, not just the federal government. It extended federal protection of rights to the state level.',
+    timeline: '1787 (Constitution)'
+  },
+  {
+    id: 'judicial-review',
+    title: 'Judicial Review',
+    category: 'Core Ideas',
+    bigIdea: 'Courts (especially the Supreme Court) can say whether laws are constitutional or not',
+    story: 'Established in Marbury v. Madison (1803), chief justice John Marshall said if Congress passes a law that violates the Constitution, the courts can throw it out. This was HUGE because it gave courts the power to check the other branches. Without this, there\'s nothing stopping lawmakers from passing unconstitutional laws.',
+    whatItDoes: 'Courts can review laws and declare them unconstitutional (invalid). This happens when someone challenges the law in court.',
+    example: 'Congress passes a law banning all criticism of the government. Someone challenges it. The court says "That violates the 1st Amendment" and the law is struck down. Judicial review in action.',
+    connects: 'This is the checks and balances system at work. It makes the judicial branch coequal to Congress and the President.',
+    timeline: '1803'
+  },
+  {
+    id: 'a7th-case',
+    title: 'Marbury v. Madison (1803)',
+    category: 'Court Cases',
+    bigIdea: 'Supreme Court got the power to review if laws are constitutional',
+    story: 'William Marbury was supposed to be a judge, but the new Secretary of State wouldn\'t give him his job. Marbury sued. Chief Justice John Marshall had a choice: either the Supreme Court has power to review laws, or it doesn\'t. He ruled that yes, courts can say if a law is constitutional. This one case basically created the Supreme Court\'s most important power.',
+    whatItDoes: 'Established judicial review - the Supreme Court can declare laws unconstitutional.',
+    example: 'Because of this case, a law that violates the Constitution can be thrown out. Without it, Congress could just pass whatever laws it wanted.',
+    connects: 'This is the basis for everything - Brown v. Board, Miranda v. Arizona, all the big rights cases. Without Marbury, courts couldn\'t enforce the Constitution.',
+    timeline: '1803'
+  },
+  {
+    id: 'brown-case',
+    title: 'Brown v. Board of Education (1954)',
+    category: 'Court Cases',
+    bigIdea: 'Segregation in schools is unconstitutional - separate is never equal',
+    story: 'Linda Brown wanted to go to a close school in Topeka, but had to go to a far-away Black school because of segregation. Her dad sued. The Supreme Court, led by Chief Justice Earl Warren, ruled that separating kids by race violates the 14th Amendment\'s equal protection clause. This overturned the terrible "separate but equal" ruling and started desegregation.',
+    whatItDoes: 'Declared that "separate but equal" is unconstitutional. Schools must be integrated. This was the legal foundation for the civil rights movement.',
+    example: 'Before Brown, Black kids and white kids went to different schools. After, they had to integrate (though white people resisted for years with "white flight" and private schools).',
+    connects: 'Uses the 14th Amendment\'s equal protection clause. Shows how judicial review can overturn bad old laws (Plessy v. Ferguson).',
+    timeline: '1954'
+  },
+  {
+    id: 'miranda-case',
+    title: 'Miranda v. Arizona (1966)',
+    category: 'Court Cases',
+    bigIdea: 'Police must tell you your rights before questioning you ("You have the right to remain silent...")',
+    story: 'Ernesto Miranda confessed to a crime but police never told him he could ask for a lawyer. The Supreme Court said that\'s a violation of the 5th Amendment right against self-incrimination. Now police have to read you your rights (the Miranda rights) before interrogating you.',
+    whatItDoes: 'Requires police to inform suspects of their rights: stay silent, have a lawyer, anything you say can be used against you.',
+    example: 'You\'ve seen this on 100 TV shows - "You have the right to remain silent. Anything you say can and will be used against you in a court of law..." That\'s Miranda rights.',
+    connects: 'Protects the 5th Amendment right to not testify against yourself. Makes sure people aren\'t tricked or coerced into confessing.',
+    timeline: '1966'
+  },
+  {
+    id: 'tinker-case',
+    title: 'Tinker v. Des Moines (1969)',
+    category: 'Court Cases',
+    bigIdea: 'Students have free speech rights in school (but can be limited if they cause disruption)',
+    story: 'High school students wore black armbands to protest the Vietnam War. The school suspended them. The Supreme Court said students don\'t "leave their constitutional rights at the schoolhouse gate." Schools can\'t censor you just because they disagree.',
+    whatItDoes: 'Students have 1st Amendment free speech rights to express political views at school, unless it materially disrupts education.',
+    example: 'You can wear a political shirt or button to school. You can be part of a protest. Teachers can\'t punish you just for expressing an opinion.',
+    connects: 'Applies the 1st Amendment to students. Shows that rights don\'t stop at the school door.',
+    timeline: '1969'
+  },
+  {
+    id: 'vocab-rights',
+    title: 'Natural Rights',
+    category: 'Vocabulary',
+    bigIdea: 'Rights you\'re born with that no government can take away',
+    story: 'Philosopher John Locke said all humans have natural rights just for being human - life, liberty, and property. These aren\'t given by government; they\'re inherent. Jefferson changed "property" to "pursuit of happiness" in the Declaration. The idea is: these rights come from nature/God/humanity, not from government. Government job is to protect them, not create them.',
+    whatItDoes: 'In American law, natural rights are protected by the Constitution and Bill of Rights. Government can\'t take them away.',
+    example: 'Your right to live, to be free, to chase your dreams - these are natural rights. The government didn\'t give them to you and can\'t take them away (though it can restrict them using due process).',
+    connects: 'This is the philosophical foundation of the entire American system. The Constitution exists to protect natural rights.',
+    timeline: 'Philosophy'
+  },
+  {
+    id: 'vocab-constit-rights',
+    title: 'Constitutional Rights',
+    category: 'Vocabulary',
+    bigIdea: 'Specific rights protected by the Constitution (can be limited in certain ways)',
+    story: 'While natural rights are the philosophy, constitutional rights are the actual protections written in the Constitution. 1st Amendment gives you freedom of speech - that\'s a constitutional right. It\'s real and enforceable in court.',
+    whatItDoes: 'Constitutional rights are concrete protections in the document. If the government violates them, you can sue in court.',
+    example: 'Freedom of speech is a constitutional right (1st Amendment). You can be arrested for crimes, but not just for what you say.',
+    connects: 'The Constitution protects the natural rights by writing them down and making them enforceable.',
+    timeline: '1789'
+  },
+  {
+    id: 'vocab-sovereignty',
+    title: 'Popular Sovereignty',
+    category: 'Vocabulary',
+    bigIdea: 'The people are the source of government power - government gets its authority from the people',
+    story: '"We the People" - that\'s popular sovereignty. It means ordinary citizens are in charge, not a king or tyrant. The government serves us; we don\'t serve it. This was revolutionary - before America, people thought power came from God and kings. Americans said "nope, power comes from the people."',
+    whatItDoes: 'Citizens have the ultimate authority. Government is supposed to represent what the people want. If government stops doing that, people can change it.',
+    example: 'You vote in elections. That\'s popular sovereignty - the people deciding who leads. If the government becomes corrupt, citizens can protest, vote them out, and change the government.',
+    connects: 'This is why voting matters and why the 26th Amendment is important - expanding who gets to participate in sovereignty.',
+    timeline: '1776 (Declaration), 1789 (Constitution)'
+  },
+  {
+    id: 'a3',
+    title: '3rd Amendment: No Quartering Soldiers',
+    category: 'Amendments',
+    bigIdea: 'The government can\'t force you to let soldiers live in your house',
+    story: 'Before America, the British could demand colonists house and feed British soldiers. That sucked for civilians - imagine soldiers eating your food and using your house. The 3rd Amendment says: never again. Government can\'t make you quarter soldiers in wartime without a law.',
+    whatItDoes: 'Protects your home from the government forcing soldiers to stay there.',
+    example: 'This amendment barely comes up today (we don\'t have armies occupying houses), but it shows the Founders\' paranoia about government overreach. They wanted home to be YOUR space.',
+    connects: 'Part of personal liberty protections in the Bill of Rights.',
+    timeline: '1791'
+  },
+  {
+    id: 'a6',
+    title: '6th Amendment: Right to a Fair Trial',
+    category: 'Amendments',
+    bigIdea: 'You get a lawyer, a jury, and a fair court process',
+    story: 'Imagine being accused of a crime and having no way to defend yourself - no lawyer, no jury. The 6th Amendment says that\'s illegal. You get a lawyer (free if poor, thanks to Gideon case), you get a jury of regular people, and you can hear the charges against you.',
+    whatItDoes: 'Guarantees right to a lawyer, speedy trial, jury trial, to know charges, and to cross-examine witnesses.',
+    example: 'You get arrested → They read you your rights → You get a lawyer (even if you\'re poor) → You get a full trial with a jury → The trial is public so people can watch.',
+    connects: 'Works with 4th and 5th Amendments to create full legal protection system.',
+    timeline: '1791'
+  },
+  {
+    id: 'a7',
+    title: '7th Amendment: Jury Trial in Civil Cases',
+    category: 'Amendments',
+    bigIdea: 'In lawsuits over money/property, you have the right to a jury trial',
+    story: 'The 6th Amendment covers criminal trials (government vs. you). The 7th Amendment covers civil trials (person vs. person over money or property). You get a jury in both types.',
+    whatItDoes: 'Preserves the right to jury trial in civil cases (lawsuits) involving over $20.',
+    example: 'You sue someone for car accident damages → You get a jury trial. Regular people, not just judges, decide if the other person owes you money.',
+    connects: 'Part of the "jury system" that protects everyday people from just government or judicial abuse.',
+    timeline: '1791'
+  },
+  {
+    id: 'a8',
+    title: '8th Amendment: No Cruel Punishment',
+    category: 'Amendments',
+    bigIdea: 'Punishment has to be fair and not torture-level cruel',
+    story: 'The 8th Amendment protects from barbaric punishments. Prevents things like torture, death for minor crimes, or extreme jail conditions. Also protects against excessive bail (can\'t charge $1 million bail for shoplifting).',
+    whatItDoes: 'Bans cruel and unusual punishment, excessive bail, and excessive fines.',
+    example: 'Court says you stole a candy bar. They can\'t sentence you to 20 years in solitary torture. Death penalty cases have extra review. Bail has to be reasonable.',
+    connects: 'Part of due process and fair trial protections.',
+    timeline: '1791'
+  },
+  {
+    id: 'a9',
+    title: '9th Amendment: Other Rights Exist Too',
+    category: 'Amendments',
+    bigIdea: 'Just because a right isn\'t in the Constitution doesn\'t mean you don\'t have it',
+    story: 'The Founders couldn\'t list every right humans have. The 9th Amendment says: "Just because we didn\'t write it down doesn\'t mean it doesn\'t exist." It\'s an acknowledgment that rights are broader than what\'s listed.',
+    whatItDoes: 'Acknowledges that people have rights beyond those specifically listed in the Constitution.',
+    example: 'Right to privacy isn\'t specifically listed, but courts have used the 9th Amendment to protect it (alongside other amendments).',
+    connects: 'Shows the Constitution is a living document with rights evolving over time.',
+    timeline: '1791'
+  },
+  {
+    id: 'a10',
+    title: '10th Amendment: Powers Reserved to States',
+    category: 'Amendments',
+    bigIdea: 'If the federal government doesn\'t have a power, the states do',
+    story: 'Federalism means power is split. The 10th Amendment clarifies: whatever powers Congress doesn\'t have, the states keep. It\'s the safety valve for federalism - makes sure federal government doesn\'t grab all power.',
+    whatItDoes: 'Reserves powers not delegated to federal government to the states and the people.',
+    example: 'Congress can\'t regulate education - that\'s a state power. States can have different school systems. Federal government can\'t control every little thing.',
+    connects: 'Protects federalism and state autonomy.',
+    timeline: '1791'
+  },
+  {
+    id: 'a11',  
+    title: '11th Amendment: States Immune from Lawsuits',
+    category: 'Amendments',
+    bigIdea: 'You generally can\'t sue a state government in federal court',
+    story: 'The 11th Amendment limits federal court power over states. States have "sovereign immunity" - you can\'t sue. Florida, California, etc. can\'t be sued in federal court by individuals (with narrow exceptions).',
+    whatItDoes: 'Protects state sovereign immunity. States can\'t be sued in federal court by citizens or foreigners.',
+    example: 'You can\'t sue Florida in federal court. You\'d have to sue in state court or go through other processes.',
+    connects: 'Part of federalism - protects state power and autonomy.',
+    timeline: '1795'
+  },
+  {
+    id: 'a12',
+    title: '12th Amendment: How We Elect President',
+    category: 'Amendments',
+    bigIdea: 'Electors vote separately for President and Vice President',
+    story: 'In 1800, there was a tie between Jefferson and Burr for President. Chaos. The 12th Amendment fixed it by requiring electors to vote separately for President and VP.',
+    whatItDoes: 'Electors cast separate ballots for President and Vice President.',
+    example: 'Without this, we could have a President and VP from different parties forced to work together.',
+    connects: 'Part of presidential election system.',
+    timeline: '1804'
+  },
+  {
+    id: 'a16',
+    title: '16th Amendment: Income Tax',
+    category: 'Amendments',
+    bigIdea: 'Congress can collect income taxes (that\'s where government money comes from)',
+    story: 'Income tax = taxes on what you earn. Supreme Court said Congress couldn\'t do it without an amendment. So they added the 16th Amendment in 1913. Now the government taxes your income to pay for schools, military, roads, etc.',
+    whatItDoes: 'Gives Congress power to collect income taxes.',
+    example: 'Your parent\'s paycheck gets taxed. That\'s the 16th Amendment at work. That money funds government services.',
+    connects: 'Allows government to have enough money to function.',
+    timeline: '1913'
+  },
+  {
+    id: 'a17',
+    title: '17th Amendment: Direct Election of Senators',
+    category: 'Amendments',
+    bigIdea: 'Citizens directly elect senators (originally state legislatures chose them)',
+    story: 'Before 1913, state legislatures chose senators, not the people. The 17th Amendment made it direct democracy - you vote for senators now. More power to the people.',
+    whatItDoes: 'Citizens directly elect senators in statewide elections.',
+    example: 'You (when you\'re old enough) will vote for your Florida senators directly.',
+    connects: 'Democratized the Senate, gave more power to regular people.',
+    timeline: '1913'
+  },
+  {
+    id: 'a18',
+    title: '18th Amendment: Prohibition (No Alcohol)',
+    category: 'Amendments',
+    bigIdea: 'Banned alcohol (lasted 1920-1933, then repealed)',
+    story: 'America tried to ban alcohol entirely. It didn\'t work - people just made it illegally (speakeasies, bootleggers). The 1920s were chaos. Finally repealed by 21st Amendment in 1933. The ONLY amendment ever fully repealed.',
+    whatItDoes: 'Banned manufacture, sale, and transportation of alcohol.',
+    example: 'This shows even constitutional amendments can fail if the country doesn\'t support them.',
+    connects: 'The only amendment to be completely overturned (by 21st Amendment).',
+    timeline: '1920-1933'
+  },
+  {
+    id: 'a20',
+    title: '20th Amendment: Presidential Inauguration Day',
+    category: 'Amendments',
+    bigIdea: 'Presidents take office January 20th (called Inauguration Day)',
+    story: 'Weird fact: presidents used to take office in March. The 20th Amendment made it January 20th. It also shortened the "lame duck" period (when a losing president was still in office between the election and new president taking over).',
+    whatItDoes: 'Sets Presidential term begin date to January 20.',
+    example: 'That\'s why we see inaugurations on January 20th (or close to it). Election in November, president takes office in January.',
+    connects: 'Technical constitutional detail that streamlined government.',
+    timeline: '1933'
+  },
+  {
+    id: 'a21',
+    title: '21st Amendment: Prohibition Repealed',
+    category: 'Amendments',
+    bigIdea: 'Alcohol is legal again (repealed 18th Amendment)',
+    story: 'The 18th Amendment banning alcohol failed spectacularly. The 21st Amendment repealed it in 1933. This is the ONLY example of an amendment completely overturning another amendment. Shows if enough people disagree with an amendment, it can go away.',
+    whatItDoes: 'Repeals the 18th Amendment. Alcohol is legal.',
+    example: 'Laws regulating alcohol vary by state, but alcohol itself is legal (for adults 21+).',
+    connects: 'The ONLY amendment to repeal another. Shows Constitution can change if there\'s enough democratic consensus.',
+    timeline: '1933'
+  },
+  {
+    id: 'a22',
+    title: '22nd Amendment: Two-Term Presidential Limit',
+    category: 'Amendments',
+    bigIdea: 'Presidents can serve maximum two terms (8 years)',
+    story: 'FDR served four terms (12 years) during the Great Depression and WWII. After he died, Congress said "never again." The 22nd Amendment limited presidents to two terms. One president, four terms - that\'s the maximum now.',
+    whatItDoes: 'Limits presidents to two terms maximum.',
+    example: 'A president can serve at most 8 years (unless they took over mid-term, then they could run for two more terms after that).',
+    connects: 'Checks presidential power, prevents one person accumulating too much authority.',
+    timeline: '1951'
+  },
+  {
+    id: 'a23',
+    title: '23rd Amendment: DC Electoral Votes',
+    category: 'Amendments',
+    bigIdea: 'Washington D.C. gets electoral votes for President (3)',
+    story: 'Washington D.C. isn\'t a state, but millions of people live there. The 23rd Amendment gave D.C. 3 electoral votes so residents can participate in presidential elections.',
+    whatItDoes: 'Washington D.C. gets 3 electoral votes for presidential elections.',
+    example: 'People living in D.C. can vote in presidential elections and those votes count.',
+    connects: 'Extends voting participation to non-state federal territory.',
+    timeline: '1961'
+  },
+  {
+    id: 'a24',
+    title: '24th Amendment: No Poll Taxes',
+    category: 'Amendments',
+    bigIdea: 'You can\'t charge people money to vote',
+    story: 'American South used poll taxes to prevent poor people (especially Black people) from voting. Pay $2 to vote? Many couldn\'t afford it. The 24th Amendment banned poll taxes in federal elections. Voting rights expanded again.',
+    whatItDoes: 'Bans poll taxes (fees to vote) in federal elections.',
+    example: 'Voting is free. Nobody can say "You have to pay $5 to vote" - that\'s illegal.',
+    connects: 'Part of voting rights expansion, removes economic barriers to democracy.',
+    timeline: '1964'
+  },
+  {
+    id: 'a25',
+    title: '25th Amendment: Presidential Succession',
+    category: 'Amendments',
+    bigIdea: 'What happens if President dies, resigns, or becomes unable to serve',
+    story: 'VP becomes President if President dies. If President becomes incapacitated (illness), VP takes over temporarily. If President can\'t do the job, there\'s a constitutional process to remove them. Added after JFK assassination.',
+    whatItDoes: 'Outlines succession if President dies, resigns, or is incapacitated.',
+    example: 'If President dies → VP becomes President. If President is very sick → VP temporarily takes over.',
+    connects: 'Makes sure there\'s always a functioning government with clear leadership.',
+    timeline: '1967'
+  },
+  {
+    id: 'a27',
+    title: '27th Amendment: Congressional Pay Raises',
+    category: 'Amendments',
+    bigIdea: 'Congress can\'t give itself a pay raise that affects the current Congress',
+    story: 'Congress can\'t vote to give themselves money immediately. Any pay raise has to wait until after the next election. This amendment was proposed in 1789 but sat around for 200 YEARS - not ratified until 1992. It\'s the slowest amendment ever.',
+    whatItDoes: 'Congressional pay raises can\'t take effect until after next election.',
+    example: 'Congress passes a bill: "We get $10,000 more salary!" It doesn\'t kick in until after the next election, so voters can judge whether they like it.',
+    connects: 'Checks Congress power to give itself money. Makes politicians face voters before a raise takes effect.',
+    timeline: '1992'
+  },
+  {
+    id: 'vocab-enumerated',
+    title: 'Enumerated Powers',
+    category: 'Vocabulary',
+    bigIdea: 'The specific powers listed in the Constitution that Congress has',
+    story: 'Congress doesn\'t have infinite power. Article I of the Constitution lists what Congress CAN do: coin money, declare war, tax, regulate commerce, etc. These are "enumerated powers" (counted/listed).',
+    whatItDoes: 'These are the specific, listed powers the Constitution gives to Congress.',
+    example: 'Congress can declare war (enumerated power). Congress can\'t ban all speech (not an enumerated power, and 1st Amendment protects it anyway).',
+    connects: 'Part of limited government - Congress is limited to powers specifically listed.',
+    timeline: '1789'
+  },
+  {
+    id: 'vocab-implied',
+    title: 'Implied Powers',
+    category: 'Vocabulary',
+    bigIdea: 'Powers Congress has because they\'re "necessary and proper" to run enumerated powers',
+    story: 'Congress can coin money (enumerated). To do that, it needs to manage a bank. Managing a bank wasn\'t specifically listed, but it\'s necessary to the enumerated power. So it\'s an "implied power" under the Necessary and Proper Clause. McCulloch v. Maryland established this.',
+    whatItDoes: 'Powers not directly listed but necessary to exercise enumerated powers.',
+    example: 'Congress needs to create agencies, hire people, make regulations - all implied powers flowing from enumerated powers.',
+    connects: 'Gives Congress flexibility to actually run government while still being limited.',
+    timeline: '1819 case guidance'
+  },
+  {
+    id: 'vocab-reserved',
+    title: 'Reserved Powers',
+    category: 'Vocabulary',
+    bigIdea: 'Powers kept by the states (not given to federal government)',
+    story: 'The 10th Amendment says powers not given to federal government go to states. States reserve (keep) powers like education, police, local laws.',
+    whatItDoes: 'These are powers kept by states under federalism.',
+    example: 'States control public education, set speed limits, license doctors. Federal government doesn\'t have these reserved powers.',
+    connects: 'Part of federalism - federal government has enumerated powers, states have reserved powers.',
+    timeline: '1791'
+  },
+  {
+    id: 'vocab-concurrent',
+    title: 'Concurrent Powers',
+    category: 'Vocabulary',
+    bigIdea: 'Powers shared between federal and state government',
+    story: 'Some powers are exercised by BOTH federal and state government. Like taxing - both Congress and states can tax. Both can make laws about certain things. When they conflict, federal usually wins (Supremacy Clause).',
+    whatItDoes: 'Powers exercised by both levels of government.',
+    example: 'Both federal and state can tax income, regulate businesses, protect health and safety.',
+    connects: 'Part of federalism - shows it\'s not totally separate, they share some areas.',
+    timeline: '1789'
+  },
+  {
+    id: 'vocab-supremacy',
+    title: 'Supremacy Clause',
+    category: 'Vocabulary',
+    bigIdea: 'Federal law is the "supreme law of the land" - beats state law when they conflict',
+    story: 'Federal law says one thing, state law says another. Which wins? The Supremacy Clause (Article VI) says federal law. State can\'t override Constitution or federal laws.',
+    whatItDoes: 'Federal law wins over state law in conflicts.',
+    example: 'State wants slavery legal, but 13th Amendment bans it. 13th Amendment wins. State can\'t override it.',
+    connects: 'Enforces federal supremacy in the federalism system.',
+    timeline: '1789'
+  },
+];
+
+const TIMELINE_EVENTS = LEARN_CONCEPTS
+  .filter(c => c.timeline)
+  .map(c => ({
+    year: c.timeline,
+    event: `${c.title} - ${c.bigIdea}`,
+  }));
+
+// =============================================
+// KEEP ORIGINAL DATA
+/*
+  { year: 1215, event: 'Magna Carta - King John forced to sign, establishing limits on royal power' },
+  { year: 1620, event: 'Mayflower Compact - Pilgrims agree to self-governance' },
+  { year: 1776, event: 'Declaration of Independence - "all men are created equal"' },
+  { year: 1787, event: 'Constitutional Convention - decide how to run the new country' },
+  { year: 1789, event: 'Constitution ratified - government begins with Washington as President' },
+  { year: 1791, event: 'Bill of Rights ratified - Amendments 1-10, protecting individual freedoms' },
+  { year: 1803, event: 'Marbury v. Madison - Supreme Court gets power to review laws' },
+  { year: 1819, event: 'McCulloch v. Maryland - Federal government is supreme over states' },
+  { year: 1857, event: 'Dred Scott decision - terrible ruling that enslaved people weren\'t citizens' },
+  { year: 1865, event: '13th Amendment - Slavery abolished (Civil War ended)' },
+  { year: 1868, event: '14th Amendment - Citizenship, equal protection, makes Constitution apply to states' },
+  { year: 1870, event: '15th Amendment - Black men can vote (can\'t discriminate on race)' },
+  { year: 1896, event: 'Plessy v. Ferguson - "separate but equal" allowed segregation' },
+  { year: 1920, event: '19th Amendment - Women can vote' },
+  { year: 1954, event: 'Brown v. Board of Education - Segregation is unconstitutional' },
+  { year: 1963, event: 'Gideon v. Wainwright - Right to free lawyer established' },
+  { year: 1966, event: 'Miranda v. Arizona - Police must read you your rights' },
+  { year: 1969, event: 'Tinker v. Des Moines - Students have free speech rights in school' },
+  { year: 1971, event: '26th Amendment - Voting age lowered to 18' },
+  
+];
+*/
+
+// Keep original data for backward compatibility
+const AMENDMENTS_OLD = [
+  { id:'a1', term:'1st Amendment', answer:'Freedom of religion, speech, press, assembly, and petition. The "RAPPS" amendment — Religion, Assembly, Press, Petition, Speech!\n\n💡 TRICK: "RAPPS" — like a rap song! Religion, Assembly, Press, Petition, Speech. Rap it out loud: RAPPS RAPPS RAPPS!', category:'Amendments' },
+  { id:'a2', term:'2nd Amendment', answer:'Right to keep and bear arms. The right of citizens to own guns.\n\n💡 TRICK: 2nd Amendment = 2 hands holding a gun. Picture the number 2 shaped like a pistol!', category:'Amendments' },
+  { id:'a5', term:'5th Amendment', answer:'Due process of law, no double jeopardy (can\'t be tried twice for same crime), no self-incrimination (you can "plead the 5th"), and eminent domain rules.\n\n💡 TRICK: Hold up a HAND — 5 fingers = 5 big rights! And you "plead the 5th" using your whole hand. Picture a giant hand in court saying "I plead the FIFTH!"', category:'Amendments' },
+];
+
 // =============================================
 // DATA
 // =============================================
@@ -1286,16 +2010,119 @@ function renderTopicProgress() {
 }
 
 // =============================================
-// SCREEN NAVIGATION
+// LEARN MODE
 // =============================================
+let learnCurrentId = null;
+
+function initLearn() {
+  const el = document.getElementById('learn-topics-scroll');
+  el.style.display = 'block';
+  el.innerHTML = '';
+  const categories = {};
+  LEARN_CONCEPTS.forEach(c => {
+    if (!categories[c.category]) categories[c.category] = [];
+    categories[c.category].push(c);
+  });
+  
+  Object.entries(categories).forEach(([cat, items]) => {
+    const section = document.createElement('div');
+    section.className = 'learn-topic-section';
+
+    const label = document.createElement('div');
+    label.className = 'learn-topic-heading';
+    label.textContent = cat;
+    section.appendChild(label);
+
+    items.forEach(concept => {
+      const btn = document.createElement('button');
+      btn.className = 'learn-topic-btn';
+      btn.textContent = concept.title;
+      btn.onclick = () => showLearnModule(concept.id);
+      section.appendChild(btn);
+    });
+
+    el.appendChild(section);
+  });
+}
+
+function showLearnModule(conceptId) {
+  stopSpeech();
+  const concept = LEARN_CONCEPTS.find(c => c.id === conceptId);
+  if (!concept) return;
+  
+  learnCurrentId = conceptId;
+  document.getElementById('learn-topics-scroll').style.display = 'none';
+  document.getElementById('learn-module-view').style.display = 'block';
+  
+  document.getElementById('learn-title').textContent = concept.title;
+  document.getElementById('learn-story').textContent = concept.story;
+  document.getElementById('learn-big-idea').textContent = concept.bigIdea;
+  document.getElementById('learn-narrative').textContent = concept.story;
+  document.getElementById('learn-what-it-does').textContent = concept.whatItDoes;
+  document.getElementById('learn-example').textContent = concept.example;
+  document.getElementById('learn-connects').textContent = concept.connects;
+  
+  // Scroll to top
+  document.querySelector('.learn-content').scrollTop = 0;
+}
+
+function backToLearnTopics() {
+  stopSpeech();
+  document.getElementById('learn-topics-scroll').style.display = 'block';
+  document.getElementById('learn-module-view').style.display = 'none';
+}
+
+function showLearnTopics() {
+  backToLearnTopics();
+}
+
+function teachBackPrompt() {
+  const concept = LEARN_CONCEPTS.find(c => c.id === learnCurrentId);
+  if (!concept) return;
+  
+  const prompt = `Can you explain "${concept.title}" in your own words? What's the main idea? Why does it matter? Just explain it naturally like you're teaching a friend - no need to memorize anything!`;
+  
+  showFeedback('🎤', prompt);
+}
+
+function initTimeline() {
+  const el = document.getElementById('timeline-container');
+  el.innerHTML = '';
+  const sortedEvents = [...TIMELINE_EVENTS].sort((a, b) => timelineSortKey(a.year) - timelineSortKey(b.year));
+  sortedEvents.forEach(e => {
+    const item = document.createElement('div');
+    item.style.cssText = 'margin-bottom:16px;padding:12px 14px;background:var(--card);border-left:4px solid var(--primary);border-radius:var(--radius-sm);';
+    item.innerHTML = `<div style="font-size:14px;font-weight:800;color:var(--primary-light);margin-bottom:4px;">${e.year}</div>
+                      <div style="font-size:13px;color:var(--text);line-height:1.5;">${e.event}</div>`;
+    el.appendChild(item);
+  });
+}
+
+function timelineSortKey(yearLabel) {
+  const matches = String(yearLabel).match(/\d{4}/g);
+  if (!matches || !matches.length) return Number.POSITIVE_INFINITY;
+  return Math.min(...matches.map(Number));
+}
+
+// =============================================
+// SCREEN NAVIGATION (UPDATED)
 function showScreen(name) {
+  const screenEl = document.getElementById('screen-' + name);
+  if (!screenEl) return;
+
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('screen-' + name).classList.add('active');
-  document.getElementById('nav-' + name).classList.add('active');
+  screenEl.classList.add('active');
+
+  const navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+
+  stopSpeech();
+  if (name === 'learn') { initLearn(); showLearnTopics(); }
   if (name === 'home') updateHomeUI();
   if (name === 'flashcards') initFlashcards();
   if (name === 'cases') initCases();
+  if (name === 'timeline') initTimeline();
   if (name === 'speed') {
     document.getElementById('speed-start-view').style.display = '';
     document.getElementById('speed-game-view').classList.remove('active');
@@ -1318,6 +2145,111 @@ let fcState = {
   got: 0,
   learning: 0,
 };
+
+let ttsVoice = null;
+
+function pickTTSVoice() {
+  if (!window.speechSynthesis) return null;
+  const voices = window.speechSynthesis.getVoices() || [];
+  if (!voices.length) return null;
+  return voices.find(v => /microsoft|edge/i.test(v.name) && /^en(-|_)?US/i.test(v.lang))
+    || voices.find(v => /microsoft|edge/i.test(v.name))
+    || voices.find(v => /^en(-|_)?US/i.test(v.lang))
+    || voices.find(v => /^en/i.test(v.lang))
+    || voices[0];
+}
+
+function initTTS() {
+  if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') return;
+  ttsVoice = pickTTSVoice();
+  window.speechSynthesis.onvoiceschanged = () => {
+    ttsVoice = pickTTSVoice();
+  };
+}
+
+function resetTTSButtons() {
+  document.querySelectorAll('.tts-btn').forEach(btn => {
+    btn.textContent = '🔊';
+  });
+}
+
+function stopSpeech() {
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  resetTTSButtons();
+}
+
+function stopCardSpeech() {
+  stopSpeech();
+}
+
+function getCurrentCardSpeechText() {
+  if (!fcState.deck.length) return '';
+  const card = fcState.deck[fcState.index];
+  if (!card) return '';
+  if (fcState.flipped) return `${card.term}. ${card.answer}`;
+  return card.term;
+}
+
+function toggleCardSpeech() {
+  const btn = document.getElementById('fc-tts-btn');
+  speakText(getCurrentCardSpeechText(), btn);
+}
+
+function speakText(text, btnEl) {
+  if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
+    showFeedback('⚠️', 'Text-to-speech is not supported in this browser.');
+    return;
+  }
+
+  if (window.speechSynthesis.speaking) {
+    stopSpeech();
+    return;
+  }
+
+  if (!text) return;
+
+  const utter = new SpeechSynthesisUtterance(text);
+  if (ttsVoice) utter.voice = ttsVoice;
+  utter.rate = 0.95;
+  utter.pitch = 1;
+  utter.volume = 1;
+
+  if (btnEl) btnEl.textContent = '⏹️';
+
+  utter.onend = () => {
+    resetTTSButtons();
+  };
+  utter.onerror = () => {
+    resetTTSButtons();
+  };
+
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utter);
+}
+
+function speakLearnModule() {
+  if (!learnCurrentId) return;
+  const concept = LEARN_CONCEPTS.find(c => c.id === learnCurrentId);
+  if (!concept) return;
+  const text = `${concept.title}. Big idea: ${concept.bigIdea}. Story: ${concept.story}. What it does: ${concept.whatItDoes}. Example: ${concept.example}. Connects to: ${concept.connects}.`;
+  speakText(text, document.getElementById('learn-tts-btn'));
+}
+
+function speakQuizQuestion() {
+  const q = quizState.questions[quizState.index];
+  if (!q) return;
+  const opts = q.opts.map((o, i) => `Option ${i + 1}: ${o}.`).join(' ');
+  speakText(`${q.q}. ${opts}`, document.getElementById('quiz-tts-btn'));
+}
+
+function speakCase(caseId, ev) {
+  if (ev) ev.stopPropagation();
+  const c = CASES.find(item => item.id === caseId);
+  if (!c) return;
+  const text = `${c.name}, ${c.year}. What happened: ${c.happened}. Ruling: ${c.ruling}. Why it matters: ${c.matters}.`;
+  const btn = document.getElementById(`case-tts-${caseId}`);
+  speakText(text, btn);
+}
 
 function buildDeck(category) {
   let cards = category === 'All' ? [...ALL_CARDS] : ALL_CARDS.filter(c => c.category === category);
@@ -1344,7 +2276,7 @@ function initFlashcards() {
   // Render category chips
   const catEl = document.getElementById('fc-cats');
   catEl.innerHTML = FC_CATEGORIES.map(c =>
-    `<button class="cat-chip ${c === fcState.category ? 'active' : ''}" onclick="setFCCategory('${c}')">${c}</button>`
+    `<button class="cat-chip ${c === fcState.category ? 'active' : ''}" onclick="setFCCategory('${c}', this)">${c}</button>`
   ).join('');
   fcState.deck = buildDeck(fcState.category);
   fcState.index = 0;
@@ -1353,10 +2285,10 @@ function initFlashcards() {
   renderFC();
 }
 
-function setFCCategory(cat) {
+function setFCCategory(cat, btnEl) {
   fcState.category = cat;
   document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
-  event.target.classList.add('active');
+  if (btnEl) btnEl.classList.add('active');
   fcState.deck = buildDeck(cat);
   fcState.index = 0;
   fcState.flipped = false;
@@ -1365,6 +2297,7 @@ function setFCCategory(cat) {
 
 function renderFC() {
   if (fcState.deck.length === 0) return;
+  stopCardSpeech();
   const card = fcState.deck[fcState.index];
   document.getElementById('fc-term').textContent = card.term;
   document.getElementById('fc-answer').textContent = card.answer;
@@ -1374,22 +2307,18 @@ function renderFC() {
   document.getElementById('fc-learning').textContent = fcState.learning;
   const total = fcState.got + fcState.learning;
   document.getElementById('fc-bar').style.width = (total > 0 ? Math.round((fcState.got / (fcState.got + fcState.learning)) * 100) : 0) + '%';
-  // Reset flip
-  if (fcState.flipped) {
-    const fc = document.getElementById('flip-card');
-    fc.style.transition = 'none';
-    fc.classList.remove('flipped');
-    setTimeout(() => { fc.style.transition = ''; }, 50);
-    fcState.flipped = false;
-  }
+  // Always reset flip when rendering new card
+  const fc = document.getElementById('flip-card');
+  fc.classList.remove('flipped');
+  fcState.flipped = false;
   document.getElementById('fc-actions').classList.remove('visible');
 }
 
 function flipCard() {
-  if (fcState.flipped) return;
-  document.getElementById('flip-card').classList.add('flipped');
-  fcState.flipped = true;
-  document.getElementById('fc-actions').classList.add('visible');
+  const fc = document.getElementById('flip-card');
+  fc.classList.toggle('flipped');
+  fcState.flipped = !fcState.flipped;
+  document.getElementById('fc-actions').classList.toggle('visible');
 }
 
 function fcNext() {
@@ -1447,6 +2376,7 @@ function startQuiz() {
 }
 
 function renderQuizQ() {
+  stopSpeech();
   const q = quizState.questions[quizState.index];
   quizState.answered = false;
   document.getElementById('quiz-q-num').textContent = `Question ${quizState.index + 1} of ${quizState.questions.length}`;
@@ -1542,6 +2472,9 @@ function initCases() {
         <span class="case-expand">▼</span>
       </div>
       <div class="case-body">
+        <div class="case-tts-row">
+          <button class="btn btn-outline btn-sm tts-btn" id="case-tts-${c.id}" onclick="speakCase('${c.id}', event)" title="Read case aloud">🔊</button>
+        </div>
         <div class="case-section">
           <div class="case-section-title">📖 What Happened</div>
           <div class="case-section-text">${c.happened}</div>
@@ -1774,6 +2707,7 @@ function toggleStudyTips() {
 // INIT
 // =============================================
 loadState();
+initTTS();
 if (state.theme === 'light') {
   document.documentElement.setAttribute('data-theme', 'light');
   document.getElementById('theme-btn').textContent = '☀️';
@@ -1781,6 +2715,10 @@ if (state.theme === 'light') {
 updateStreak();
 updateHomeUI();
 initCases();
+initTimeline();
+
+// Start with Learn mode active
+showScreen('learn');
 
 // Pre-render
 document.getElementById('best-score-display').textContent = state.speedBest;
