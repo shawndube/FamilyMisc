@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+<!--
+  Florida Civics EOC study app for a 7th grade student in Tampa, Florida.
+  This is a single-file learning tool designed for same-day practical use:
+  strong content coverage, fast navigation, mobile-friendly layout, active recall,
+  quiz stamina practice, and clear remediation when answers are missed.
+  Learning strategy focus: retrieval practice, spaced repetition, teach-back,
+  mixed quiz difficulty, repeated exposure to missed concepts, concrete examples,
+  and memory supports that help a middle-school student retain civics content.
+  Focus changes on usefulness for real middle-school civics prep, not abstract demos.
+-->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -626,6 +636,38 @@ body {
 #feedback-overlay.show { transform: translate(-50%, -50%) scale(1); }
 .feedback-emoji { font-size: 48px; }
 .feedback-text { font-size: 18px; font-weight: 800; margin-top: 8px; }
+/* ===== PROMPT MODAL ===== */
+#prompt-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 18, 0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 240;
+  padding: 20px;
+}
+#prompt-modal.show { display: flex; }
+.prompt-card {
+  width: min(100%, 420px);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+}
+.prompt-title {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: var(--primary-light);
+}
+.prompt-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 16px;
+}
 /* ===== CONFETTI ===== */
 #confetti-container {
   position: fixed;
@@ -975,8 +1017,10 @@ body {
       <div style="padding:24px 16px;text-align:center;">
         <div style="font-size:64px;margin-bottom:16px;">📝</div>
         <div style="font-size:22px;font-weight:800;margin-bottom:8px;">Ready to test yourself?</div>
-        <div style="font-size:15px;color:var(--text2);margin-bottom:32px;">10 questions, mixed topics, just like the real EOC!</div>
-        <button class="btn btn-primary" onclick="startQuiz()" style="max-width:240px;margin:0 auto 12px;">🎯 Start Quiz</button>
+        <div style="font-size:15px;color:var(--text2);margin-bottom:16px;">Choose a quiz length. Longer sets help build EOCA endurance.</div>
+        <button class="btn btn-primary" onclick="startQuizWithSize(10)" style="max-width:240px;margin:0 auto 10px;">🎯 Quick Quiz (10)</button>
+        <button class="btn btn-outline" onclick="startQuizWithSize(25)" style="max-width:240px;margin:0 auto 10px;">📚 Standard Quiz (25)</button>
+        <button class="btn btn-outline" onclick="startQuizWithSize(50)" style="max-width:240px;margin:0 auto 12px;">🏁 EOCA Stamina (50)</button>
         <div style="font-size:12px;color:var(--text2);margin-top:8px;">+10 XP per correct, +25 XP for finishing!</div>
       </div>
     </div>
@@ -1069,6 +1113,13 @@ body {
 <div id="feedback-overlay">
   <div class="feedback-emoji" id="feedback-emoji">🎉</div>
   <div class="feedback-text" id="feedback-text">Correct!</div>
+</div>
+<div id="prompt-modal" onclick="closePromptModal(event)">
+  <div class="prompt-card">
+    <div class="prompt-title" id="prompt-title">Explain It Back</div>
+    <div class="prompt-text" id="prompt-text"></div>
+    <button class="btn btn-primary" onclick="closePromptModal()">Close</button>
+  </div>
 </div>
 <!-- Level up banner -->
 <div id="levelup-banner">🎉 LEVEL UP! You are now a <span id="levelup-name"></span>!</div>
@@ -1576,6 +1627,94 @@ const LEARN_CONCEPTS = [
     connects: 'Enforces federal supremacy in the federalism system.',
     timeline: '1789'
   },
+  {
+    id: 'citizenship-14-naturalization',
+    title: 'Citizenship and Naturalization',
+    category: 'Civics360 Topics',
+    bigIdea: 'You can be a citizen by birth (14th Amendment) or by naturalization process',
+    story: 'In U.S. civics, citizenship is not just a label - it defines legal belonging and political rights. The 14th Amendment says most people born in the U.S. are citizens. People born elsewhere can become citizens through naturalization, which includes legal residency requirements, tests, and an oath.',
+    whatItDoes: 'Explains who counts as a U.S. citizen and how lawful permanent residents can become citizens with full political rights like voting in federal elections.',
+    example: 'A student born in Florida is a U.S. citizen at birth. A parent born abroad may become a citizen later after completing naturalization steps.',
+    connects: 'Links directly to voting rights, civic duties, and equal protection under the 14th Amendment.',
+    timeline: '1868'
+  },
+  {
+    id: 'citizen-obligations',
+    title: 'Citizen Obligations and Responsibilities',
+    category: 'Civics360 Topics',
+    bigIdea: 'Rights come with responsibilities: obey laws, serve on juries, stay informed, and participate',
+    story: 'Civics class is not only about what government owes you. It is also about what a constitutional republic needs from citizens. Some duties are legally required (jury service, obeying laws). Others are civic responsibilities that keep democracy healthy (voting, informed participation, respectful debate).',
+    whatItDoes: 'Distinguishes between mandatory obligations and voluntary responsibilities so students understand both legal duties and democratic habits.',
+    example: 'If called, an eligible adult may have to serve on a jury. Voting is not mandatory, but responsible citizens still show up because policy decisions affect everyone.',
+    connects: 'Connects to engaged citizenship, elections, and public policy outcomes.',
+    timeline: 'Modern Civics'
+  },
+  {
+    id: 'election-processes',
+    title: 'Election Processes and Qualifications',
+    category: 'Civics360 Topics',
+    bigIdea: 'Different offices have different qualifications, and elections follow defined procedures',
+    story: 'Not every office works the same way. Federal offices have constitutional age/residency/citizenship requirements. Elections also follow procedures: primaries, general elections, ballot access rules, and counting/certification steps.',
+    whatItDoes: 'Helps students compare how people run for office and how votes become official election results.',
+    example: 'A candidate for President must meet constitutional age and citizenship requirements, while local offices may have different rules under state law.',
+    connects: 'Builds into Electoral College and voting rights topics.',
+    timeline: '1789 + Ongoing'
+  },
+  {
+    id: 'electoral-college',
+    title: 'Electoral College Basics',
+    category: 'Civics360 Topics',
+    bigIdea: 'Presidents are formally chosen by electors, not a direct national popular vote alone',
+    story: 'In presidential elections, voters in each state choose electors. Those electors cast official Electoral College votes. Most states use winner-take-all allocation, so state-level outcomes matter a lot.',
+    whatItDoes: 'Explains why candidates campaign by state strategy and why popular-vote and electoral-vote outcomes can differ.',
+    example: 'A candidate can win the national popular vote but lose the Electoral College if they lose key states.',
+    connects: 'Connects to federalism, representation, and election process benchmarks.',
+    timeline: '1789'
+  },
+  {
+    id: 'public-policy-problem-solving',
+    title: 'Public Policy Problem Solving',
+    category: 'Civics360 Topics',
+    bigIdea: 'Public policy is government trying to solve real problems with tradeoffs',
+    story: 'Government policy is usually not about perfect answers; it is about choices with costs and benefits. Decision-makers define a problem, compare options, estimate consequences, and choose a policy while balancing rights, budget, and fairness.',
+    whatItDoes: 'Trains students to evaluate policy proposals using evidence, stakeholders, and likely outcomes instead of slogans.',
+    example: 'A city wants safer roads. Options might include lower speed limits, better crosswalks, more enforcement, or infrastructure changes. Each option has costs and impacts.',
+    connects: 'Directly supports Government Policies questions and civic participation skills.',
+    timeline: 'Modern Civics'
+  },
+  {
+    id: 'bias-symbolism-propaganda',
+    title: 'Bias, Symbolism, and Propaganda',
+    category: 'Civics360 Topics',
+    bigIdea: 'Messages can persuade by emotion or framing, so citizens must evaluate sources critically',
+    story: 'Civic information is not always neutral. Ads, speeches, and social posts use symbols, loaded language, and selective facts to persuade. Good citizens learn to identify bias, check evidence, and compare trustworthy sources before forming conclusions.',
+    whatItDoes: 'Builds media literacy and critical thinking for democratic decision-making.',
+    example: 'Two campaign ads describe the same policy in opposite ways. A careful voter checks original data and independent reporting before deciding.',
+    connects: 'Supports engaged citizenship and informed voting.',
+    timeline: 'Modern Civics'
+  },
+  {
+    id: 'forms-systems-government',
+    title: 'Forms and Systems of Government',
+    category: 'Civics360 Topics',
+    bigIdea: 'A constitutional republic combines representative democracy with limits on power',
+    story: 'Countries organize power differently: autocracy, oligarchy, monarchy, parliamentary systems, presidential systems, and constitutional republics. The U.S. model uses representation, written limits, and checks and balances to protect liberty.',
+    whatItDoes: 'Helps students compare systems and explain why the U.S. design emphasizes both elections and constitutional restraints.',
+    example: 'In an autocracy, one leader can rule by decree. In a constitutional republic, leaders are elected and constrained by law and courts.',
+    connects: 'Connects to founding principles, rule of law, and constitutional structure.',
+    timeline: 'Comparative'
+  },
+  {
+    id: 'domestic-vs-foreign-policy',
+    title: 'Domestic vs. Foreign Policy',
+    category: 'Civics360 Topics',
+    bigIdea: 'Domestic policy deals with issues inside the U.S.; foreign policy handles relationships abroad',
+    story: 'Government has to make decisions both at home and internationally. Domestic policy includes education, healthcare, transportation, and public safety. Foreign policy includes diplomacy, defense alliances, trade agreements, and responses to global conflicts.',
+    whatItDoes: 'Teaches students to classify policy decisions and identify which institutions lead each area.',
+    example: 'Funding schools is domestic policy. Negotiating a treaty or responding to an international conflict is foreign policy.',
+    connects: 'Links to executive/legislative powers and international organizations benchmarks.',
+    timeline: 'Modern Civics'
+  },
 ];
 
 const TIMELINE_EVENTS = LEARN_CONCEPTS
@@ -1886,6 +2025,32 @@ const QUIZ_QUESTIONS = [
   { q:'A law is passed that bans all newspapers from criticizing the government. Which amendment does this MOST clearly violate?', opts:['1st Amendment','4th Amendment','10th Amendment','2nd Amendment'], ans:0, explain:'The 1st Amendment protects freedom of the press. A law banning newspapers from criticizing the government would be a direct violation of this fundamental right.', category:'Organization', difficulty:'low' },
 ];
 
+const EXTRA_QUIZ_QUESTIONS = [
+  { q:'Why did the Framers include separation of powers in the U.S. Constitution?', opts:['To let states ignore federal laws','To prevent any one branch from becoming too powerful','To give courts control over elections','To allow Congress to appoint governors'], ans:1, explain:'Separation of powers divides authority among legislative, executive, and judicial branches to limit concentration of power.', category:'Origins', difficulty:'low' },
+  { q:'How did the weakness of the Articles of Confederation influence the Constitutional Convention?', opts:['Delegates strengthened the national government\'s ability to tax and regulate commerce','Delegates removed state governments from national decision-making','Delegates abolished Congress and created only courts','Delegates gave the president power to write laws'], ans:0, explain:'Under the Articles, Congress could not effectively tax or regulate interstate trade, so the Constitution fixed those weaknesses.', category:'Origins', difficulty:'moderate' },
+  { q:'Why did Anti-Federalists push for a Bill of Rights?', opts:['They wanted to increase presidential military powers','They feared the national government could violate individual liberties','They wanted judges elected by state legislatures','They opposed written constitutions'], ans:1, explain:'Anti-Federalists worried that without explicit protections, individual rights could be threatened by federal power.', category:'Origins', difficulty:'low' },
+  { q:'How did Enlightenment ideas influence the founding documents?', opts:['They supported monarchy and inherited power','They rejected natural rights in favor of military authority','They promoted natural rights and social contract principles','They required church leaders to approve laws'], ans:2, explain:'Thinkers like Locke influenced ideas of natural rights, consent, and government\'s duty to protect liberty.', category:'Origins', difficulty:'moderate' },
+  { q:'A state passes a law directly conflicting with a constitutional federal law. Which principle determines the outcome?', opts:['Popular sovereignty','Federalism','Supremacy of national law under the Constitution','Judicial restraint'], ans:2, explain:'The Supremacy Clause establishes that constitutional federal law prevails over conflicting state law.', category:'Origins', difficulty:'high' },
+  { q:'How is selective incorporation significant for rights in the states?', opts:['It allows states to rewrite the Bill of Rights','It applies many Bill of Rights protections to state governments through the Fourteenth Amendment','It limits rights to federal territories only','It lets Congress overrule state constitutions by majority vote'], ans:1, explain:'Through Supreme Court rulings, many federal rights protections now constrain state governments.', category:'Rights', difficulty:'high' },
+  { q:'Why is equal protection under the law a key principle in civil rights cases?', opts:['It guarantees identical outcomes for all people','It requires governments to treat similarly situated people fairly under the law','It bans all distinctions in any law','It gives states power to ignore federal civil rights laws'], ans:1, explain:'Equal protection focuses on fair and non-arbitrary legal treatment by government.', category:'Rights', difficulty:'moderate' },
+  { q:'Which scenario is most likely protected by the First Amendment\'s free exercise clause?', opts:['A city banning all religious meetings because some are unpopular','A student choosing to pray quietly during free time','A court requiring one official religion','A state forcing citizens to attend specific religious services'], ans:1, explain:'Free exercise protects individuals\' rights to practice religion, subject to constitutional limits.', category:'Rights', difficulty:'moderate' },
+  { q:'A city requires a permit for all parades, regardless of viewpoint, to manage traffic and safety. This is usually considered', opts:['an unconstitutional prior restraint in all cases','a valid content-neutral time, place, and manner regulation','a violation of the right to petition','proof of establishment of religion'], ans:1, explain:'Government may impose reasonable, content-neutral regulations on when, where, and how speech occurs.', category:'Rights', difficulty:'high' },
+  { q:'Which action would most directly violate the Establishment Clause?', opts:['Allowing voluntary student religious clubs after school','Using tax money to fund a mandatory state church service','Protecting a person\'s right to wear religious clothing','Permitting private religious charities to operate'], ans:1, explain:'The Establishment Clause bars government from establishing or endorsing religion.', category:'Rights', difficulty:'moderate' },
+  { q:'Which action is a direct way citizens influence public policy in Florida and the U.S.?', opts:['Ignoring local elections','Voting and contacting elected officials','Serving only on federal juries','Refusing to follow enacted laws'], ans:1, explain:'Voting and civic communication are core democratic methods to shape policy decisions.', category:'Government Policies', difficulty:'low' },
+  { q:'Why are appropriations bills significant in public policy?', opts:['They define constitutional amendments','They fund government programs and reflect policy priorities','They appoint federal judges','They regulate only state taxes'], ans:1, explain:'Budget decisions determine which programs are implemented and at what scale.', category:'Government Policies', difficulty:'moderate' },
+  { q:'How do committee hearings in Congress affect policymaking?', opts:['They replace final votes on bills','They gather evidence, expert views, and public input before legislation advances','They automatically enact proposed laws','They allow only executive branch officials to draft bills'], ans:1, explain:'Committees shape legislation through research, testimony, amendments, and recommendations.', category:'Government Policies', difficulty:'moderate' },
+  { q:'Which scenario best illustrates a public policy tradeoff?', opts:['Choosing not to enforce any laws','Expanding services while deciding how to fund them through taxes or spending cuts','Letting courts write all budget laws','Holding elections every month'], ans:1, explain:'Policy tradeoffs involve balancing competing goals and limited resources.', category:'Government Policies', difficulty:'high' },
+  { q:'A legislature redraws voting districts to weaken one group\'s political influence. Which constitutional concern is most directly raised?', opts:['Separation of church and state','Equal protection and fair representation','Quartering soldiers in homes','Protection against double jeopardy'], ans:1, explain:'Districting that unfairly dilutes voting power can raise equal protection and representation issues.', category:'Government Policies', difficulty:'high' },
+  { q:'What is the main purpose of the Electoral College in presidential elections?', opts:['To allow governors to choose the president directly','To formally cast states\' electoral votes for president based on state outcomes','To count only popular votes in Congress','To replace all primary elections'], ans:1, explain:'Voters choose electors in each state, and those electors formally vote for president.', category:'Organization', difficulty:'moderate' },
+  { q:'How does bicameralism affect lawmaking in Congress?', opts:['Bills become law after Senate approval alone','Bills must pass both the House and Senate in matching form','The president writes final statutory language','State courts ratify federal bills'], ans:1, explain:'Both chambers must approve identical bill language before it goes to the president.', category:'Organization', difficulty:'low' },
+  { q:'A vacancy opens on the U.S. Supreme Court. Which sequence is constitutionally required?', opts:['House nominates, president confirms','President nominates, Senate confirms','Chief Justice appoints, House confirms','States vote by referendum'], ans:1, explain:'The Appointments Clause gives the president nomination power and the Senate advice-and-consent authority.', category:'Organization', difficulty:'moderate' },
+  { q:'What is a key difference between delegated powers and reserved powers?', opts:['Delegated powers belong to states; reserved powers belong only to courts','Delegated powers are granted to the national government; reserved powers remain with states or the people','Delegated powers apply only during emergencies','Reserved powers are listed in Article III'], ans:1, explain:'Federal powers are delegated by the Constitution, while other powers are reserved under the Tenth Amendment framework.', category:'Organization', difficulty:'moderate' },
+  { q:'Why is the census important to government organization?', opts:['It determines Supreme Court case assignments','It sets military command structure','It affects apportionment of House seats and distribution of some federal funds','It replaces state voter registration systems'], ans:2, explain:'Population counts shape representation in the House and influence allocation formulas.', category:'Organization', difficulty:'moderate' },
+  { q:'An individual sues claiming a state law violates the U.S. Constitution. The case reaches the Supreme Court after lower court rulings. Why can the Court hear it?', opts:['Because it has original jurisdiction over all state laws','Because it has appellate jurisdiction over constitutional questions','Because governors must request review','Because only Congress can interpret the Constitution'], ans:1, explain:'The Supreme Court primarily reviews appeals involving federal constitutional issues.', category:'Organization', difficulty:'high' },
+];
+
+const ALL_QUIZ_QUESTIONS = [...QUIZ_QUESTIONS, ...EXTRA_QUIZ_QUESTIONS];
+
 // =============================================
 // STATE
 // =============================================
@@ -2025,6 +2190,7 @@ function initLearn() {
   });
   
   Object.entries(categories).forEach(([cat, items]) => {
+    const sortedItems = [...items].sort(compareLearnConcepts);
     const section = document.createElement('div');
     section.className = 'learn-topic-section';
 
@@ -2033,7 +2199,7 @@ function initLearn() {
     label.textContent = cat;
     section.appendChild(label);
 
-    items.forEach(concept => {
+    sortedItems.forEach(concept => {
       const btn = document.createElement('button');
       btn.className = 'learn-topic-btn';
       btn.textContent = concept.title;
@@ -2043,6 +2209,21 @@ function initLearn() {
 
     el.appendChild(section);
   });
+}
+
+function compareLearnConcepts(a, b) {
+  const amA = getAmendmentNumber(a.title);
+  const amB = getAmendmentNumber(b.title);
+  if (amA !== null && amB !== null) return amA - amB;
+  if (amA !== null) return -1;
+  if (amB !== null) return 1;
+  return a.title.localeCompare(b.title);
+}
+
+function getAmendmentNumber(title) {
+  const m = String(title).match(/^(\d+)(st|nd|rd|th)\s+Amendment\b/i);
+  if (!m) return null;
+  return Number(m[1]);
 }
 
 function showLearnModule(conceptId) {
@@ -2081,8 +2262,15 @@ function teachBackPrompt() {
   if (!concept) return;
   
   const prompt = `Can you explain "${concept.title}" in your own words? What's the main idea? Why does it matter? Just explain it naturally like you're teaching a friend - no need to memorize anything!`;
-  
-  showFeedback('🎤', prompt);
+
+  document.getElementById('prompt-title').textContent = 'Explain It Back';
+  document.getElementById('prompt-text').textContent = prompt;
+  document.getElementById('prompt-modal').classList.add('show');
+}
+
+function closePromptModal(event) {
+  if (event && event.target !== event.currentTarget) return;
+  document.getElementById('prompt-modal').classList.remove('show');
 }
 
 function initTimeline() {
@@ -2229,9 +2417,16 @@ function speakText(text, btnEl) {
 
 function speakLearnModule() {
   if (!learnCurrentId) return;
-  const concept = LEARN_CONCEPTS.find(c => c.id === learnCurrentId);
-  if (!concept) return;
-  const text = `${concept.title}. Big idea: ${concept.bigIdea}. Story: ${concept.story}. What it does: ${concept.whatItDoes}. Example: ${concept.example}. Connects to: ${concept.connects}.`;
+  const textParts = [
+    document.getElementById('learn-title')?.textContent?.trim(),
+    document.getElementById('learn-story')?.textContent?.trim(),
+    `Big idea: ${document.getElementById('learn-big-idea')?.textContent?.trim() || ''}`,
+    `What it does: ${document.getElementById('learn-what-it-does')?.textContent?.trim() || ''}`,
+    `Example: ${document.getElementById('learn-example')?.textContent?.trim() || ''}`,
+    `Connects to: ${document.getElementById('learn-connects')?.textContent?.trim() || ''}`,
+  ].filter(Boolean);
+
+  const text = textParts.join('. ');
   speakText(text, document.getElementById('learn-tts-btn'));
 }
 
@@ -2362,13 +2557,18 @@ let quizState = {
   streak: 0,
 };
 
-function startQuiz() {
+function startQuizWithSize(count) {
+  startQuiz(count);
+}
+
+function startQuiz(questionCount = 10) {
   updateStreak();
   showScreen('quiz');
   document.getElementById('quiz-start-view').style.display = 'none';
   document.getElementById('quiz-game-view').style.display = 'block';
   document.getElementById('quiz-result-view').style.display = 'none';
-  quizState.questions = shuffle([...QUIZ_QUESTIONS]).slice(0, 10);
+  const size = Math.max(5, Math.min(questionCount, ALL_QUIZ_QUESTIONS.length));
+  quizState.questions = shuffle([...ALL_QUIZ_QUESTIONS]).slice(0, size);
   quizState.index = 0;
   quizState.score = 0;
   quizState.streak = 0;
@@ -2520,7 +2720,7 @@ function startCasesQuiz() {
 // =============================================
 // SPEED ROUND
 // =============================================
-const SPEED_QUESTIONS = [...QUIZ_QUESTIONS, ...CASES.map(c => ({
+const SPEED_QUESTIONS = [...ALL_QUIZ_QUESTIONS, ...CASES.map(c => ({
   q: c.quizQ.q,
   opts: c.quizQ.opts,
   ans: c.quizQ.ans,
