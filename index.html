@@ -217,6 +217,29 @@ body {
 .progress-track { flex: 0 0 100px; height: 8px; background: var(--bg3); border-radius: 50px; overflow: hidden; }
 .progress-fill { height: 100%; border-radius: 50px; transition: width 0.5s ease; }
 .progress-pct { font-size: 12px; color: var(--text2); font-weight: 700; min-width: 32px; text-align: right; }
+.coverage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 12px 8px;
+}
+.coverage-row {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+}
+.coverage-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.coverage-detail {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.4;
+}
 .quick-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 12px 8px; }
 .quick-btn {
   background: var(--card);
@@ -323,6 +346,20 @@ body {
   color: var(--text);
   line-height: 1.6;
 }
+.glossary-term {
+  border: none;
+  border-bottom: 2px dotted var(--yellow);
+  background: rgba(255, 209, 102, 0.12);
+  color: inherit;
+  font: inherit;
+  font-weight: 800;
+  padding: 0 2px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.glossary-term:active {
+  background: rgba(255, 209, 102, 0.22);
+}
 /* ===== FLASHCARDS ===== */
 .fc-header {
   padding: 16px;
@@ -364,20 +401,19 @@ body {
 }
 .fc-cat-scroll {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   padding: 0 12px 12px;
-  overflow-x: auto;
-  scrollbar-width: none;
+  overflow: visible;
 }
-.fc-cat-scroll::-webkit-scrollbar { display: none; }
 .cat-chip {
-  flex-shrink: 0;
-  padding: 8px 16px;
+  flex: 0 1 auto;
+  padding: 8px 12px;
   border-radius: 50px;
   border: 1.5px solid var(--border);
   background: transparent;
   color: var(--text2);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
@@ -428,6 +464,9 @@ body {
 .flip-term { font-size: 22px; font-weight: 800; }
 .flip-cat { font-size: 11px; opacity: 0.7; margin-top: 8px; font-weight: 600; }
 .flip-answer { font-size: 16px; font-weight: 600; line-height: 1.5; }
+.flip-answer .glossary-term {
+  color: #fff;
+}
 .fc-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -876,7 +915,7 @@ body {
   </div>
 
   <!-- HOME SCREEN -->
-  <div id="screen-home" class="screen active">
+  <div id="screen-home" class="screen">
     <div class="home-header">
       <div>
         <div style="font-size:12px;color:var(--text2);font-weight:700;">FLORIDA CIVICS EOC</div>
@@ -944,6 +983,8 @@ body {
     </div>
         <div class="section-title">📊 Topic Progress</div>
     <div id="topic-progress-list"></div>
+    <div class="section-title">Civics360 Coverage</div>
+    <div id="coverage-list" class="coverage-list"></div>
     <div class="section-title">🚀 Quick Start</div>
     <div class="quick-btns">
       <button class="quick-btn" onclick="showScreen('flashcards')">
@@ -1017,10 +1058,10 @@ body {
       <div style="padding:24px 16px;text-align:center;">
         <div style="font-size:64px;margin-bottom:16px;">📝</div>
         <div style="font-size:22px;font-weight:800;margin-bottom:8px;">Ready to test yourself?</div>
-        <div style="font-size:15px;color:var(--text2);margin-bottom:16px;">Choose a quiz length. Longer sets help build EOCA endurance.</div>
+        <div style="font-size:15px;color:var(--text2);margin-bottom:16px;">Choose a quiz length. Longer sets help build EOC endurance.</div>
         <button class="btn btn-primary" onclick="startQuizWithSize(10)" style="max-width:240px;margin:0 auto 10px;">🎯 Quick Quiz (10)</button>
         <button class="btn btn-outline" onclick="startQuizWithSize(25)" style="max-width:240px;margin:0 auto 10px;">📚 Standard Quiz (25)</button>
-        <button class="btn btn-outline" onclick="startQuizWithSize(50)" style="max-width:240px;margin:0 auto 12px;">🏁 EOCA Stamina (50)</button>
+        <button class="btn btn-outline" onclick="startQuizWithSize(50)" style="max-width:240px;margin:0 auto 12px;">🏁 EOC Stamina (50)</button>
         <div style="font-size:12px;color:var(--text2);margin-top:8px;">+10 XP per correct, +25 XP for finishing!</div>
       </div>
     </div>
@@ -1139,7 +1180,7 @@ const LEARN_CONCEPTS = [
     bigIdea: 'Power is split three ways so nobody gets too much',
     story: 'Americans just got done fighting a king who had ALL the power. They said "never again" and invented a system where power is divided into three branches. Congress makes laws, the President enforces them, courts decide if they\'re legal. It\'s like having three CEOs of a company who all have to agree on big decisions.',
     whatItDoes: 'The government can\'t just do whatever it wants because the branches check each other. President wants to start a war → Congress has to approve it. Congress passes a law → President might veto it, or courts might say it\'s unconstitutional.',
-    example: 'Trump wanted to ban TikTok → He couldn\'t just do it. Congress had to vote. Courts had to say if it was legal. That\'s separation of powers in action right now.',
+    example: 'A President cannot create a permanent new tax alone. Congress writes tax laws, the President may sign or veto them, and courts can review constitutional disputes. That is separation of powers in action.',
     connects: 'This is why amendments and the Constitution matter - they set up these power-sharing rules.',
     timeline: '1787 (Constitution)'
   },
@@ -1161,7 +1202,7 @@ const LEARN_CONCEPTS = [
     bigIdea: 'You can say what you want, practice your religion, protest the government. The government can\'t control your thoughts.',
     story: 'Before America, people got in trouble for criticizing the king or practicing the "wrong" religion. Americans said that\'s garbage - we came here to be FREE. So the 1st Amendment says the government can\'t tell you what to think, say, or believe. This amendment is basically "Leave us alone - we\'re free now."',
     whatItDoes: 'Protects freedom of speech (you can say it), freedom of press (media can publish it), freedom of religion (believe what you want), freedom of assembly (protest with friends), freedom to petition (complain to the government).',
-    example: 'You can make a TikTok saying the government is terrible. The government can\'t arrest you. A newspaper can criticize the President. Muslims can build a mosque. These are all 1st Amendment protections happening RIGHT NOW.',
+    example: 'You can criticize the government in a speech, article, post, or peaceful protest. A newspaper can criticize the President. Religious groups can worship freely. Those are 1st Amendment protections.',
     connects: 'This is the first thing on the Bill of Rights because it\'s the most important - all other rights don\'t matter if you can\'t talk about them.',
     timeline: '1791'
   },
@@ -1172,7 +1213,7 @@ const LEARN_CONCEPTS = [
     bigIdea: 'You have the right to own a gun (but it can be regulated)',
     story: 'America fought a revolution partly because the British had guns and colonists couldn\'t defend themselves. So 2nd Amendment says people can own guns. BUT - debate today is how much can the government regulate it. Can they ban certain guns? Require background checks? Both sides argue about what the amendment really means.',
     whatItDoes: 'Protects the right to own firearms. The government can regulate guns (background checks, licensing) but can\'t take away the right entirely. It\'s had a ton of court cases trying to define exactly what this means.',
-    example: 'You can buy a gun (with background check in most states). But you probably can\'t buy a machine gun designed for war. People argue about this constantly.',
+    example: 'Gun ownership is constitutionally protected, but governments can still have rules such as background checks, age limits, and restrictions on especially dangerous weapons.',
     connects: 'Part of the Bill of Rights - your right to defend yourself.',
     timeline: '1791'
   },
@@ -1181,8 +1222,8 @@ const LEARN_CONCEPTS = [
     title: '4th Amendment: No Unreasonable Search',
     category: 'Amendments',
     bigIdea: 'Police need a warrant signed by a judge before searching your stuff',
-    story: 'The British secret police used to raid people\'s homes randomly looking for stuff. Americans hated this. The 4th Amendment says police can\'t just barge into your house - they need a warrant, which means a judge has to believe they have a good reason to search.',
-    whatItDoes: 'Police need probable cause and a judicial warrant to search your home, car, or personal belongings. Without it, evidence isn\'t valid in court. This protects your privacy from government overreach.',
+    story: 'British officials used broad searches called writs of assistance to search colonists homes and businesses. Americans hated this. The 4th Amendment says police cannot just barge into your house - they usually need a warrant, which means a judge believes there is a legal reason to search.',
+    whatItDoes: 'Police generally need probable cause and a judicial warrant to search your home, car, or personal belongings. If they break the rules, the evidence may be excluded from court. This protects your privacy from government overreach.',
     example: 'Cops see you walking down the street and want to search your backpack. They can\'t just do it - they need probable cause (reason to believe you have something illegal). Your phone can\'t be searched without a warrant either.',
     connects: 'Works with the 5th Amendment to protect you from injustice.',
     timeline: '1791'
@@ -1247,7 +1288,7 @@ const LEARN_CONCEPTS = [
     title: '19th Amendment: Women Can Vote',
     category: 'Amendments',
     bigIdea: 'Women have the right to vote just like men (1920)',
-    story: 'Women had been fighting for voting rights since the 1800s. The 19th Amendment finally granted it. Before 1920, American women couldn\'t vote in federal elections - that\'s insane by today\'s standards. This amendment finally gave women a voice in government.',
+    story: 'Women had been fighting for voting rights since the 1800s. The 19th Amendment finally protected women\'s suffrage nationally. Before 1920, many American women were denied the vote. This amendment gave women a guaranteed voice in elections.',
     whatItDoes: 'Guarantees women have the right to vote - cannot be denied based on sex.',
     example: 'Before 1920, your mom wouldn\'t have been able to vote. That changed in 1920. The fight for women\'s voting rights took DECADES of protests. Susan B. Anthony was arrested for voting illegally before the amendment even passed.',
     connects: 'Part of the slow expansion of who gets to participate in democracy - from just rich men → all men → women.',
@@ -1379,15 +1420,15 @@ const LEARN_CONCEPTS = [
     title: '3rd Amendment: No Quartering Soldiers',
     category: 'Amendments',
     bigIdea: 'The government can\'t force you to let soldiers live in your house',
-    story: 'Before America, the British could demand colonists house and feed British soldiers. That sucked for civilians - imagine soldiers eating your food and using your house. The 3rd Amendment says: never again. Government can\'t make you quarter soldiers in wartime without a law.',
+    story: 'Before America, British authorities could demand that colonists house and feed British soldiers. That was a serious invasion of private homes. The 3rd Amendment says the government cannot make you quarter soldiers in peacetime, or in wartime without a law.',
     whatItDoes: 'Protects your home from the government forcing soldiers to stay there.',
-    example: 'This amendment barely comes up today (we don\'t have armies occupying houses), but it shows the Founders\' paranoia about government overreach. They wanted home to be YOUR space.',
+    example: 'This amendment rarely comes up today, but it shows how strongly the Founders wanted to protect homes from government overreach.',
     connects: 'Part of personal liberty protections in the Bill of Rights.',
     timeline: '1791'
   },
   {
-    id: 'a6',
-    title: '6th Amendment: Right to a Fair Trial',
+    id: 'a6-checklist',
+    title: '6th Amendment: Fair Trial Checklist',
     category: 'Amendments',
     bigIdea: 'You get a lawyer, a jury, and a fair court process',
     story: 'Imagine being accused of a crime and having no way to defend yourself - no lawyer, no jury. The 6th Amendment says that\'s illegal. You get a lawyer (free if poor, thanks to Gideon case), you get a jury of regular people, and you can hear the charges against you.',
@@ -1522,7 +1563,7 @@ const LEARN_CONCEPTS = [
     title: '22nd Amendment: Two-Term Presidential Limit',
     category: 'Amendments',
     bigIdea: 'Presidents can serve maximum two terms (8 years)',
-    story: 'FDR served four terms (12 years) during the Great Depression and WWII. After he died, Congress said "never again." The 22nd Amendment limited presidents to two terms. One president, four terms - that\'s the maximum now.',
+    story: 'FDR served four terms (12 years) during the Great Depression and WWII. After he died, Congress said "never again." The 22nd Amendment limited presidents to two elected terms, so that kind of long presidency is no longer allowed.',
     whatItDoes: 'Limits presidents to two terms maximum.',
     example: 'A president can serve at most 8 years (unless they took over mid-term, then they could run for two more terms after that).',
     connects: 'Checks presidential power, prevents one person accumulating too much authority.',
@@ -1724,6 +1765,298 @@ const TIMELINE_EVENTS = LEARN_CONCEPTS
     event: `${c.title} - ${c.bigIdea}`,
   }));
 
+const CIVICS360_BENCHMARK_MODULES = [
+  ['cg-2-1', 'Citizen You', 'SS.7.CG.2.1', 'Defining Citizenship',
+    'Citizenship means legal membership in a country, with rights and duties.',
+    'A U.S. citizen can be born into citizenship or become a citizen through naturalization. Citizenship matters because citizens can vote, serve on juries, run for many offices, and receive constitutional protections.',
+    'Teaches birthright citizenship, naturalized citizenship, alien/noncitizen status, and the connection between citizenship and political rights.',
+    'A student born in Tampa is a citizen at birth. A lawful permanent resident born abroad may become a citizen after meeting naturalization requirements and taking the oath.',
+    'Connects to the 14th Amendment, voting rights, civic duties, and equal protection.'],
+  ['cg-2-2', 'Citizen You', 'SS.7.CG.2.2', 'Citizen Obligations and Responsibilities',
+    'Some civic actions are required by law; others are voluntary responsibilities.',
+    'A constitutional republic depends on citizens who know the difference between legal obligations and responsible participation. Obeying laws, paying taxes, and serving on juries when called are duties. Voting, staying informed, volunteering, and contacting officials are responsibilities.',
+    'Separates mandatory civic obligations from voluntary civic responsibilities and explains why both matter.',
+    'Jury duty is a legal obligation for eligible adults. Voting is voluntary, but it is one of the strongest ways citizens shape policy.',
+    'Connects to juries, elections, public policy, and civic participation.'],
+  ['cg-1-1', "Founders' Influences", 'SS.7.CG.1.1', 'Ancient and Religious Influences',
+    'American government borrowed ideas from older civilizations and traditions.',
+    'The Founders did not invent every idea from scratch. They studied Greek democracy, Roman republicanism, English legal traditions, Judeo-Christian ideas about moral law, and civic virtue.',
+    'Builds the background for representative government, rule of law, civic virtue, and written limits on power.',
+    'The Senate gets its name from Rome, while the idea that rulers must follow law developed through English constitutional history.',
+    'Connects to founding principles, rule of law, and influential documents.'],
+  ['cg-1-2', "Founders' Influences", 'SS.7.CG.1.2', 'Founding Principles',
+    'The U.S. system rests on principles that limit power and protect liberty.',
+    'Founding principles include popular sovereignty, natural rights, social contract, limited government, republicanism, federalism, separation of powers, checks and balances, and rule of law.',
+    'Gives students the vocabulary to explain why the Constitution is structured the way it is.',
+    '"We the People" shows popular sovereignty. Three branches show separation of powers. Vetoes and judicial review show checks and balances.',
+    'Connects to the Constitution, Bill of Rights, and every branch of government.'],
+  ['cg-1-3', "Founders' Influences", 'SS.7.CG.1.3', 'Influential Documents',
+    'Earlier documents shaped the Declaration, Articles, Constitution, and Bill of Rights.',
+    'The Magna Carta, English Bill of Rights, Mayflower Compact, Common Sense, Declaration of Independence, Articles of Confederation, and Federalist Papers each influenced American constitutional ideas.',
+    'Helps students match documents to ideas: limited monarchy, self-government, natural rights, weak confederation, ratification, and rights protections.',
+    'The Magna Carta limited the king; the Mayflower Compact modeled self-government; Common Sense argued for independence.',
+    'Connects to founding principles and the road to independence.'],
+  ['cg-1-4', "Founders' Influences", 'SS.7.CG.1.4', 'Enlightenment Influences',
+    'Enlightenment thinkers gave the Founders language for rights and limited government.',
+    'John Locke emphasized natural rights and consent of the governed. Montesquieu influenced separation of powers. Rousseau discussed social contract. These ideas helped justify independence and constitutional limits.',
+    'Explains how philosophical ideas became practical government design.',
+    'The Declaration says governments get power from consent and must protect rights. That is Locke showing up in American language.',
+    'Connects to the Declaration of Independence, Constitution, and Bill of Rights.'],
+  ['cg-1-11', "Founders' Influences", 'SS.7.CG.1.11', 'Rule of Law',
+    'No person, official, or branch is above the law.',
+    'Rule of law means leaders must follow the same legal rules as everyone else. It is the opposite of arbitrary rule by kings, dictators, or officials who punish people whenever they want.',
+    'Teaches why constitutions, courts, due process, and checks on power are essential.',
+    'A governor or president cannot ignore a court order just because they dislike it. Officials are bound by law.',
+    'Connects to limited government, due process, and judicial review.'],
+  ['cg-1-5', 'The Founding: Colonies to United States', 'SS.7.CG.1.5', 'The Road to Independence',
+    'Colonists moved from protest to independence because they believed rights were being violated.',
+    'Major causes included taxation without representation, British enforcement policies, the Boston Massacre, Boston Tea Party, Intolerable Acts, and arguments in pamphlets like Common Sense.',
+    'Explains the chain of events that turned colonial complaints into a demand for independence.',
+    'A tax on tea was not just about tea; colonists saw it as proof Parliament was governing them without consent.',
+    'Connects to natural rights, consent of the governed, and the Declaration of Independence.'],
+  ['cg-1-6', 'The Founding: Colonies to United States', 'SS.7.CG.1.6', 'Declaration of Independence',
+    'The Declaration explains why the colonies broke away from Britain.',
+    'The Declaration argues that people have natural rights, government gets power from consent, and people may alter or abolish a government that violates rights.',
+    'Teaches the purpose, main ideas, grievances, and impact of the Declaration.',
+    'When Jefferson wrote about life, liberty, and the pursuit of happiness, he was explaining what government exists to protect.',
+    'Connects to John Locke, natural rights, social contract, and popular sovereignty.'],
+  ['cg-1-7', 'The Founding: Colonies to United States', 'SS.7.CG.1.7', 'Articles of Confederation',
+    'The first national government was too weak to solve national problems.',
+    'Under the Articles, Congress could not tax effectively, regulate interstate commerce, enforce laws with an executive branch, or run a national court system. Shays rebellion exposed the weakness.',
+    'Shows why the Constitutional Convention created a stronger national government.',
+    'If Congress needed money, it had to ask states. States could refuse, leaving the national government unable to pay debts.',
+    'Connects to federalism, enumerated powers, and the Constitution.'],
+  ['cg-1-8', 'Constitutional Principles & Structures', 'SS.7.CG.1.8', 'U.S. Constitution Preamble',
+    'The Preamble states the Constitution was created by the people for six broad goals.',
+    'The six goals are to form a more perfect union, establish justice, ensure domestic tranquility, provide for the common defense, promote the general welfare, and secure the blessings of liberty.',
+    'Helps students identify purpose language and connect it to government actions.',
+    'National defense connects to common defense; courts connect to justice; disaster aid and public health connect to general welfare.',
+    'Connects to popular sovereignty and the purposes of government.'],
+  ['cg-1-9', 'Constitutional Principles & Structures', 'SS.7.CG.1.9', 'Limits on Government Power',
+    'The Constitution gives government power but also limits it.',
+    'Limits include separation of powers, checks and balances, federalism, rule of law, due process, elections, judicial review, and protected rights.',
+    'Explains how the Constitution prevents tyranny while still allowing government to act.',
+    'Congress can pass laws, but the President can veto them and courts can review them for constitutionality.',
+    'Connects to the Bill of Rights, Articles I-III, and Marbury v. Madison.'],
+  ['cg-1-10', 'Constitutional Principles & Structures', 'SS.7.CG.1.10', 'Federalist vs. Anti-Federalist',
+    'Federalists supported ratification; Anti-Federalists feared the new national government was too powerful.',
+    'Federalists argued the Constitution created an effective but limited government. Anti-Federalists demanded clearer protections for individual rights, leading to the Bill of Rights.',
+    'Teaches the ratification debate and why the Bill of Rights was added.',
+    'Hamilton, Madison, and Jay wrote the Federalist Papers. Anti-Federalist concerns helped push the first ten amendments.',
+    'Connects to ratification, limited government, and individual rights.'],
+  ['cg-3-3', 'Constitutional Principles & Structures', 'SS.7.CG.3.3', 'Articles I, II, and III',
+    'The first three articles create the legislative, executive, and judicial branches.',
+    'Article I creates Congress, Article II creates the presidency, and Article III creates the federal courts. Each branch has separate powers and checks on the others.',
+    'Helps students identify branch powers and constitutional structure.',
+    'Congress declares war, the President commands the military, and courts interpret laws in cases.',
+    'Connects to separation of powers and checks and balances.'],
+  ['cg-3-4-national', 'Constitutional Principles & Structures', 'SS.7.CG.3.4', 'Federalism',
+    'Federalism divides power between national and state governments.',
+    'Delegated powers belong to the national government, reserved powers remain with states, and concurrent powers are shared. The Supremacy Clause makes constitutional federal law supreme when conflicts arise.',
+    'Teaches delegated, reserved, concurrent, and prohibited powers.',
+    'Coining money is national. Running public schools is mainly state. Taxing can be both national and state.',
+    'Connects to the 10th Amendment, Supremacy Clause, and Florida government.'],
+  ['cg-3-5', 'Constitutional Principles & Structures', 'SS.7.CG.3.5', 'The Amendment Process',
+    'Changing the Constitution is possible but intentionally difficult.',
+    'An amendment is usually proposed by two-thirds of both houses of Congress and ratified by three-fourths of the states. This protects stability while allowing change.',
+    'Teaches proposal, ratification, and why broad agreement is required.',
+    'The 26th Amendment lowered the voting age to 18 after national debate during the Vietnam era.',
+    'Connects to all 27 amendments and federalism.'],
+  ['cg-3-7-national', 'Executive & Legislative Branches', 'SS.7.CG.3.7', 'National Government: Legislative Branch',
+    'Congress makes federal laws and controls major national policy tools.',
+    'Congress is bicameral: the House represents population and the Senate represents states equally. Congress can tax, spend, regulate commerce, declare war, impeach, and confirm certain officials through the Senate.',
+    'Teaches House vs. Senate, lawmaking, representation, and congressional checks.',
+    'A bill must pass both the House and Senate in the same form before going to the President.',
+    'Connects to Article I, checks and balances, public policy, and federalism.'],
+  ['cg-3-8-national', 'Executive & Legislative Branches', 'SS.7.CG.3.8', 'National Government: Executive Branch',
+    'The executive branch enforces laws and leads national administration.',
+    'The President is chief executive, commander in chief, head of state, and foreign policy leader. The Cabinet and federal agencies carry out laws passed by Congress.',
+    'Teaches presidential roles, veto power, appointments, executive departments, and enforcement.',
+    'The President can veto a bill, nominate judges, negotiate treaties, and direct federal agencies to carry out law.',
+    'Connects to Article II, foreign policy, and checks and balances.'],
+  ['cg-3-13-national', 'Executive & Legislative Branches', 'SS.7.CG.3.13', 'National Government Obligations and Services',
+    'Governments provide services and meet obligations using laws, budgets, and agencies.',
+    'National government services include defense, interstate transportation systems, postal service, disaster response, public health programs, and enforcement of civil rights laws.',
+    'Teaches how taxes, budgets, and agencies turn policy into services.',
+    'FEMA responding after a hurricane is a national service that works with state and local governments.',
+    'Connects to public policy, taxation, federalism, and domestic policy.'],
+  ['cg-3-9-national', 'Judicial Branch and Legal System', 'SS.7.CG.3.9', 'Judicial Branch',
+    'Courts interpret laws, resolve disputes, and protect constitutional rights.',
+    'The federal judiciary includes district courts, appeals courts, and the Supreme Court. Courts decide cases based on law, jurisdiction, precedent, and constitutional principles.',
+    'Teaches court levels, jurisdiction, appeals, judicial review, and precedent.',
+    'A case may start in a trial court, be appealed to a higher court, and eventually reach the Supreme Court if a federal constitutional issue exists.',
+    'Connects to Article III, Marbury, due process, and landmark cases.'],
+  ['cg-3-10', 'Judicial Branch and Legal System', 'SS.7.CG.3.10', 'Sources and Types of Law',
+    'Law comes from multiple sources and covers different kinds of disputes.',
+    'Sources include constitutions, statutes, regulations, and court decisions. Types include criminal law, civil law, constitutional law, and administrative law.',
+    'Helps students classify legal situations and identify which rules apply.',
+    'A theft charge is criminal law. A lawsuit over property damage is civil law. A claim that a rule violates free speech is constitutional law.',
+    'Connects to juries, trials, courts, and due process.'],
+  ['cg-3-11-marbury', 'Judicial Branch and Legal System', 'SS.7.CG.3.11', 'Landmark Supreme Court Cases: Marbury Only',
+    'Marbury v. Madison established judicial review.',
+    'The Supreme Court used Marbury to say courts can declare laws unconstitutional. That made the judicial branch a coequal branch able to check Congress and the President.',
+    'Teaches why Marbury is the foundation for later constitutional rights cases.',
+    'If Congress passes a law violating the First Amendment, courts can strike it down because of judicial review.',
+    'Connects to checks and balances and all later Supreme Court case review.'],
+  ['cg-2-5', 'Judicial Branch and Legal System', 'SS.7.CG.2.5', 'Juries and Trials',
+    'Juries help citizens participate directly in the justice system.',
+    'The Constitution protects jury trials in criminal cases and many civil cases. Jurors listen to evidence, apply legal instructions, and help decide guilt or liability.',
+    'Teaches jury duty, trial rights, burden of proof, and civic responsibility.',
+    'In a criminal trial, the prosecution must prove guilt beyond a reasonable doubt to a jury.',
+    'Connects to the 6th and 7th Amendments, due process, and citizen obligations.'],
+  ['cg-3-4-fl', 'Florida State & Local Government', 'SS.7.CG.3.4', 'Florida Federalism',
+    'Florida has its own government powers inside the federal system.',
+    'Florida controls many reserved-power areas such as education, elections administration, public safety, local governments, and state courts, while still obeying the U.S. Constitution and valid federal law.',
+    'Applies federalism to real Florida state and local government.',
+    'Florida can set graduation requirements, but it cannot violate federal constitutional rights.',
+    'Connects to reserved powers, state constitutions, and local services.'],
+  ['cg-3-7-fl', 'Florida State & Local Government', 'SS.7.CG.3.7', 'Florida Legislative Branch',
+    'Florida law is made by a bicameral state legislature.',
+    'The Florida Legislature has a House of Representatives and a Senate. It passes state laws, approves the state budget, and can place proposed constitutional amendments before voters.',
+    'Compares state lawmaking with Congress while keeping Florida details clear.',
+    'A bill about Florida schools must pass both chambers of the Florida Legislature and go to the governor.',
+    'Connects to representation, state budgets, and public policy.'],
+  ['cg-3-8-fl', 'Florida State & Local Government', 'SS.7.CG.3.8', 'Florida Executive Branch',
+    'Florida executive officials enforce state law and administer state programs.',
+    'The governor leads the executive branch, signs or vetoes bills, prepares budget recommendations, and works with elected Cabinet officials and agencies.',
+    'Teaches state executive roles and how they compare with the President.',
+    'After a hurricane, the governor can coordinate state emergency response and work with local and federal agencies.',
+    'Connects to public safety, state services, and checks and balances.'],
+  ['cg-3-9-fl', 'Florida State & Local Government', 'SS.7.CG.3.9', 'Florida Judicial Branch',
+    'Florida courts interpret state law and protect rights under state and federal constitutions.',
+    'Florida has county courts, circuit courts, district courts of appeal, and the Florida Supreme Court. State courts handle most criminal, family, probate, traffic, and local civil cases.',
+    'Teaches state court structure and the role of appeals.',
+    'A Florida criminal case usually begins in a state trial court, not the U.S. Supreme Court.',
+    'Connects to sources of law, juries, and comparing constitutions.'],
+  ['cg-3-12', 'Florida State & Local Government', 'SS.7.CG.3.12', 'Comparing Constitutions',
+    'The U.S. Constitution and Florida Constitution both organize government and protect rights.',
+    'The U.S. Constitution is the supreme national law. The Florida Constitution creates state government, protects state-level rights, and can include detailed rules about education, local government, taxes, and amendments.',
+    'Teaches similarities, differences, and supremacy when state and federal law conflict.',
+    'Florida can protect rights more specifically than the federal Constitution, but it cannot take away federal rights.',
+    'Connects to federalism, amendments, and state government structure.'],
+  ['cg-3-13-fl', 'Florida State & Local Government', 'SS.7.CG.3.13', 'State and Local Government Services',
+    'State and local governments provide many services people use every day.',
+    'Florida and local governments handle schools, roads, police and fire protection, courts, libraries, water, zoning, elections administration, public health, and emergency management.',
+    'Shows which level of government is likely responsible for local problems.',
+    'A pothole near school is usually local government. A statewide school rule is usually state government.',
+    'Connects to federalism, public policy, budgets, and civic participation.'],
+  ['cg-2-3', 'My Rights and Liberties', 'SS.7.CG.2.3', 'Bill of Rights and Amendments',
+    'The Bill of Rights protects individual liberties and limits government power.',
+    'The first ten amendments protect freedoms such as speech, religion, press, assembly, petition, fair criminal process, jury trials, and protection from unreasonable searches and cruel punishment.',
+    'Teaches rights by amendment and helps students match scenarios to protections.',
+    'Police usually need a warrant for a home search because of the 4th Amendment. A defendant gets a lawyer because of the 6th Amendment.',
+    'Connects to court cases, due process, and limits on government.'],
+  ['cg-2-4', 'My Rights and Liberties', 'SS.7.CG.2.4', 'Safeguarding and Limiting Rights',
+    'Rights are protected strongly, but they can have constitutional limits.',
+    'Government may limit rights when it has a valid constitutional reason, such as public safety, protecting others rights, or regulating time, place, and manner without targeting a viewpoint.',
+    'Teaches that rights analysis often asks what right is involved and whether the limit is constitutional.',
+    'A city can require parade permits for traffic safety if the rule is content-neutral and applied fairly.',
+    'Connects to the First Amendment, due process, and Supreme Court cases.'],
+  ['cg-3-6', 'My Rights and Liberties', 'SS.7.CG.3.6', 'Voting Rights',
+    'Voting rights expanded through amendments, laws, and court action.',
+    'Key protections include the 15th Amendment banning race discrimination in voting, 19th Amendment for women, 24th Amendment banning poll taxes in federal elections, and 26th Amendment lowering the voting age to 18.',
+    'Teaches the voting-rights timeline and common barriers such as poll taxes, literacy tests, and discrimination.',
+    'The 24th Amendment means a state cannot charge a fee to vote in a federal election.',
+    'Connects to citizenship, elections, civil rights, and equal protection.'],
+  ['cg-3-11-rights', 'My Rights and Liberties', 'SS.7.CG.3.11', 'Landmark Supreme Court Cases: Rights Cases',
+    'Landmark cases show how constitutional rights are applied to real disputes.',
+    'Important cases include McCulloch, Gibbons, Dred Scott, Plessy, Brown, Gideon, In re Gault, Miranda, and Tinker. Each connects a legal issue to constitutional principles.',
+    'Helps students remember the issue, ruling, and constitutional connection for each case.',
+    'Brown uses equal protection to reject school segregation. Miranda protects the right against self-incrimination during custodial interrogation.',
+    'Connects to amendments, judicial review, precedent, and civil liberties.'],
+  ['cg-2-8', 'Engaged Citizens', 'SS.7.CG.2.8', 'Influencing and Monitoring Government',
+    'Citizens can influence government before, during, and after elections.',
+    'Citizens monitor officials by following news, checking voting records, attending meetings, contacting representatives, petitioning, protesting peacefully, joining groups, and voting.',
+    'Teaches practical civic participation beyond memorizing branches.',
+    'A Tampa resident can speak at a city council meeting, email a state legislator, sign a petition, or vote in local elections.',
+    'Connects to the First Amendment, public policy, and elections.'],
+  ['cg-2-9', 'Engaged Citizens', 'SS.7.CG.2.9', 'Bias, Symbolism, and Propaganda',
+    'Civic messages often use persuasion, emotion, and selective evidence.',
+    'Bias is a preference or slant. Symbolism uses images or objects to stand for ideas. Propaganda tries to persuade, sometimes by loaded language, bandwagon appeals, name-calling, glittering generalities, or fear.',
+    'Builds media literacy for campaign ads, speeches, social media, and public debates.',
+    'An ad with scary music and only negative facts may be trying to create fear rather than explain the whole issue.',
+    'Connects to informed voting and monitoring government.'],
+  ['cg-2-10', 'Engaged Citizens', 'SS.7.CG.2.10', 'Public Policy Problem Solving',
+    'Public policy means government choices about how to solve public problems.',
+    'Policy analysis identifies a problem, gathers evidence, compares options, considers costs and benefits, hears stakeholders, and evaluates results.',
+    'Teaches students how to reason through policy instead of just choosing slogans.',
+    'For school safety, options could include better lighting, crossing guards, traffic enforcement, or redesigned roads. Each has tradeoffs.',
+    'Connects to legislatures, budgets, civic participation, and government services.'],
+  ['cg-2-6', 'Voting and Elections', 'SS.7.CG.2.6', 'Election Processes',
+    'Elections use rules that move candidates from nomination to final results.',
+    'Processes include voter registration, primaries, campaigns, general elections, ballots, vote counting, recounts when required, and certification. Rules differ by office and level of government.',
+    'Teaches the sequence and purpose of election steps.',
+    'A primary helps choose a party nominee. A general election chooses who will hold the office.',
+    'Connects to political parties, voting rights, qualifications, and the Electoral College.'],
+  ['cg-2-7', 'Voting and Elections', 'SS.7.CG.2.7', 'Qualifications for Elected Office',
+    'Different offices have different age, citizenship, and residency requirements.',
+    'The Constitution sets qualifications for President, U.S. Senate, and U.S. House. State and local offices have their own legal requirements under state law.',
+    'Helps students compare offices and avoid mixing up requirements.',
+    'The President must be at least 35, a natural-born citizen, and a U.S. resident for 14 years.',
+    'Connects to citizenship, elections, and representation.'],
+  ['cg-3-14', 'Voting and Elections', 'SS.7.CG.3.14', 'Electoral College',
+    'The President is elected through state electors, not by direct national popular vote alone.',
+    'Each state gets electoral votes equal to its House seats plus two senators. Most states award electoral votes winner-take-all. A candidate needs a majority of electoral votes to win.',
+    'Explains why state results matter in presidential elections.',
+    'Florida electoral votes matter because winning a large state can move a candidate much closer to the national total needed.',
+    'Connects to federalism, representation, and the 12th Amendment.'],
+  ['cg-3-1', 'Why a Constitutional Republic?', 'SS.7.CG.3.1', 'Forms of Government',
+    'Different forms of government answer who has power.',
+    'Common forms include democracy, republic, monarchy, autocracy, oligarchy, and dictatorship. The U.S. is a constitutional republic with representative democracy.',
+    'Teaches students to classify governments by who rules and how power is limited.',
+    'In an autocracy, one ruler controls decisions. In a republic, citizens elect representatives to govern under law.',
+    'Connects to popular sovereignty, rule of law, and constitutional limits.'],
+  ['cg-3-2', 'Why a Constitutional Republic?', 'SS.7.CG.3.2', 'Systems of Government',
+    'Systems of government describe how power is distributed geographically and institutionally.',
+    'Unitary systems concentrate power nationally, federal systems divide power, and confederal systems keep most power with member states. Parliamentary and presidential systems organize executive-legislative relationships differently.',
+    'Helps students compare the U.S. federal presidential system with other systems.',
+    'The Articles of Confederation were confederal. The Constitution created a stronger federal system.',
+    'Connects to federalism, Articles of Confederation, and separation of powers.'],
+  ['cg-3-15', 'Why a Constitutional Republic?', 'SS.7.CG.3.15', 'Economic Systems',
+    'Economic systems answer how goods and services are produced and distributed.',
+    'Market, command, mixed, and traditional economies differ in who makes economic decisions. The U.S. uses a mixed market economy with private enterprise and government regulation.',
+    'Teaches how economic choices connect to public policy and government power.',
+    'A pure market leaves decisions mostly to buyers and sellers. A command economy puts decisions mainly in government hands. The U.S. mixes markets with rules like consumer protection.',
+    'Connects to public policy, regulation, taxes, and limited government.'],
+  ['cg-4-1', 'The U.S. and the World', 'SS.7.CG.4.1', 'Domestic and Foreign Policy',
+    'Domestic policy handles issues inside the country; foreign policy handles relations with other countries.',
+    'Domestic policy includes education, transportation, health, taxes, and public safety. Foreign policy includes diplomacy, treaties, trade, defense, alliances, and responses to global events.',
+    'Teaches students to classify government actions by policy area.',
+    'Funding highways is domestic policy. Negotiating a treaty with another country is foreign policy.',
+    'Connects to executive power, Congress, international organizations, and public policy.'],
+  ['cg-4-2', 'The U.S. and the World', 'SS.7.CG.4.2', 'International Organizations',
+    'International organizations help countries cooperate on shared problems.',
+    'Organizations such as the United Nations, NATO, World Trade Organization, and Red Cross have different purposes, from security to trade to humanitarian aid.',
+    'Teaches how countries work together and why membership can involve benefits and responsibilities.',
+    'NATO is a security alliance. The United Nations gives countries a forum to debate global problems.',
+    'Connects to foreign policy, alliances, conflict, and diplomacy.'],
+  ['cg-4-3', 'The U.S. and the World', 'SS.7.CG.4.3', 'International Conflicts',
+    'International conflict can involve diplomacy, sanctions, alliances, military action, and humanitarian response.',
+    'Governments respond to conflicts by weighing national interests, alliances, laws, public opinion, costs, and possible consequences.',
+    'Teaches the tools and tradeoffs of foreign-policy decision-making.',
+    'A country may use sanctions to pressure another government before considering military action.',
+    'Connects to Congress war powers, presidential commander-in-chief role, NATO, and the United Nations.'],
+  ['cg-4-4', 'The U.S. and the World', 'SS.7.CG.4.4', 'September 11, 2001',
+    'The September 11 attacks changed U.S. domestic and foreign policy.',
+    'After terrorist attacks on September 11, 2001, the U.S. increased homeland security, created the Department of Homeland Security, changed airport security, and launched military and diplomatic responses abroad.',
+    'Teaches how one event affected policy, rights debates, security, and international relations.',
+    'Airport screening and counterterrorism policies are examples of domestic effects after 9/11.',
+    'Connects to foreign policy, domestic policy, rights and security, and international conflicts.'],
+].map(([id, category, benchmark, shortTitle, bigIdea, story, whatItDoes, example, connects]) => ({
+  id,
+  title: `${benchmark}: ${shortTitle}`,
+  category,
+  benchmark,
+  bigIdea,
+  story,
+  whatItDoes,
+  example,
+  connects,
+  timeline: 'Civics360'
+}));
+
+LEARN_CONCEPTS.push(...CIVICS360_BENCHMARK_MODULES);
+
 // =============================================
 // KEEP ORIGINAL DATA
 /*
@@ -1829,6 +2162,74 @@ const FOUNDING_DOCS = [
   { id:'fd6', term:'Preamble to the Constitution', answer:'"We the People of the United States, in Order to form a more perfect Union..." Lists 6 goals: form a union, establish justice, ensure tranquility, provide defense, promote welfare, secure liberty.\n\n💡 TRICK: "We JUST Ensure Defense Promotes Security — WEDPS!" Take the first letters of the 6 goals: Union, Justice, Tranquility, Defense, Welfare, Liberty. Or just memorize: the Preamble STARTS with We the People and ENDS with liberty — beginning and end!', category:'Founding Documents' },
   { id:'fd7', term:'Magna Carta (1215)', answer:'English document that first limited the power of the king. Established that even the king must follow the law — a key influence on American ideas about limited government and due process.\n\n💡 TRICK: "MAGNA = LARGE, CARTA = CARD — the BIG CARD that limited the king!" 1215 — think: 12 barons forced King John to sign it. Even kings must follow rules! This BIG CARD was the ancestor of ALL American freedoms.', category:'Founding Documents' },
   { id:'fd8', term:'Mayflower Compact (1620)', answer:'First self-governing agreement in the American colonies. The Pilgrims agreed to make "just and equal laws" for the general good — an early example of popular sovereignty and social contract.\n\n💡 TRICK: "MAY-flower = MAYBE the first American democracy blossomed here!" 1620, Pilgrims on a ship, wrote their OWN rules before landing. The FLOWER of democracy was planted on that boat. First social contract in America!', category:'Founding Documents' },
+];
+
+const CIVICS360_FLASHCARDS = [
+  { id:'c360-t1', term:'Citizen by Birth', answer:'A person who is a U.S. citizen because they were born in the United States or born abroad to qualifying U.S. citizen parents. Connects to the 14th Amendment.', category:'Civics360 Terms' },
+  { id:'c360-t2', term:'Naturalized Citizen', answer:'A person born outside the United States who completes the legal process to become a U.S. citizen. Naturalization usually includes residency, an application, tests, and an oath.', category:'Civics360 Terms' },
+  { id:'c360-t3', term:'Alien / Noncitizen', answer:'A person living in a country who is not a citizen of that country. Noncitizens still have many legal rights, but they usually cannot vote in federal elections.', category:'Civics360 Terms' },
+  { id:'c360-t4', term:'Obligation vs. Responsibility', answer:'Obligations are required by law, such as obeying laws, paying taxes, and jury duty. Responsibilities are voluntary civic actions, such as voting, staying informed, and volunteering.', category:'Civics360 Terms' },
+  { id:'c360-t5', term:'Civic Participation', answer:'Actions citizens take to influence or improve government and community life: voting, petitioning, peaceful protest, contacting officials, attending meetings, and volunteering.', category:'Civics360 Terms' },
+  { id:'c360-t6', term:'Civic Virtue', answer:'Responsible behavior that supports the common good, such as honesty, respect for law, informed voting, and willingness to serve the community.', category:'Civics360 Terms' },
+  { id:'c360-t7', term:'Consent of the Governed', answer:'The idea that government gets legitimate power from the people it governs. This is central to the Declaration of Independence and popular sovereignty.', category:'Civics360 Terms' },
+  { id:'c360-t8', term:'Limited Government', answer:'Government only has the powers given by law and the Constitution. It cannot act however it wants.', category:'Civics360 Terms' },
+  { id:'c360-t9', term:'Rule of Law', answer:'Everyone must follow the law, including government leaders. No one is above the law.', category:'Civics360 Terms' },
+  { id:'c360-t10', term:'Delegated Powers', answer:'Powers the Constitution gives to the national government, such as coining money, declaring war, regulating interstate commerce, and making treaties.', category:'Civics360 Terms' },
+  { id:'c360-t11', term:'Reserved Powers', answer:'Powers kept by the states or the people, such as running public schools, creating local governments, and regulating many local safety issues.', category:'Civics360 Terms' },
+  { id:'c360-t12', term:'Concurrent Powers', answer:'Powers shared by national and state governments, such as taxing, making laws, borrowing money, and operating courts.', category:'Civics360 Terms' },
+  { id:'c360-t13', term:'Prohibited Powers', answer:'Powers denied to a level of government. Example: states cannot coin money or make treaties with foreign countries.', category:'Civics360 Terms' },
+  { id:'c360-t14', term:'Supremacy Clause', answer:'Article VI rule that the U.S. Constitution and valid federal laws are the supreme law of the land when they conflict with state law.', category:'Civics360 Terms' },
+  { id:'c360-t15', term:'Necessary and Proper Clause', answer:'The elastic clause. It lets Congress make laws needed to carry out its listed powers, creating implied powers.', category:'Civics360 Terms' },
+  { id:'c360-t16', term:'Selective Incorporation', answer:'Supreme Court process that applies many Bill of Rights protections to state governments through the 14th Amendment.', category:'Civics360 Terms' },
+  { id:'c360-t17', term:'Equal Protection Clause', answer:'Part of the 14th Amendment requiring government to treat people fairly and not deny equal protection of the laws.', category:'Civics360 Terms' },
+  { id:'c360-t18', term:'Due Process Clause', answer:'Government must follow fair legal procedures before taking life, liberty, or property. Found in the 5th and 14th Amendments.', category:'Civics360 Terms' },
+  { id:'c360-t19', term:'Free Exercise Clause', answer:'First Amendment protection for people to practice their religion, within constitutional limits.', category:'Civics360 Terms' },
+  { id:'c360-t20', term:'Establishment Clause', answer:'First Amendment rule that government cannot establish an official religion or improperly favor religion.', category:'Civics360 Terms' },
+  { id:'c360-t21', term:'Time, Place, and Manner Limits', answer:'Content-neutral rules about when, where, or how speech occurs. Example: parade permits for traffic safety.', category:'Civics360 Terms' },
+  { id:'c360-t22', term:'Probable Cause', answer:'A reasonable basis to believe a crime happened or evidence is in a place. Usually needed for warrants and arrests.', category:'Civics360 Terms' },
+  { id:'c360-t23', term:'Warrant', answer:'A court order, usually signed by a judge, allowing police to search, seize, or arrest based on probable cause.', category:'Civics360 Terms' },
+  { id:'c360-t24', term:'Burden of Proof', answer:'The duty to prove a claim. In criminal cases, the prosecution must prove guilt beyond a reasonable doubt.', category:'Civics360 Terms' },
+  { id:'c360-t25', term:'Original Jurisdiction', answer:'A court power to hear a case first, before any appeal.', category:'Civics360 Terms' },
+  { id:'c360-t26', term:'Appellate Jurisdiction', answer:'A court power to review a decision made by a lower court.', category:'Civics360 Terms' },
+  { id:'c360-t27', term:'Statute', answer:'A law passed by a legislative body, such as Congress or the Florida Legislature.', category:'Civics360 Terms' },
+  { id:'c360-t28', term:'Regulation', answer:'A rule made by an executive agency to carry out a law passed by a legislature.', category:'Civics360 Terms' },
+  { id:'c360-t29', term:'Civil Law vs. Criminal Law', answer:'Civil law handles disputes between people or groups, usually over money or rights. Criminal law handles acts considered offenses against society.', category:'Civics360 Terms' },
+  { id:'c360-t30', term:'Apportionment', answer:'Dividing U.S. House seats among states based on population after the census.', category:'Civics360 Terms' },
+
+  { id:'c360-d1', term:'English Bill of Rights (1689)', answer:'Limited monarchy and protected rights of Parliament and citizens. Influenced American ideas about rights, representative government, and limits on rulers.', category:'Documents+' },
+  { id:'c360-d2', term:'Common Sense', answer:'Thomas Paine pamphlet that argued plainly and forcefully for American independence from Britain.', category:'Documents+' },
+  { id:'c360-d3', term:'Federalist No. 10', answer:'Madison essay about factions. It argues a large republic can control factions better than a small direct democracy.', category:'Documents+' },
+  { id:'c360-d4', term:'Federalist No. 51', answer:'Madison essay explaining separation of powers and checks and balances. Key idea: ambition must counteract ambition.', category:'Documents+' },
+  { id:'c360-d5', term:'John Locke', answer:'Enlightenment thinker tied to natural rights, consent of the governed, and social contract. Big influence on the Declaration of Independence.', category:'Documents+' },
+  { id:'c360-d6', term:'Montesquieu', answer:'Enlightenment thinker strongly linked to separation of powers among branches of government.', category:'Documents+' },
+  { id:'c360-d7', term:'Rousseau', answer:'Enlightenment thinker linked to social contract theory and the idea that government is based on an agreement among the people.', category:'Documents+' },
+  { id:'c360-d8', term:'Shays Rebellion', answer:'1786-1787 uprising that exposed weaknesses of the Articles of Confederation and helped push leaders toward the Constitutional Convention.', category:'Documents+' },
+  { id:'c360-d9', term:'Constitutional Convention', answer:'1787 meeting in Philadelphia that produced the U.S. Constitution to replace the weak Articles of Confederation.', category:'Documents+' },
+
+  { id:'c360-fp1', term:'Florida Legislature', answer:'Florida lawmaking branch. It is bicameral, with a Florida House of Representatives and a Florida Senate.', category:'Florida & Policy' },
+  { id:'c360-fp2', term:'Florida Governor', answer:'Head of Florida executive branch. Signs or vetoes state bills, proposes budget priorities, and leads state emergency response.', category:'Florida & Policy' },
+  { id:'c360-fp3', term:'Florida Cabinet', answer:'Elected executive officials who share some state executive responsibilities with the governor, depending on the office and issue.', category:'Florida & Policy' },
+  { id:'c360-fp4', term:'Florida Supreme Court', answer:'Highest court in Florida state government. Reviews state legal issues and interprets the Florida Constitution.', category:'Florida & Policy' },
+  { id:'c360-fp5', term:'County Court', answer:'Florida trial court that handles many misdemeanors, traffic cases, small claims, and lower-value civil disputes.', category:'Florida & Policy' },
+  { id:'c360-fp6', term:'Circuit Court', answer:'Florida trial court for felonies, family cases, probate, juvenile cases, and larger civil disputes.', category:'Florida & Policy' },
+  { id:'c360-fp7', term:'State Constitution', answer:'A state rulebook that creates state government and protects state-level rights. It cannot violate the U.S. Constitution.', category:'Florida & Policy' },
+  { id:'c360-fp8', term:'Local Government Services', answer:'Services close to daily life: police, fire, local roads, water, libraries, zoning, parks, and local public meetings.', category:'Florida & Policy' },
+  { id:'c360-fp9', term:'Public Policy', answer:'A government plan or action to address a public problem, usually involving laws, budgets, regulations, or services.', category:'Florida & Policy' },
+  { id:'c360-fp10', term:'Policy Tradeoff', answer:'A choice where a policy has benefits and costs. Good civic reasoning compares evidence, stakeholders, rights, budgets, and outcomes.', category:'Florida & Policy' },
+  { id:'c360-fp11', term:'Appropriations', answer:'Government spending decisions. Appropriations bills fund programs and show policy priorities.', category:'Florida & Policy' },
+  { id:'c360-fp12', term:'Primary Election', answer:'Election where voters choose a party candidate for the general election.', category:'Florida & Policy' },
+  { id:'c360-fp13', term:'General Election', answer:'Election where voters choose who will hold public office.', category:'Florida & Policy' },
+  { id:'c360-fp14', term:'Electoral Votes', answer:'Votes cast by electors for President and Vice President. Each state gets House seats plus two senators.', category:'Florida & Policy' },
+  { id:'c360-fp15', term:'Market Economy', answer:'Economic system where buyers and sellers make most decisions through supply, demand, prices, and competition.', category:'Florida & Policy' },
+  { id:'c360-fp16', term:'Command Economy', answer:'Economic system where the government makes most major production and distribution decisions.', category:'Florida & Policy' },
+  { id:'c360-fp17', term:'Mixed Market Economy', answer:'Economic system with private markets plus government rules and services. The United States is usually described this way.', category:'Florida & Policy' },
+  { id:'c360-fp18', term:'Domestic Policy', answer:'Government policy about issues inside the country, such as education, health, transportation, taxes, and public safety.', category:'Florida & Policy' },
+  { id:'c360-fp19', term:'Foreign Policy', answer:'Government policy about relations with other countries, including diplomacy, trade, treaties, defense, and alliances.', category:'Florida & Policy' },
+  { id:'c360-fp20', term:'Sanctions', answer:'Economic or political penalties used to pressure another country without immediately using military force.', category:'Florida & Policy' },
+  { id:'c360-fp21', term:'NATO', answer:'A military and security alliance. Members agree to collective defense if one member is attacked.', category:'Florida & Policy' },
+  { id:'c360-fp22', term:'United Nations', answer:'International organization where countries discuss global problems, diplomacy, peace, security, and humanitarian issues.', category:'Florida & Policy' },
+  { id:'c360-fp23', term:'Department of Homeland Security', answer:'Federal department created after September 11, 2001 to coordinate homeland security and counterterrorism efforts.', category:'Florida & Policy' },
+  { id:'c360-fp24', term:'Propaganda Techniques', answer:'Persuasive methods such as bandwagon, name-calling, loaded language, glittering generalities, fear, and symbols.', category:'Florida & Policy' },
 ];
 
 
@@ -2051,6 +2452,57 @@ const EXTRA_QUIZ_QUESTIONS = [
 
 const ALL_QUIZ_QUESTIONS = [...QUIZ_QUESTIONS, ...EXTRA_QUIZ_QUESTIONS];
 
+const CIVICS360_BENCHMARK_QUESTIONS = [
+  { q:'Which pair correctly shows the two main ways a person can become a U.S. citizen?', opts:['Birth and naturalization','Voting and paying taxes','Jury duty and military service','State residency and property ownership'], ans:0, explain:'A person may be a citizen by birth or may become a citizen through naturalization.', category:'Rights', difficulty:'low' },
+  { q:'Which choice is a legal obligation of eligible citizens rather than only a voluntary responsibility?', opts:['Voting in every election','Serving on a jury when summoned','Attending campaign rallies','Writing letters to officials'], ans:1, explain:'Jury service is a legal obligation when an eligible person is summoned. Voting and contacting officials are important responsibilities, but they are voluntary.', category:'Rights', difficulty:'low' },
+  { q:'Which ancient influence is most connected to the idea of a republic with elected representatives?', opts:['Roman republican government','Absolute monarchy','Divine right of kings','Feudal inheritance'], ans:0, explain:'The Roman Republic influenced later ideas about representative government and civic virtue.', category:'Origins', difficulty:'moderate' },
+  { q:'Which founding principle means government gets its power from the people?', opts:['Popular sovereignty','Judicial review','Federal supremacy','Eminent domain'], ans:0, explain:'Popular sovereignty means the people are the source of government authority.', category:'Origins', difficulty:'low' },
+  { q:'Why is the Magna Carta important to American constitutional government?', opts:['It created the U.S. Senate','It first declared independence from Britain','It helped establish that rulers are limited by law','It created the Electoral College'], ans:2, explain:'The Magna Carta limited the power of the king and influenced rule of law and due process.', category:'Origins', difficulty:'moderate' },
+  { q:'Which Enlightenment thinker is most associated with natural rights of life, liberty, and property?', opts:['John Locke','King George III','John Marshall','Susan B. Anthony'], ans:0, explain:'John Locke argued that people have natural rights and that government should protect them.', category:'Origins', difficulty:'low' },
+  { q:'A mayor breaks the law and is prosecuted like any other citizen. Which principle is shown?', opts:['Rule of law','Confederalism','Popular vote','Executive privilege'], ans:0, explain:'Rule of law means everyone, including government officials, must obey the law.', category:'Origins', difficulty:'low' },
+  { q:'Which complaint helped move colonists toward independence from Britain?', opts:['Too much representation in Parliament','Taxation without representation','The right to trial by jury being too strong','States having too much reserved power'], ans:1, explain:'Colonists objected that Britain taxed them without giving them representation in Parliament.', category:'Origins', difficulty:'low' },
+  { q:'The Declaration of Independence says governments get their just powers from what?', opts:['Consent of the governed','Orders from the courts','Approval by the king','Military control'], ans:0, explain:'The Declaration uses the social contract idea that legitimate government depends on the consent of the governed.', category:'Origins', difficulty:'moderate' },
+  { q:'Which was a major weakness of the Articles of Confederation?', opts:['Congress could not effectively tax','The president had too much power','The national courts controlled every state','States had no role in government'], ans:0, explain:'The Articles created a weak national government that could not effectively tax, regulate commerce, or enforce laws.', category:'Origins', difficulty:'low' },
+  { q:'Which is one goal listed in the Preamble to the U.S. Constitution?', opts:['Create a national church','Secure the blessings of liberty','Abolish all state governments','Give the President unlimited power'], ans:1, explain:'The Preamble lists goals including justice, tranquility, common defense, general welfare, and liberty.', category:'Organization', difficulty:'low' },
+  { q:'Which constitutional feature directly limits government power?', opts:['Checks and balances','One-party rule','Inherited office','Unlimited executive decrees'], ans:0, explain:'Checks and balances allow each branch to limit the others, preventing concentration of power.', category:'Organization', difficulty:'low' },
+  { q:'Why did Anti-Federalists demand a Bill of Rights?', opts:['They wanted stronger protection for individual liberties','They wanted to abolish state governments','They wanted the President to choose senators','They opposed written rights'], ans:0, explain:'Anti-Federalists feared the new national government could violate rights unless protections were written down.', category:'Origins', difficulty:'moderate' },
+  { q:'Which Article of the Constitution creates the executive branch?', opts:['Article I','Article II','Article III','Article VI'], ans:1, explain:'Article II creates the executive branch and describes presidential powers.', category:'Organization', difficulty:'low' },
+  { q:'Public education is mostly controlled by states because it is usually considered what type of power?', opts:['Reserved power','Enumerated power','Prohibited power','Judicial power'], ans:0, explain:'Reserved powers are kept by the states or the people under the federal system.', category:'Organization', difficulty:'moderate' },
+  { q:'What is the usual federal amendment process?', opts:['President proposes and courts ratify','Congress proposes by 2/3 and states ratify by 3/4','A national popular vote alone changes it','One state proposes and the President signs'], ans:1, explain:'Most amendments are proposed by two-thirds of both houses of Congress and ratified by three-fourths of the states.', category:'Organization', difficulty:'moderate' },
+  { q:'Why is Congress called bicameral?', opts:['It has two chambers','It has two presidents','It meets every two years only','It controls two courts'], ans:0, explain:'Congress has two chambers: the House of Representatives and the Senate.', category:'Organization', difficulty:'low' },
+  { q:'Which is a major role of the executive branch?', opts:['Enforcing laws','Writing final court opinions','Ratifying constitutional amendments','Choosing all members of Congress'], ans:0, explain:'The executive branch enforces and administers laws.', category:'Organization', difficulty:'low' },
+  { q:'FEMA helping after a hurricane is an example of government doing what?', opts:['Providing public services','Holding a criminal trial','Ratifying an amendment','Selecting electors'], ans:0, explain:'Disaster response is a government service carried out through public agencies and budgets.', category:'Government Policies', difficulty:'moderate' },
+  { q:'A person loses in federal trial court and asks a higher court to review legal errors. What is this called?', opts:['An appeal','A veto','A filibuster','A primary'], ans:0, explain:'An appeal asks a higher court to review a lower court decision.', category:'Organization', difficulty:'moderate' },
+  { q:'A law passed by a legislature is called what type of law?', opts:['Statute','Precedent','Verdict','Treaty clause'], ans:0, explain:'A statute is a law passed by a legislative body.', category:'Organization', difficulty:'low' },
+  { q:'Which case established judicial review?', opts:['Marbury v. Madison','Brown v. Board of Education','Miranda v. Arizona','Tinker v. Des Moines'], ans:0, explain:'Marbury v. Madison established the Supreme Court power to declare laws unconstitutional.', category:'Organization', difficulty:'low' },
+  { q:'In a criminal trial, what must the prosecution prove to convict a defendant?', opts:['Guilt beyond a reasonable doubt','That the defendant is unpopular','That a civil contract was broken','That the governor agrees'], ans:0, explain:'Criminal convictions require proof beyond a reasonable doubt.', category:'Rights', difficulty:'moderate' },
+  { q:'Which issue is most likely handled mainly by Florida government under federalism?', opts:['Setting state school requirements','Printing U.S. currency','Declaring war','Signing treaties'], ans:0, explain:'Education is mostly a state responsibility, while money, war, and treaties are national powers.', category:'Organization', difficulty:'moderate' },
+  { q:'A proposed Florida law must usually pass which bodies before going to the governor?', opts:['Florida House and Florida Senate','U.S. House and U.S. Senate','County courts and circuit courts','Cabinet and Supreme Court only'], ans:0, explain:'Florida has a bicameral legislature with a House and Senate.', category:'Organization', difficulty:'moderate' },
+  { q:'Which power belongs to the Florida governor?', opts:['Signing or vetoing bills passed by the Florida Legislature','Declaring federal war','Interpreting all U.S. Supreme Court cases','Ratifying federal amendments alone'], ans:0, explain:'The governor is part of the state executive branch and may sign or veto state bills.', category:'Organization', difficulty:'moderate' },
+  { q:'Most criminal and family cases in Florida begin in which court system?', opts:['Florida state courts','The U.S. Supreme Court','The United Nations court','The Electoral College'], ans:0, explain:'State courts handle most criminal, family, traffic, probate, and local civil cases.', category:'Organization', difficulty:'moderate' },
+  { q:'If the Florida Constitution conflicts with the U.S. Constitution, what happens?', opts:['The U.S. Constitution controls','The Florida Constitution always controls','The county decides','The governor cancels both'], ans:0, explain:'The U.S. Constitution is the supreme law of the land.', category:'Organization', difficulty:'high' },
+  { q:'A pothole on a city street is usually the responsibility of which level of government?', opts:['Local government','The Supreme Court','NATO','The Electoral College'], ans:0, explain:'Local governments commonly handle local roads, utilities, zoning, and nearby services.', category:'Government Policies', difficulty:'low' },
+  { q:'Police search a home without a warrant or valid exception. Which amendment is most directly involved?', opts:['4th Amendment','17th Amendment','22nd Amendment','3rd Amendment'], ans:0, explain:'The 4th Amendment protects against unreasonable searches and seizures.', category:'Rights', difficulty:'low' },
+  { q:'A city requires all parade groups to get permits for traffic safety, regardless of viewpoint. This is usually what?', opts:['A content-neutral time, place, and manner rule','A ban on all speech','An establishment of religion','Double jeopardy'], ans:0, explain:'Reasonable content-neutral rules can regulate when, where, and how speech occurs.', category:'Rights', difficulty:'high' },
+  { q:'Which amendment banned poll taxes in federal elections?', opts:['24th Amendment','19th Amendment','13th Amendment','12th Amendment'], ans:0, explain:'The 24th Amendment banned poll taxes in federal elections.', category:'Rights', difficulty:'moderate' },
+  { q:'Which case ruled that school segregation violated equal protection?', opts:['Brown v. Board of Education','Gibbons v. Ogden','McCulloch v. Maryland','Marbury v. Madison'], ans:0, explain:'Brown v. Board of Education ruled that segregated public schools are unconstitutional under the 14th Amendment.', category:'Rights', difficulty:'low' },
+  { q:'Which action is a direct way citizens can monitor and influence government?', opts:['Contacting elected officials','Ignoring public meetings','Refusing jury summons','Letting only courts vote'], ans:0, explain:'Citizens influence and monitor government by voting, contacting officials, attending meetings, petitioning, and following public information.', category:'Government Policies', difficulty:'low' },
+  { q:'A campaign ad uses name-calling and scary music instead of evidence. What should a careful citizen recognize?', opts:['Propaganda technique','Judicial review','Reserved power','Naturalization'], ans:0, explain:'Name-calling, fear, loaded language, and emotional symbols are common propaganda techniques.', category:'Government Policies', difficulty:'low' },
+  { q:'What is the best first step in solving a public policy problem?', opts:['Clearly define the problem and gather evidence','Choose the loudest slogan','Ignore stakeholders','Ban all opposing views'], ans:0, explain:'Policy problem solving begins by defining the problem, gathering evidence, and comparing possible solutions.', category:'Government Policies', difficulty:'moderate' },
+  { q:'What is the purpose of a primary election?', opts:['To choose a party candidate for the general election','To amend the Constitution','To appoint Supreme Court justices','To count electoral votes in Congress'], ans:0, explain:'Primaries help political parties choose candidates who will run in the general election.', category:'Government Policies', difficulty:'low' },
+  { q:'Which is a constitutional qualification for President of the United States?', opts:['At least 35 years old','At least 25 years old','Must have served in Congress','Must live in Florida'], ans:0, explain:'The President must be at least 35, a natural-born citizen, and a U.S. resident for 14 years.', category:'Organization', difficulty:'moderate' },
+  { q:'How many electoral votes does each state receive?', opts:['Its U.S. House seats plus two senators','Exactly one vote','The same as its governor chooses','Only its population divided by ten'], ans:0, explain:'A state has electoral votes equal to its number of U.S. representatives plus two senators.', category:'Government Policies', difficulty:'moderate' },
+  { q:'A small group of powerful elites controls the government. What form of government is this?', opts:['Oligarchy','Direct democracy','Federal republic','Confederation'], ans:0, explain:'An oligarchy is rule by a small group.', category:'Organization', difficulty:'low' },
+  { q:'Under which system do member states keep most power and the central government is weak?', opts:['Confederal system','Unitary system','Federal system','Presidential system'], ans:0, explain:'A confederal system leaves most power with member states. The Articles of Confederation are the classic U.S. example.', category:'Organization', difficulty:'moderate' },
+  { q:'The United States economy is best described as which type?', opts:['Mixed market economy','Pure command economy','Pure traditional economy','No-market economy'], ans:0, explain:'The U.S. has a mixed market economy with private enterprise plus government regulation and services.', category:'Government Policies', difficulty:'moderate' },
+  { q:'Which is an example of foreign policy?', opts:['Negotiating a treaty with another country','Setting a local speed limit','Choosing a school lunch menu','Repairing a county sidewalk'], ans:0, explain:'Foreign policy concerns relations with other countries, including diplomacy, treaties, trade, and defense.', category:'Government Policies', difficulty:'low' },
+  { q:'Which international organization is a military alliance that includes the United States?', opts:['NATO','Florida Legislature','Electoral College','U.S. Census Bureau'], ans:0, explain:'NATO is a security alliance among member countries, including the United States.', category:'Government Policies', difficulty:'moderate' },
+  { q:'A country uses trade restrictions to pressure another government without immediately using force. What tool is being used?', opts:['Sanctions','Jury nullification','Naturalization','Apportionment'], ans:0, explain:'Sanctions are economic or political penalties used as a foreign-policy tool.', category:'Government Policies', difficulty:'high' },
+  { q:'Which department was created after the September 11, 2001 terrorist attacks?', opts:['Department of Homeland Security','Department of Education','Department of Agriculture','Department of the Interior'], ans:0, explain:'The Department of Homeland Security was created after 9/11 to coordinate security and counterterrorism efforts.', category:'Government Policies', difficulty:'moderate' },
+];
+
+ALL_QUIZ_QUESTIONS.push(...CIVICS360_BENCHMARK_QUESTIONS);
+
 // =============================================
 // STATE
 // =============================================
@@ -2068,6 +2520,26 @@ const TOPIC_CATS = [
   { key:'Rights', label:'Rights & Responsibilities', color:'#22d47a' },
   { key:'Government Policies', label:'Gov Policies & Processes', color:'#ff8c42' },
   { key:'Organization', label:'Organization & Function', color:'#ff6b9d' },
+];
+
+const LEARN_CATEGORY_ORDER = [
+  'Citizen You',
+  "Founders' Influences",
+  'The Founding: Colonies to United States',
+  'Constitutional Principles & Structures',
+  'Executive & Legislative Branches',
+  'Judicial Branch and Legal System',
+  'Florida State & Local Government',
+  'My Rights and Liberties',
+  'Engaged Citizens',
+  'Voting and Elections',
+  'Why a Constitutional Republic?',
+  'The U.S. and the World',
+  'Core Ideas',
+  'Amendments',
+  'Court Cases',
+  'Vocabulary',
+  'Civics360 Topics',
 ];
 
 function defaultState() {
@@ -2157,6 +2629,7 @@ function updateHomeUI() {
   document.getElementById('home-cards-done').textContent = state.cardsDone;
   document.getElementById('home-quizzes').textContent = state.quizzesCompleted;
   renderTopicProgress();
+  renderCoverageMap();
 }
 
 function renderTopicProgress() {
@@ -2174,6 +2647,26 @@ function renderTopicProgress() {
   });
 }
 
+function renderCoverageMap() {
+  const el = document.getElementById('coverage-list');
+  if (!el) return;
+  const groups = {};
+  CIVICS360_BENCHMARK_MODULES.forEach(module => {
+    if (!groups[module.category]) groups[module.category] = [];
+    groups[module.category].push(module.benchmark);
+  });
+
+  el.innerHTML = LEARN_CATEGORY_ORDER
+    .filter(category => groups[category])
+    .map(category => {
+      const benchmarks = groups[category];
+      return `<div class="coverage-row">
+        <div class="coverage-title">${category}</div>
+        <div class="coverage-detail">${benchmarks.length} modules: ${benchmarks.join(', ')}</div>
+      </div>`;
+    }).join('');
+}
+
 // =============================================
 // LEARN MODE
 // =============================================
@@ -2189,7 +2682,12 @@ function initLearn() {
     categories[c.category].push(c);
   });
   
-  Object.entries(categories).forEach(([cat, items]) => {
+  Object.entries(categories).sort(([catA], [catB]) => {
+    const a = LEARN_CATEGORY_ORDER.indexOf(catA);
+    const b = LEARN_CATEGORY_ORDER.indexOf(catB);
+    if (a !== -1 || b !== -1) return (a === -1 ? 999 : a) - (b === -1 ? 999 : b);
+    return catA.localeCompare(catB);
+  }).forEach(([cat, items]) => {
     const sortedItems = [...items].sort(compareLearnConcepts);
     const section = document.createElement('div');
     section.className = 'learn-topic-section';
@@ -2236,12 +2734,12 @@ function showLearnModule(conceptId) {
   document.getElementById('learn-module-view').style.display = 'block';
   
   document.getElementById('learn-title').textContent = concept.title;
-  document.getElementById('learn-story').textContent = concept.story;
-  document.getElementById('learn-big-idea').textContent = concept.bigIdea;
-  document.getElementById('learn-narrative').textContent = concept.story;
-  document.getElementById('learn-what-it-does').textContent = concept.whatItDoes;
-  document.getElementById('learn-example').textContent = concept.example;
-  document.getElementById('learn-connects').textContent = concept.connects;
+  setGlossaryHTML('learn-story', concept.story);
+  setGlossaryHTML('learn-big-idea', concept.bigIdea);
+  setGlossaryHTML('learn-narrative', concept.story);
+  setGlossaryHTML('learn-what-it-does', concept.whatItDoes);
+  setGlossaryHTML('learn-example', concept.example);
+  setGlossaryHTML('learn-connects', concept.connects);
   
   // Scroll to top
   document.querySelector('.learn-content').scrollTop = 0;
@@ -2322,8 +2820,107 @@ function showScreen(name) {
 // =============================================
 // FLASHCARDS
 // =============================================
-const ALL_CARDS = [...AMENDMENTS, ...VOCABULARY, ...FOUNDING_DOCS];
-const FC_CATEGORIES = ['All', 'Amendments', 'Vocabulary', 'Founding Documents'];
+const CASE_FLASHCARDS = CASES.map(c => ({
+  id: `case-card-${c.id}`,
+  term: `${c.name} (${c.year})`,
+  answer: `${c.ruling}\n\nWhy it matters: ${c.matters}`,
+  category: 'Court Cases',
+}));
+
+const ALL_CARDS = [...AMENDMENTS, ...VOCABULARY, ...FOUNDING_DOCS, ...CIVICS360_FLASHCARDS, ...CASE_FLASHCARDS];
+const FC_CATEGORIES = ['All', 'Amendments', 'Vocabulary', 'Founding Documents', 'Civics360 Terms', 'Documents+', 'Court Cases', 'Florida & Policy'];
+
+const GLOSSARY_TERMS = [
+  { term:'bicameral', definition:'A legislature with two chambers. Congress is bicameral because it has the House and Senate. Florida is also bicameral because it has a Florida House and Florida Senate.' },
+  { term:'unicameral', definition:'A legislature with one chamber.' },
+  { term:'apportionment', definition:'Dividing U.S. House seats among states based on population after the census.' },
+  { term:'appropriations', definition:'Government spending decisions. Appropriations bills fund programs and show policy priorities.' },
+  { term:'jurisdiction', definition:'A court power to hear and decide a case.' },
+  { term:'original jurisdiction', definition:'A court power to hear a case first, before any appeal.' },
+  { term:'appellate jurisdiction', definition:'A court power to review a lower court decision.' },
+  { term:'precedent', definition:'A court decision that guides later cases with similar facts or legal questions.' },
+  { term:'statute', definition:'A law passed by a legislative body, such as Congress or the Florida Legislature.' },
+  { term:'regulation', definition:'A rule made by an executive agency to carry out a law.' },
+  { term:'ordinance', definition:'A local law passed by a city or county government.' },
+  { term:'federalism', definition:'A system where power is divided between the national government and state governments.' },
+  { term:'delegated powers', definition:'Powers the Constitution gives to the national government, such as coining money and declaring war.' },
+  { term:'reserved powers', definition:'Powers kept by states or the people, such as running public schools and local governments.' },
+  { term:'concurrent powers', definition:'Powers shared by national and state governments, such as taxing and operating courts.' },
+  { term:'prohibited powers', definition:'Powers denied to a government. Example: states cannot coin money or make treaties.' },
+  { term:'supremacy clause', definition:'Article VI rule that the Constitution and valid federal laws beat conflicting state laws.' },
+  { term:'necessary and proper clause', definition:'The elastic clause. It lets Congress make laws needed to carry out its listed powers.' },
+  { term:'implied powers', definition:'Powers not written word-for-word in the Constitution but needed to carry out listed powers.' },
+  { term:'enumerated powers', definition:'Powers specifically listed in the Constitution.' },
+  { term:'popular sovereignty', definition:'The people are the source of government power. Think: We the People.' },
+  { term:'limited government', definition:'Government has only the powers given by law and the Constitution.' },
+  { term:'rule of law', definition:'Everyone must follow the law, including government officials.' },
+  { term:'natural rights', definition:'Rights people are born with, such as life, liberty, and property or pursuit of happiness.' },
+  { term:'social contract', definition:'The idea that people create government and give it power in exchange for protection of rights.' },
+  { term:'consent of the governed', definition:'Government is legitimate only when the people agree to be governed.' },
+  { term:'republic', definition:'A government where citizens elect representatives to make decisions.' },
+  { term:'constitutional republic', definition:'A republic where elected leaders must obey a written constitution that limits government power.' },
+  { term:'autocracy', definition:'Government where one person holds the power.' },
+  { term:'oligarchy', definition:'Government where a small group holds the power.' },
+  { term:'monarchy', definition:'Government ruled by a king or queen.' },
+  { term:'confederal system', definition:'A system where member states keep most power and the central government is weak.' },
+  { term:'unitary system', definition:'A system where most power is held by the central national government.' },
+  { term:'parliamentary system', definition:'A system where the executive leader is chosen by and usually part of the legislature.' },
+  { term:'presidential system', definition:'A system where the executive is elected separately from the legislature.' },
+  { term:'separation of powers', definition:'Dividing government power among legislative, executive, and judicial branches.' },
+  { term:'checks and balances', definition:'Each branch has powers that can limit the other branches.' },
+  { term:'judicial review', definition:'Court power to decide whether laws or government actions violate the Constitution.' },
+  { term:'due process', definition:'Government must follow fair legal procedures before taking life, liberty, or property.' },
+  { term:'equal protection', definition:'Government must treat people fairly under the law and cannot deny equal protection of the laws.' },
+  { term:'selective incorporation', definition:'The Supreme Court applying many Bill of Rights protections to state governments through the 14th Amendment.' },
+  { term:'probable cause', definition:'A reasonable basis to believe a crime happened or evidence is in a place.' },
+  { term:'warrant', definition:'A judge-approved order allowing a search, seizure, or arrest.' },
+  { term:'self-incrimination', definition:'Being forced to provide evidence against yourself in a criminal case. The 5th Amendment protects against it.' },
+  { term:'double jeopardy', definition:'Being tried twice for the same crime after acquittal or conviction. The 5th Amendment protects against it.' },
+  { term:'eminent domain', definition:'Government power to take private property for public use, with fair compensation.' },
+  { term:'establishment clause', definition:'First Amendment rule that government cannot establish an official religion or improperly favor religion.' },
+  { term:'free exercise clause', definition:'First Amendment protection for people to practice their religion, within constitutional limits.' },
+  { term:'content-neutral', definition:'A rule that regulates speech without favoring or targeting one viewpoint or message.' },
+  { term:'time, place, and manner', definition:'Rules about when, where, or how speech happens, usually allowed if content-neutral and reasonable.' },
+  { term:'suffrage', definition:'The right to vote.' },
+  { term:'poll tax', definition:'A fee charged to vote. The 24th Amendment banned poll taxes in federal elections.' },
+  { term:'literacy test', definition:'A reading test once used to block people, especially Black citizens, from voting.' },
+  { term:'primary election', definition:'Election where voters choose a party candidate for the general election.' },
+  { term:'general election', definition:'Election where voters choose who will hold public office.' },
+  { term:'electoral college', definition:'The system of electors that formally chooses the President and Vice President.' },
+  { term:'electoral votes', definition:'Votes cast by electors. Each state gets electoral votes equal to its U.S. House seats plus two senators.' },
+  { term:'naturalization', definition:'The legal process by which a person born outside the U.S. becomes a U.S. citizen.' },
+  { term:'citizenship', definition:'Legal membership in a country, with rights and duties.' },
+  { term:'civic virtue', definition:'Responsible behavior that supports the common good and community self-government.' },
+  { term:'common good', definition:'What benefits the community as a whole, not just one person or group.' },
+  { term:'public policy', definition:'A government plan or action to solve a public problem.' },
+  { term:'policy tradeoff', definition:'A policy choice with both benefits and costs.' },
+  { term:'stakeholders', definition:'People or groups affected by a decision or policy.' },
+  { term:'bias', definition:'A preference or slant that affects how information is presented.' },
+  { term:'symbolism', definition:'Using images, objects, or words to represent bigger ideas.' },
+  { term:'propaganda', definition:'Persuasive communication that often uses emotion, selective facts, or loaded language.' },
+  { term:'bandwagon', definition:'A propaganda technique that says you should agree because everyone else does.' },
+  { term:'name-calling', definition:'A propaganda technique using negative labels instead of evidence.' },
+  { term:'glittering generalities', definition:'A propaganda technique using positive but vague words, such as freedom or strength, without specifics.' },
+  { term:'market economy', definition:'An economy where buyers and sellers make most choices through prices, competition, supply, and demand.' },
+  { term:'command economy', definition:'An economy where government makes most major production and distribution decisions.' },
+  { term:'mixed market economy', definition:'An economy with private markets plus government rules and services. The U.S. is usually described this way.' },
+  { term:'domestic policy', definition:'Government policy about issues inside the country.' },
+  { term:'foreign policy', definition:'Government policy about relations with other countries.' },
+  { term:'diplomacy', definition:'Managing relationships between countries through negotiation and communication.' },
+  { term:'treaty', definition:'A formal agreement between countries.' },
+  { term:'sanctions', definition:'Economic or political penalties used to pressure another country.' },
+  { term:'alliance', definition:'An agreement between countries to work together, often for security.' },
+  { term:'NATO', definition:'A military alliance. Members agree to collective defense if one member is attacked.' },
+  { term:'United Nations', definition:'International organization where countries discuss global problems, diplomacy, peace, and humanitarian issues.' },
+  { term:'Department of Homeland Security', definition:'Federal department created after September 11, 2001 to coordinate homeland security and counterterrorism.' },
+];
+
+const GLOSSARY_LOOKUP = Object.fromEntries(GLOSSARY_TERMS.map((item, index) => [`g${index}`, item]));
+const GLOSSARY_PATTERN = new RegExp(`(^|[^A-Za-z0-9])(${GLOSSARY_TERMS
+  .map(item => item.term)
+  .sort((a, b) => b.length - a.length)
+  .map(escapeRegExp)
+  .join('|')})(?![A-Za-z0-9])`, 'gi');
 
 let fcState = {
   category: 'All',
@@ -2364,6 +2961,46 @@ function resetTTSButtons() {
 function stopSpeech() {
   if ('speechSynthesis' in window) window.speechSynthesis.cancel();
   resetTTSButtons();
+}
+
+function escapeRegExp(text) {
+  return String(text).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function escapeHTML(text) {
+  return String(text ?? '').replace(/[&<>"']/g, ch => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[ch]));
+}
+
+function glossaryHTML(text) {
+  return escapeHTML(text).replace(GLOSSARY_PATTERN, (match, prefix, found) => {
+    const itemIndex = GLOSSARY_TERMS.findIndex(item => item.term.toLowerCase() === found.toLowerCase());
+    if (itemIndex === -1) return match;
+    const id = `g${itemIndex}`;
+    return `${prefix}<button type="button" class="glossary-term" onclick="showGlossaryTerm('${id}', event)">${found}</button>`;
+  }).replace(/\n/g, '<br>');
+}
+
+function setGlossaryHTML(elementId, text) {
+  const el = document.getElementById(elementId);
+  if (el) el.innerHTML = glossaryHTML(text);
+}
+
+function showGlossaryTerm(id, event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  const item = GLOSSARY_LOOKUP[id];
+  if (!item) return;
+  document.getElementById('prompt-title').textContent = item.term;
+  document.getElementById('prompt-text').textContent = item.definition;
+  document.getElementById('prompt-modal').classList.add('show');
 }
 
 function stopCardSpeech() {
@@ -2494,8 +3131,8 @@ function renderFC() {
   if (fcState.deck.length === 0) return;
   stopCardSpeech();
   const card = fcState.deck[fcState.index];
-  document.getElementById('fc-term').textContent = card.term;
-  document.getElementById('fc-answer').textContent = card.answer;
+  setGlossaryHTML('fc-term', card.term);
+  setGlossaryHTML('fc-answer', card.answer);
   document.getElementById('fc-cat-label').textContent = card.category;
   document.getElementById('fc-counter').textContent = `Card ${fcState.index + 1} of ${fcState.deck.length}`;
   document.getElementById('fc-got').textContent = fcState.got;
@@ -2581,7 +3218,7 @@ function renderQuizQ() {
   quizState.answered = false;
   document.getElementById('quiz-q-num').textContent = `Question ${quizState.index + 1} of ${quizState.questions.length}`;
   document.getElementById('quiz-progress-fill').style.width = ((quizState.index + 1) / quizState.questions.length * 100) + '%';
-  document.getElementById('quiz-question').textContent = q.q;
+  setGlossaryHTML('quiz-question', q.q);
   document.getElementById('quiz-score-live').textContent = `Score: ${quizState.score}`;
   const optsEl = document.getElementById('quiz-options');
   optsEl.innerHTML = '';
@@ -2625,7 +3262,7 @@ function answerQuiz(chosen, btn) {
   }
   saveState();
   const expEl = document.getElementById('quiz-explanation');
-  expEl.textContent = '💡 ' + q.explain;
+  expEl.innerHTML = glossaryHTML('Hint: ' + q.explain);
   expEl.classList.add('show');
   document.getElementById('quiz-next-btn').style.display = 'block';
 }
@@ -2677,15 +3314,15 @@ function initCases() {
         </div>
         <div class="case-section">
           <div class="case-section-title">📖 What Happened</div>
-          <div class="case-section-text">${c.happened}</div>
+          <div class="case-section-text">${glossaryHTML(c.happened)}</div>
         </div>
         <div class="case-section">
           <div class="case-section-title">⚖️ The Ruling</div>
-          <div class="case-section-text">${c.ruling}</div>
+          <div class="case-section-text">${glossaryHTML(c.ruling)}</div>
         </div>
         <div class="case-section case-matters">
           <div class="case-section-title">⭐ Why It Matters</div>
-          <div class="case-section-text">${c.matters}</div>
+          <div class="case-section-text">${glossaryHTML(c.matters)}</div>
         </div>
       </div>
     </div>`;
@@ -2925,4 +3562,3 @@ document.getElementById('best-score-display').textContent = state.speedBest;
 </script>
 </body>
 </html>
-                                                                         
