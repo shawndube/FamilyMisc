@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Florida Civics EOC Prep</title>
+<style>
+:root {
+  --bg: #0f0e1a;
+  --bg2: #1a1830;
+  --bg3: #24223a;
+  --card: #1e1c35;
+  --border: #2e2c50;
+  --text: #f0eeff;
+  --text2: #a09dc0;
+  --primary: #6c63ff;
+  --primary-light: #8b85ff;
+  --primary-dark: #4a44c0;
+  --accent: #ff8c42;
+  --green: #22d47a;
+  --red: #ff4d6d;
+  --yellow: #ffd166;
+  --teal: #06d6a0;
+  --pink: #ff6b9d;
+  --nav-h: 68px;
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+[data-theme="light"] {
+  --bg: #f0eeff;
+  --bg2: #e4e0ff;
+  --bg3: #d8d3ff;
+  --card: #ffffff;
+  --border: #c5bfff;
+  --text: #1a1830;
+  --text2: #5a5580;
+  --primary: #5b52e8;
+  --primary-light: #7a73f0;
+  --primary-dark: #3d36c0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.5;
+}
+#app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+.screen {
+  display: none;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: calc(var(--nav-h) + 16px);
+  scroll-behavior: smooth;
+}
+.screen.active { display: block; }
+/* ===== NAV ===== */
+#nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  height: var(--nav-h);
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  color: var(--text2);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s;
+  min-width: 56px;
+}
+.nav-btn.active { color: var(--primary-light); }
+.nav-btn .nav-icon { font-size: 22px; line-height: 1; }
+.nav-btn .nav-label { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+/* ===== CARDS ===== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin: 8px 12px;
+}
+.card-lg { padding: 20px; }
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+  touch-action: manipulation;
+  width: 100%;
+}
+.btn:active { transform: scale(0.96); }
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:active { background: var(--primary-dark); }
+.btn-success { background: var(--green); color: #0a2e1a; }
+.btn-danger { background: var(--red); color: #fff; }
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--border);
+  color: var(--text);
+}
+.btn-sm { padding: 10px 18px; font-size: 14px; border-radius: 50px; }
+/* ===== HOME SCREEN ===== */
+.home-header {
+  padding: 20px 16px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.home-title { font-size: 22px; font-weight: 800; }
+.theme-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  font-size: 20px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.level-card {
+  margin: 8px 12px;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  border-radius: var(--radius);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.level-card::before {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 120px; height: 120px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50%;
+}
+.level-badge { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; opacity: 0.8; margin-bottom: 4px; }
+.level-name { font-size: 20px; font-weight: 800; margin-bottom: 12px; }
+.xp-bar-wrap { background: rgba(0,0,0,0.25); border-radius: 50px; height: 10px; overflow: hidden; }
+.xp-bar { background: var(--yellow); height: 100%; border-radius: 50px; transition: width 0.5s ease; }
+.xp-label { font-size: 12px; opacity: 0.85; margin-top: 6px; display: flex; justify-content: space-between; }
+.stats-row {
+  display: flex;
+  gap: 10px;
+  margin: 0 12px 4px;
+}
+.stat-box {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 12px;
+  text-align: center;
+}
+.stat-num { font-size: 26px; font-weight: 800; color: var(--primary-light); }
+.stat-label { font-size: 11px; color: var(--text2); font-weight: 600; margin-top: 2px; }
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text2);
+  padding: 16px 16px 8px;
+}
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+}
+.progress-label { font-size: 13px; font-weight: 600; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.progress-track { flex: 0 0 100px; height: 8px; background: var(--bg3); border-radius: 50px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 50px; transition: width 0.5s ease; }
+.progress-pct { font-size: 12px; color: var(--text2); font-weight: 700; min-width: 32px; text-align: right; }
+.quick-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 12px 8px; }
+.quick-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  touch-action: manipulation;
+}
+.quick-btn:active { transform: scale(0.97); background: var(--bg3); }
+.quick-btn .q-icon { font-size: 28px; }
+.quick-btn .q-title { font-size: 14px; font-weight: 700; }
+.quick-btn .q-sub { font-size: 11px; color: var(--text2); }
+/* ===== FLASHCARDS ===== */
+.fc-header {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.back-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--bg3);
+  border: none;
+  color: var(--text);
+  font-size: 20px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.fc-cat-scroll {
+  display: flex;
+  gap: 8px;
+  padding: 0 12px 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.fc-cat-scroll::-webkit-scrollbar { display: none; }
+.cat-chip {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  border-radius: 50px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.cat-chip.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.fc-counter { font-size: 13px; color: var(--text2); text-align: center; padding-bottom: 8px; }
+/* Card flip */
+.flip-scene {
+  perspective: 1200px;
+  margin: 0 16px;
+  height: 260px;
+  cursor: pointer;
+  user-select: none;
+}
+.flip-card {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.flip-card.flipped { transform: rotateY(180deg); }
+.flip-face {
+  position: absolute;
+  width: 100%; height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+.flip-front {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+}
+.flip-back {
+  background: linear-gradient(135deg, #1a3a2e, #0d5c3a);
+  transform: rotateY(180deg);
+}
+.flip-hint { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; opacity: 0.7; margin-bottom: 12px; }
+.flip-term { font-size: 22px; font-weight: 800; }
+.flip-cat { font-size: 11px; opacity: 0.7; margin-top: 8px; font-weight: 600; }
+.flip-answer { font-size: 16px; font-weight: 600; line-height: 1.5; }
+.fc-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 14px 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.fc-actions.visible { opacity: 1; pointer-events: all; }
+.fc-progress-wrap { padding: 0 16px 8px; }
+.fc-stats { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); margin-bottom: 6px; }
+/* ===== QUIZ ===== */
+.quiz-progress-bar {
+  height: 6px;
+  background: var(--bg3);
+  margin: 0 16px;
+  border-radius: 50px;
+  overflow: hidden;
+}
+.quiz-progress-fill { height: 100%; background: var(--primary); border-radius: 50px; transition: width 0.4s ease; }
+.quiz-q-num { font-size: 12px; color: var(--text2); font-weight: 700; padding: 10px 16px 0; }
+.quiz-question {
+  font-size: 18px;
+  font-weight: 700;
+  padding: 12px 16px 16px;
+  line-height: 1.4;
+}
+.quiz-options { padding: 0 12px; display: flex; flex-direction: column; gap: 10px; }
+.q-option {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  color: var(--text);
+  touch-action: manipulation;
+}
+.q-option:active { transform: scale(0.98); }
+.q-option.correct { border-color: var(--green); background: rgba(34,212,122,0.1); color: var(--green); }
+.q-option.wrong { border-color: var(--red); background: rgba(255,77,109,0.1); color: var(--red); }
+.q-option.reveal-correct { border-color: var(--green); background: rgba(34,212,122,0.08); }
+.q-option:disabled { cursor: default; }
+.quiz-explanation {
+  margin: 12px 12px 0;
+  background: var(--bg3);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-size: 14px;
+  color: var(--text2);
+  display: none;
+}
+.quiz-explanation.show { display: block; }
+.quiz-next-btn { margin: 14px 12px 0; }
+.quiz-result {
+  padding: 32px 20px;
+  text-align: center;
+}
+.result-emoji { font-size: 64px; margin-bottom: 16px; }
+.result-score { font-size: 48px; font-weight: 900; color: var(--primary-light); }
+.result-label { font-size: 16px; color: var(--text2); margin-bottom: 24px; }
+.result-msg { font-size: 18px; font-weight: 700; margin-bottom: 24px; }
+/* ===== CASES ===== */
+.cases-list { padding: 8px 12px; }
+.case-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.case-card:active { transform: scale(0.98); }
+.case-header {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.case-year {
+  background: var(--primary);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 50px;
+  flex-shrink: 0;
+}
+.case-name { font-size: 15px; font-weight: 700; flex: 1; }
+.case-expand { font-size: 18px; color: var(--text2); transition: transform 0.3s; }
+.case-card.open .case-expand { transform: rotate(180deg); }
+.case-body { display: none; padding: 0 16px 16px; }
+.case-card.open .case-body { display: block; }
+.case-section { margin-bottom: 12px; }
+.case-section-title {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--primary-light);
+  margin-bottom: 4px;
+}
+.case-section-text { font-size: 14px; color: var(--text2); line-height: 1.5; }
+.case-matters { background: rgba(108,99,255,0.1); border-radius: var(--radius-sm); padding: 12px; border-left: 3px solid var(--primary); }
+.case-matters .case-section-text { color: var(--text); }
+.cases-quiz-btn { margin: 8px 12px 16px; }
+/* ===== SPEED ROUND ===== */
+.speed-start {
+  padding: 40px 24px;
+  text-align: center;
+}
+.speed-icon { font-size: 72px; margin-bottom: 16px; }
+.speed-title { font-size: 28px; font-weight: 900; margin-bottom: 8px; }
+.speed-sub { font-size: 16px; color: var(--text2); margin-bottom: 32px; }
+.best-score-badge {
+  background: var(--bg3);
+  border-radius: var(--radius);
+  padding: 12px 24px;
+  display: inline-block;
+  margin-bottom: 32px;
+  font-size: 14px;
+  color: var(--text2);
+}
+.best-score-badge span { font-size: 20px; font-weight: 800; color: var(--yellow); }
+.speed-game {
+  display: none;
+  flex-direction: column;
+  height: calc(100vh - var(--nav-h));
+  overflow: hidden;
+}
+.speed-game.active { display: flex; }
+.speed-timer-row {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.speed-timer {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--yellow);
+  min-width: 50px;
+}
+.speed-timer.urgent { color: var(--red); animation: pulse 0.5s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+.speed-score-live { font-size: 16px; font-weight: 700; color: var(--text2); }
+.speed-timer-bar-wrap { flex: 1; height: 8px; background: var(--bg3); border-radius: 50px; overflow: hidden; }
+.speed-timer-bar { height: 100%; background: var(--yellow); border-radius: 50px; transition: width 1s linear; }
+.speed-q { font-size: 20px; font-weight: 800; padding: 8px 16px 16px; line-height: 1.3; }
+.speed-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 12px; flex: 1; }
+.speed-opt {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--text);
+  transition: all 0.15s;
+  touch-action: manipulation;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.speed-opt:active { transform: scale(0.95); }
+.speed-opt.flash-correct { background: rgba(34,212,122,0.25); border-color: var(--green); color: var(--green); }
+.speed-opt.flash-wrong { background: rgba(255,77,109,0.2); border-color: var(--red); color: var(--red); }
+.speed-result {
+  display: none;
+  padding: 40px 24px;
+  text-align: center;
+}
+.speed-result.active { display: block; }
+/* ===== FEEDBACK OVERLAY ===== */
+#feedback-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 24px 32px;
+  text-align: center;
+  z-index: 200;
+  border: 2px solid var(--primary);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  max-width: 280px;
+  width: 90%;
+}
+#feedback-overlay.show { transform: translate(-50%, -50%) scale(1); }
+.feedback-emoji { font-size: 48px; }
+.feedback-text { font-size: 18px; font-weight: 800; margin-top: 8px; }
+/* ===== CONFETTI ===== */
+#confetti-container {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 300;
+  overflow: hidden;
+}
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: -20px;
+  animation: confetti-fall linear forwards;
+}
+@keyframes confetti-fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+/* ===== LEVEL UP BANNER ===== */
+#levelup-banner {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--primary-dark), var(--accent));
+  color: #fff;
+  padding: 16px 28px;
+  border-radius: 0 0 var(--radius) var(--radius);
+  font-size: 16px;
+  font-weight: 800;
+  z-index: 250;
+  text-align: center;
+  max-width: 360px;
+  width: 90%;
+  transition: top 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+#levelup-banner.show { top: 0; }
+/* ===== STREAK BADGE ===== */
+.streak-fire { font-size: 24px; }
+.streak-num { font-size: 22px; font-weight: 900; color: var(--accent); }
+/* ===== XP POPUP ===== */
+.xp-popup {
+  position: fixed;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--yellow);
+  pointer-events: none;
+  z-index: 200;
+  animation: xp-rise 1.2s ease forwards;
+}
+@keyframes xp-rise {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-60px); }
+}
+/* ===== SCROLLBAR ===== */
+.screen::-webkit-scrollbar { width: 3px; }
+.screen::-webkit-scrollbar-track { background: transparent; }
+.screen::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+/* ===== MISC ===== */
+.divider { height: 1px; background: var(--border); margin: 8px 16px; }
+.tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--bg3);
+  color: var(--text2);
+}
+.screen-title { font-size: 20px; font-weight: 800; flex: 1; }
+.empty-state { text-align: center; padding: 48px 24px; color: var(--text2); }
+.empty-state .e-icon { font-size: 48px; margin-bottom: 12px; }
+@media (min-height: 800px) {
+  .flip-scene { height: 300px; }
+}
+/* ===== STUDY TIPS CARD ===== */
+.study-tips-card {
+  margin: 0 12px 4px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.study-tips-header {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+.study-tips-header:active { background: var(--bg3); }
+.study-tips-title {
+  font-size: 15px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.study-tips-chevron {
+  font-size: 18px;
+  color: var(--text2);
+  transition: transform 0.3s;
+}
+.study-tips-card.open .study-tips-chevron { transform: rotate(180deg); }
+.study-tips-body {
+  display: none;
+  padding: 0 16px 16px;
+}
+.study-tips-card.open .study-tips-body { display: block; }
+.study-tip-item {
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  background: var(--bg3);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--primary);
+}
+.study-tip-item:last-child { margin-bottom: 0; }
+.study-tip-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--primary-light);
+  margin-bottom: 4px;
+}
+.study-tip-desc {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- NAV -->
+  <nav id="nav">
+    <button class="nav-btn active" onclick="showScreen('home')" id="nav-home">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Home</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('flashcards')" id="nav-flashcards">
+      <span class="nav-icon">🃏</span>
+      <span class="nav-label">Cards</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('quiz')" id="nav-quiz">
+      <span class="nav-icon">📝</span>
+      <span class="nav-label">Quiz</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('cases')" id="nav-cases">
+      <span class="nav-icon">⚖️</span>
+      <span class="nav-label">Cases</span>
+    </button>
+    <button class="nav-btn" onclick="showScreen('speed')" id="nav-speed">
+      <span class="nav-icon">⚡</span>
+      <span class="nav-label">Speed</span>
+    </button>
+  </nav>
+
+  <!-- HOME SCREEN -->
+  <div id="screen-home" class="screen active">
+    <div class="home-header">
+      <div>
+        <div style="font-size:12px;color:var(--text2);font-weight:700;">FLORIDA CIVICS EOC</div>
+        <div class="home-title">Study Hub 🗽</div>
+      </div>
+      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">🌙</button>
+    </div>
+    <div class="level-card" id="level-card">
+      <div class="level-badge">⭐ LEVEL <span id="home-level-num">1</span></div>
+      <div class="level-name" id="home-level-name">Citizen Cadet</div>
+      <div class="xp-bar-wrap">
+        <div class="xp-bar" id="home-xp-bar" style="width:0%"></div>
+      </div>
+      <div class="xp-label">
+        <span id="home-xp-cur">0 XP</span>
+        <span id="home-xp-next">100 XP to next level</span>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="streak-fire">🔥</div>
+        <div class="streak-num" id="home-streak">0</div>
+        <div class="stat-label">Day Streak</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="home-cards-done">0</div>
+        <div class="stat-label">Cards Done</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="home-quizzes">0</div>
+        <div class="stat-label">Quizzes</div>
+      </div>
+    </div>
+    <div class="study-tips-card" id="study-tips-card">
+      <div class="study-tips-header" onclick="toggleStudyTips()">
+        <div class="study-tips-title">🧠 Study Tips That Actually Work</div>
+        <span class="study-tips-chevron">▼</span>
+      </div>
+      <div class="study-tips-body">
+        <div class="study-tip-item">
+          <div class="study-tip-name">🧪 Active Recall</div>
+          <div class="study-tip-desc">Don't just re-read — quiz yourself! That's why this app works. Testing yourself is 3x more effective than re-reading notes. Close your notes and try to remember first.</div>
+        </div>
+        <div class="study-tip-item">
+          <div class="study-tip-name">📅 Spaced Repetition</div>
+          <div class="study-tip-desc">Study a little each day instead of cramming. Your brain needs sleep to move info to long-term memory. Even 15 min today + 15 min tomorrow beats 1 hour all at once.</div>
+        </div>
+        <div class="study-tip-item">
+          <div class="study-tip-name">📦 Chunking</div>
+          <div class="study-tip-desc">Group related stuff together. The Civil War Amendments (13-14-15) go together: Free → Citizen → Vote. The "Court Cases about Rights" group together. Chunks are easier to remember!</div>
+        </div>
+        <div class="study-tip-item">
+          <div class="study-tip-name">🏠 Memory Palace</div>
+          <div class="study-tip-desc">Imagine walking through your house. Put each amendment in a different room. The weirder the image, the better you'll remember it! Put the 1st Amendment at your front door, 2nd in the kitchen, etc.</div>
+        </div>
+        <div class="study-tip-item">
+          <div class="study-tip-name">🔤 First Letter Mnemonics</div>
+          <div class="study-tip-desc">Take the first letters of things you need to remember and make a word or sentence. Like RAPPS for the 1st Amendment rights (Religion, Assembly, Press, Petition, Speech)!</div>
+        </div>
+        <div class="study-tip-item">
+          <div class="study-tip-name">🗣 Teach Someone</div>
+          <div class="study-tip-desc">If you can explain it to your mom, dad, or friend without looking, you KNOW it. Teaching forces your brain to organize what it knows. Try explaining judicial review right now!</div>
+        </div>
+      </div>
+    </div>
+        <div class="section-title">📊 Topic Progress</div>
+    <div id="topic-progress-list"></div>
+    <div class="section-title">🚀 Quick Start</div>
+    <div class="quick-btns">
+      <button class="quick-btn" onclick="showScreen('flashcards')">
+        <span class="q-icon">🃏</span>
+        <span class="q-title">Flashcards</span>
+        <span class="q-sub">Flip & learn</span>
+      </button>
+      <button class="quick-btn" onclick="startQuiz()">
+        <span class="q-icon">📝</span>
+        <span class="q-title">Quiz Me</span>
+        <span class="q-sub">10 questions</span>
+      </button>
+      <button class="quick-btn" onclick="showScreen('cases')">
+        <span class="q-icon">⚖️</span>
+        <span class="q-title">Court Cases</span>
+        <span class="q-sub">Case Crusher</span>
+      </button>
+      <button class="quick-btn" onclick="showScreen('speed')">
+        <span class="q-icon">⚡</span>
+        <span class="q-title">Speed Round</span>
+        <span class="q-sub">60 seconds!</span>
+      </button>
+    </div>
+    <div style="height:8px"></div>
+  </div>
+
+  <!-- FLASHCARDS SCREEN -->
+  <div id="screen-flashcards" class="screen">
+    <div class="fc-header">
+      <div class="screen-title">Flashcards 🃏</div>
+    </div>
+    <div class="fc-cat-scroll" id="fc-cats"></div>
+    <div class="fc-counter" id="fc-counter">Card 1 of 1</div>
+    <div class="flip-scene" id="flip-scene" onclick="flipCard()">
+      <div class="flip-card" id="flip-card">
+        <div class="flip-face flip-front">
+          <div class="flip-hint">TAP TO FLIP</div>
+          <div class="flip-term" id="fc-term">Loading...</div>
+          <div class="flip-cat" id="fc-cat-label"></div>
+        </div>
+        <div class="flip-face flip-back">
+          <div class="flip-hint">ANSWER</div>
+          <div class="flip-answer" id="fc-answer"></div>
+        </div>
+      </div>
+    </div>
+    <div class="fc-actions" id="fc-actions">
+      <button class="btn btn-success btn-sm" onclick="fcGotIt()">✅ Got it!</button>
+      <button class="btn btn-danger btn-sm" onclick="fcStillLearning()">🔄 Still learning</button>
+    </div>
+    <div class="fc-progress-wrap">
+      <div class="fc-stats">
+        <span>✅ Got it: <strong id="fc-got">0</strong></span>
+        <span>🔄 Learning: <strong id="fc-learning">0</strong></span>
+      </div>
+      <div class="xp-bar-wrap">
+        <div class="xp-bar" id="fc-bar" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="screen-quiz" class="screen">
+    <div class="fc-header">
+      <div class="screen-title">Quiz Mode 📝</div>
+    </div>
+    <div id="quiz-start-view">
+      <div style="padding:24px 16px;text-align:center;">
+        <div style="font-size:64px;margin-bottom:16px;">📝</div>
+        <div style="font-size:22px;font-weight:800;margin-bottom:8px;">Ready to test yourself?</div>
+        <div style="font-size:15px;color:var(--text2);margin-bottom:32px;">10 questions, mixed topics, just like the real EOC!</div>
+        <button class="btn btn-primary" onclick="startQuiz()" style="max-width:240px;margin:0 auto 12px;">🎯 Start Quiz</button>
+        <div style="font-size:12px;color:var(--text2);margin-top:8px;">+10 XP per correct, +25 XP for finishing!</div>
+      </div>
+    </div>
+    <div id="quiz-game-view" style="display:none">
+      <div style="padding:12px 16px 6px;display:flex;justify-content:space-between;align-items:center;">
+        <div class="quiz-q-num" id="quiz-q-num" style="padding:0;">Question 1 of 10</div>
+        <div style="font-size:13px;color:var(--yellow);font-weight:700;" id="quiz-score-live">Score: 0</div>
+      </div>
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="quiz-progress-fill" style="width:10%"></div>
+      </div>
+      <div class="quiz-question" id="quiz-question">Question text</div>
+      <div class="quiz-options" id="quiz-options"></div>
+      <div class="quiz-explanation" id="quiz-explanation"></div>
+      <div class="quiz-next-btn">
+        <button class="btn btn-primary" id="quiz-next-btn" onclick="quizNext()" style="display:none">Next Question →</button>
+      </div>
+    </div>
+    <div id="quiz-result-view" style="display:none">
+      <div class="quiz-result">
+        <div class="result-emoji" id="result-emoji">🏆</div>
+        <div class="result-score" id="result-score">0/10</div>
+        <div class="result-label">Questions Correct</div>
+        <div class="result-msg" id="result-msg">Great job!</div>
+        <button class="btn btn-primary" onclick="startQuiz()" style="margin-bottom:12px;">🔄 Try Again</button>
+        <button class="btn btn-outline" onclick="showScreen('home')">🏠 Home</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASES SCREEN -->
+  <div id="screen-cases" class="screen">
+    <div class="fc-header">
+      <div class="screen-title">Case Crusher ⚖️</div>
+    </div>
+    <div style="padding:0 16px 12px;font-size:14px;color:var(--text2);">Tap a case to expand it and learn the story!</div>
+    <div class="cases-list" id="cases-list"></div>
+    <button class="btn btn-primary cases-quiz-btn" onclick="startCasesQuiz()">⚖️ Quiz Me on Cases</button>
+    <div style="height:8px"></div>
+  </div>
+
+  <!-- SPEED ROUND SCREEN -->
+  <div id="screen-speed" class="screen">
+    <div id="speed-start-view" class="speed-start">
+      <div class="speed-icon">⚡</div>
+      <div class="speed-title">Speed Round!</div>
+      <div class="speed-sub">Answer as many questions as you can in 60 seconds. Go as fast as you can!</div>
+      <div class="best-score-badge">🏆 Best Score: <span id="best-score-display">0</span> correct</div>
+      <button class="btn btn-primary" onclick="startSpeedRound()" style="max-width:220px;margin:0 auto;">⚡ Let's Go!</button>
+    </div>
+    <div id="speed-game-view" class="speed-game">
+      <div class="speed-timer-row">
+        <div class="speed-timer" id="speed-timer">60</div>
+        <div class="speed-timer-bar-wrap">
+          <div class="speed-timer-bar" id="speed-timer-bar"></div>
+        </div>
+        <div class="speed-score-live">✅ <span id="speed-correct-live">0</span></div>
+      </div>
+      <div class="speed-q" id="speed-q">Question...</div>
+      <div class="speed-opts" id="speed-opts"></div>
+    </div>
+    <div id="speed-result-view" class="speed-result">
+      <div style="font-size:64px;margin-bottom:12px;">⚡</div>
+      <div style="font-size:32px;font-weight:900;color:var(--yellow);margin-bottom:4px;" id="speed-final-score">0</div>
+      <div style="font-size:16px;color:var(--text2);margin-bottom:4px;">correct answers!</div>
+      <div style="font-size:14px;color:var(--text2);margin-bottom:24px;" id="speed-new-best"></div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:16px;" id="speed-result-msg">Nice speed!</div>
+      <div id="speed-review" style="text-align:left;margin-bottom:20px;"></div>
+      <button class="btn btn-primary" onclick="startSpeedRound()" style="margin-bottom:12px;">⚡ Play Again</button>
+      <button class="btn btn-outline" onclick="showScreen('home')">🏠 Home</button>
+    </div>
+  </div>
+</div>
+
+<!-- Feedback overlay -->
+<div id="feedback-overlay">
+  <div class="feedback-emoji" id="feedback-emoji">🎉</div>
+  <div class="feedback-text" id="feedback-text">Correct!</div>
+</div>
+<!-- Level up banner -->
+<div id="levelup-banner" id="levelup-banner">🎉 LEVEL UP! You are now a <span id="levelup-name"></span>!</div>
+<!-- Confetti container -->
+<div id="confetti-container"></div>
+
+<script>
+// =============================================
+// DATA
+// =============================================
+const AMENDMENTS = [
+  { id:'a1', term:'1st Amendment', answer:'Freedom of religion, speech, press, assembly, and petition. The "RAPPS" amendment — Religion, Assembly, Press, Petition, Speech!\n\n💡 TRICK: "RAPPS" — like a rap song! Religion, Assembly, Press, Petition, Speech. Rap it out loud: RAPPS RAPPS RAPPS!', category:'Amendments' },
+  { id:'a2', term:'2nd Amendment', answer:'Right to keep and bear arms. The right of citizens to own guns.\n\n💡 TRICK: 2nd Amendment = 2 hands holding a gun. Picture the number 2 shaped like a pistol!', category:'Amendments' },
+  { id:'a3', term:'3rd Amendment', answer:'No quartering of soldiers in private homes without owner\'s consent. (This was a big deal after the British did it!)\n\n💡 TRICK: "3rd = No soldiers in your 3-bedroom home!" Think of a redcoat knocking on your door — you can slam it shut.', category:'Amendments' },
+  { id:'a4', term:'4th Amendment', answer:'Protection against unreasonable searches and seizures. Police need a warrant based on probable cause to search you.\n\n💡 TRICK: "4th = No Forced entry!" The 4 looks like a door — police can\'t bust through it without a warrant!', category:'Amendments' },
+  { id:'a5', term:'5th Amendment', answer:'Due process of law, no double jeopardy (can\'t be tried twice for same crime), no self-incrimination (you can "plead the 5th"), and eminent domain rules.\n\n💡 TRICK: Hold up a HAND — 5 fingers = 5 big rights! And you "plead the 5th" using your whole hand. Picture a giant hand in court saying "I plead the FIFTH!"', category:'Amendments' },
+  { id:'a6', term:'6th Amendment', answer:'Right to a speedy and public trial, an impartial jury, to know the charges against you, and to have a lawyer.\n\n💡 TRICK: "6th = Lawyer SIX-urity!" You get a lawyer for security. In court you need 6 things: Speedy trial, public trial, jury, know charges, confront witnesses, get a lawyer — count them on 6 fingers!', category:'Amendments' },
+  { id:'a7', term:'7th Amendment', answer:'Right to a jury trial in civil cases (lawsuits between people) involving more than $20.\n\n💡 TRICK: "7 jurors... wait, actually 12 — but the 7th gets you CIVIL jury!" Think: $20 bill = civil lawsuit. $20 seems tiny today but the 7th locks it in!', category:'Amendments' },
+  { id:'a8', term:'8th Amendment', answer:'No cruel and unusual punishment, no excessive bail or fines. The government can\'t punish you in a barbaric way.\n\n💡 TRICK: "8th = No being late on BAIL — and no BRUTAL jail!" The number 8 looks like handcuffs — but the 8th makes sure those cuffs aren\'t too tight!', category:'Amendments' },
+  { id:'a9', term:'9th Amendment', answer:'Just because a right isn\'t listed in the Constitution doesn\'t mean people don\'t have it. Rights not listed still exist!\n\n💡 TRICK: "9th = NINE-ty-nine unlisted rights!" Think of a hidden treasure chest full of extra rights the Founders didn\'t bother to write down. They\'re still yours!', category:'Amendments' },
+  { id:'a10', term:'10th Amendment', answer:'Powers not given to the federal government are reserved to the states or the people. States\' rights!\n\n💡 TRICK: "10th = States get the REST!" Perfect 10 for the states — like a perfect score for state power. Whatever the feds don\'t have, the states keep!', category:'Amendments' },
+  { id:'a11', term:'11th Amendment', answer:'States cannot be sued in federal court by citizens of another state or a foreign country.\n\n💡 TRICK: "11th = Eleven-ty protection — states can\'t be dragged to fed court!" The two 1s in 11 are like two walls protecting a state from outside lawsuits.', category:'Amendments' },
+  { id:'a12', term:'12th Amendment', answer:'Electors cast separate ballots for President and Vice President. (Fixed the tie problem from the 1800 election!)\n\n💡 TRICK: "12th = TWELVE the tie!" In 1800 there was a BIG tie between Adams and Jefferson. The 12th fixed it by using 2 separate ballots — one for Pres, one for VP.', category:'Amendments' },
+  { id:'a13', term:'13th Amendment', answer:'Abolished slavery and involuntary servitude in the United States. Ratified in 1865 after the Civil War.\n\n💡 TRICK: "13 = UN-lucky for slaveholders!" Think unlucky number 13 — slavery\'s luck ran out. 13th Amendment = FREEDOM. Also: 1865 → the Civil War just ended!', category:'Amendments' },
+  { id:'a14', term:'14th Amendment', answer:'Citizenship for anyone born in the US (citizenship clause), equal protection under the law for all citizens, and due process applies to states too.\n\n💡 TRICK: "14th = 1 country, 4-ever equal!" Think of the 3 C\'s: Citizenship, civil rights, Constitution applies to states. Born in the USA? You\'re automatically IN!', category:'Amendments' },
+  { id:'a15', term:'15th Amendment', answer:'The right to vote cannot be denied based on race, color, or previous condition of servitude. African American men gained voting rights in 1870.\n\n💡 TRICK: "13-14-15 = Free, Citizen, VOTE!" These Civil War Amendments go together like a staircase: Abolish slavery → Give citizenship → Give the right to vote. Three steps UP!', category:'Amendments' },
+  { id:'a16', term:'16th Amendment', answer:'Congress has the power to collect income taxes. Ratified in 1913.\n\n💡 TRICK: "Sweet 16 = Your first paycheck gets taxed!" When you get your first job at 16, BAM — the 16th Amendment means the government takes a cut. Ratified in 1913.', category:'Amendments' },
+  { id:'a17', term:'17th Amendment', answer:'Senators are directly elected by the people (instead of by state legislatures). More democratic!\n\n💡 TRICK: "17th = You pick your Senator!" Before 1913 state governments chose senators. The 17th said: "Let the PEOPLE decide!" More power to regular voters!', category:'Amendments' },
+  { id:'a18', term:'18th Amendment', answer:'Prohibition — banned the manufacture, sale, and transportation of alcohol. (Lasted from 1920 to 1933, then repealed by the 21st Amendment.)\n\n💡 TRICK: "18th = You have to be 21 to drink... but even adults couldn\'t in the 1920s!" The 18th banned booze, but it flopped so hard it\'s the only amendment ever repealed!', category:'Amendments' },
+  { id:'a19', term:'19th Amendment', answer:'Women\'s suffrage — the right to vote cannot be denied based on sex. Women gained the right to vote in 1920!\n\n💡 TRICK: "The 19th was fine — women vote in 1920\'s time!" Say it like a rhyme. Also: W for Women = 19th Amendment. Women waited way too long!', category:'Amendments' },
+  { id:'a20', term:'20th Amendment', answer:'Presidential terms begin on January 20 (Inauguration Day). Also called the "Lame Duck Amendment."\n\n💡 TRICK: "20th = January 20th!" Easy — the amendment number matches the date! Jan 20 = 20th Amendment. And a "lame duck" is a quacking loser who lost the election but is still in office for a few weeks.', category:'Amendments' },
+  { id:'a21', term:'21st Amendment', answer:'Repealed the 18th Amendment (Prohibition). Alcohol was legal again! The only amendment to repeal another amendment.\n\n💡 TRICK: "21st = You can drink at 21!" The 21st Amendment ended Prohibition — fittingly, 21 is the drinking age. It CANCELLED the 18th like unfriending someone online.', category:'Amendments' },
+  { id:'a22', term:'22nd Amendment', answer:'The President is limited to two terms in office. Added after FDR served four terms.\n\n💡 TRICK: "22nd = 2 terms, 2 terms only!" The number 22 has two 2s — just like the TWO-term limit. FDR served 4 terms and everyone said "never again!" so they made it official.', category:'Amendments' },
+  { id:'a23', term:'23rd Amendment', answer:'Washington D.C. gets electoral votes for President (3 electoral votes), even though it\'s not a state.\n\n💡 TRICK: "23rd = DC gets 3!" Washington DC got 3 electoral votes in 1961. Think: DC has 2 letters and gets 3 votes. It\'s not a state but it still gets a say!', category:'Amendments' },
+  { id:'a24', term:'24th Amendment', answer:'Poll taxes (fees to vote) are banned in federal elections. Made it easier for poor citizens to vote.\n\n💡 TRICK: "24th = Voting is FREE — no fee!" Poll taxes were used to stop poor Black voters from voting. The 24th said: YOUR VOTE COSTS NOTHING. No pay-to-play at the ballot box!', category:'Amendments' },
+  { id:'a25', term:'25th Amendment', answer:'Deals with presidential succession and disability. The VP becomes President if the President dies or is removed. Also covers when a President is unable to perform duties.\n\n💡 TRICK: "25th = Who\'s next in line?" Think of 25 as a countdown — if #1 goes down, #2 (VP) steps up! It\'s the "backup plan" amendment for when the President can\'t do the job.', category:'Amendments' },
+  { id:'a26', term:'26th Amendment', answer:'Lowered the voting age from 21 to 18. Ratified in 1971 during the Vietnam War era ("old enough to fight, old enough to vote").\n\n💡 TRICK: "Old enough to fight = old enough to vote!" During Vietnam, 18-year-olds were drafted into war but couldn\'t vote. The 26th fixed that injustice in 1971. Now YOU\'LL be able to vote at 18!', category:'Amendments' },
+  { id:'a27', term:'27th Amendment', answer:'Congressional pay raises can\'t take effect until after the next election. Proposed in 1789, but not ratified until 1992!\n\n💡 TRICK: "27th = Politicians can\'t give themselves an instant raise!" Proposed by James Madison in 1789 — it sat waiting for over 200 YEARS before being ratified in 1992. The slowest amendment ever!', category:'Amendments' },
+];
+
+
+const VOCABULARY = [
+  { id:'v1', term:'Popular Sovereignty', answer:'The idea that government\'s power comes from the people. "We the People" — citizens are the boss!\n\n💡 TRICK: "POP-ular = The PEOPLE are popular!" Pop = People. The people are the most popular — they\'re in charge! Sovereignty = supreme power. People power!', category:'Vocabulary' },
+  { id:'v2', term:'Federalism', answer:'A system of government where power is divided between a national (federal) government and state governments.\n\n💡 TRICK: "FED-eralism = FED-eral + states SHARING power!" Think of a pizza split between the national government and your state. FED gets some slices, state gets some slices. Together they share the pie!', category:'Vocabulary' },
+  { id:'v3', term:'Separation of Powers', answer:'Dividing government power into three branches — Legislative (makes laws), Executive (enforces laws), Judicial (interprets laws) — so no one branch is too powerful.\n\n💡 TRICK: "LEJ = Legislative-Executive-Judicial!" Or remember: "Laws, Enforces, Judges" — who MAKES it, who DOES it, who JUDGES it. Three jobs, three branches!', category:'Vocabulary' },
+  { id:'v4', term:'Checks and Balances', answer:'Each branch of government has powers that limit the other branches. For example, the President can veto laws Congress passes, but Congress can override a veto.\n\n💡 TRICK: "Checks like a CHECK on a test — you mark what\'s wrong!" Each branch can CHECK the others. Like rock-paper-scissors — no one always wins! Congress, President, Courts all keep each other in line.', category:'Vocabulary' },
+  { id:'v5', term:'Republic', answer:'A form of government where citizens elect representatives to make decisions for them. The US is a constitutional republic.\n\n💡 TRICK: "Republic = Representatives!" Both start with R. We don\'t vote on every law ourselves — we elect REPs to do it. Representative Republic!', category:'Vocabulary' },
+  { id:'v6', term:'Democracy', answer:'A system of government where citizens hold power, either directly (direct democracy) or through elected representatives (representative democracy).\n\n💡 TRICK: "DEMO-cracy = DEMO for the people!" Demo = demonstration, showing off power. DEMOs are for everyone — so is democracy. The people DEMO-nstrate their power by voting!', category:'Vocabulary' },
+  { id:'v7', term:'Autocracy', answer:'A government where one person holds unlimited power. Examples: dictatorship, absolute monarchy.\n\n💡 TRICK: "AUTO-cracy = ONE person on AUTO-pilot!" Auto = self, one person. Like an automatic car — one person controls everything with no input from others. Think AUTO = solo!', category:'Vocabulary' },
+  { id:'v8', term:'Oligarchy', answer:'A government ruled by a small group of people, often wealthy or powerful elites.\n\n💡 TRICK: "OLI-garchy = a small CLIQUE of OLDIE power players!" Oligo means few in Greek. Think of the popular clique at school — a small group running things. Oligarchy = the exclusive club of rulers!', category:'Vocabulary' },
+  { id:'v9', term:'Monarchy', answer:'A government ruled by a king or queen who inherits power. Can be absolute (total power) or constitutional (limited by law).\n\n💡 TRICK: "MON-archy = ONE (MONopolizer) rules!" Mono = one. One king or queen on the throne. Picture a crown — MON-archy wears the MONO crown!', category:'Vocabulary' },
+  { id:'v10', term:'Judicial Review', answer:'The power of the Supreme Court to decide if laws are constitutional or not. Established by Marbury v. Madison (1803).\n\n💡 TRICK: "MAR-bury MARked the start of courts reviewing laws!" Marbury v. Madison (1803) = the case that gave courts this power. Think: the judge REVIEWS your homework — and if it\'s unconstitutional, it gets an F!', category:'Vocabulary' },
+  { id:'v11', term:'Due Process', answer:'The government must follow fair procedures and laws before taking away someone\'s life, liberty, or property. Guaranteed by the 5th and 14th Amendments.\n\n💡 TRICK: "DUE Process = you\'re DUE a fair process!" Like when you\'re DUE a refund — you\'re OWED fairness. The government owes you fair treatment before taking anything away!', category:'Vocabulary' },
+  { id:'v12', term:'Rule of Law', answer:'Everyone — including government officials — must follow the law. No one is above the law!\n\n💡 TRICK: "Even the RULER must follow the RULES!" The Rule of Law means the rules RULE over everyone — even the rulers! No king, no president, nobody gets a free pass.', category:'Vocabulary' },
+  { id:'v13', term:'Limited Government', answer:'The government only has the powers given to it by the Constitution. It cannot do whatever it wants.\n\n💡 TRICK: "LIMITED like a LIMITED-edition sneaker — only so many!" The government\'s power has limits, just like a limited-edition item is capped. The Constitution is the cap!', category:'Vocabulary' },
+  { id:'v14', term:'Civic Virtue', answer:'Good character and behavior by citizens that helps the community. Being an active, responsible member of society.\n\n💡 TRICK: "CIVIC = City + good VIRTUe!" Think of a CIVIC car (reliable, responsible) — a civic virtue person is reliable and responsible for their community. They SHOW UP!', category:'Vocabulary' },
+  { id:'v15', term:'Common Good', answer:'Actions and policies that benefit society as a whole, not just individual people.\n\n💡 TRICK: "Common Good = good for EVERYONE, not just your crew!" Like sharing pizza with the whole class instead of just your best friends. What\'s COMMON (shared) should be GOOD for all!', category:'Vocabulary' },
+  { id:'v16', term:'Natural Rights', answer:'Rights that all people are born with, according to John Locke: life, liberty, and property. Jefferson changed "property" to "pursuit of happiness" in the Declaration.\n\n💡 TRICK: "LOCK-e your Natural Rights: Life, Liberty, Land (property)!" John LOCKE said these are LOCKED IN at birth — no government can take them away. Jefferson swapped property for HAPPINESS!', category:'Vocabulary' },
+  { id:'v17', term:'Social Contract', answer:'The idea that people give up some freedoms to a government in exchange for protection of their rights. From philosophers like Locke and Rousseau.\n\n💡 TRICK: "Social Contract = a DEAL between you and the government!" You give up some freedom (can\'t speed, can\'t steal), government protects you in return. It\'s a trade — like a handshake deal with society!', category:'Vocabulary' },
+  { id:'v18', term:'Veto', answer:'The President\'s power to reject a bill passed by Congress. Congress can override a veto with a 2/3 vote in both chambers.\n\n💡 TRICK: "VETO = Very Effective Trash-Out!" The President trashes the bill with a veto. But Congress can dig it out of the trash with a 2/3 vote override!', category:'Vocabulary' },
+  { id:'v19', term:'Filibuster', answer:'A tactic in the Senate where a senator speaks for a very long time to delay or block a vote on a bill.\n\n💡 TRICK: "FILIbuster = FILL the time with BUSTING chatter!" A senator literally just TALKS and TALKS for hours to stop a vote. It\'s like stalling a teacher by asking lots of questions so the bell rings before the test!', category:'Vocabulary' },
+  { id:'v20', term:'Electoral College', answer:'The group of electors (538 total) who officially elect the President and Vice President. Each state gets electors equal to its number of representatives + senators.\n\n💡 TRICK: "538 electors = 435 House + 100 Senate + 3 for DC!" Picture a COLLEGE campus with 538 students who vote for class president. Your state\'s electoral votes = your reps + 2 senators. Math it out!', category:'Vocabulary' },
+  { id:'v21', term:'Amendment Process', answer:'To change the Constitution: Congress proposes an amendment with 2/3 vote in both houses, then 3/4 of states must ratify it.\n\n💡 TRICK: "2/3 to PROPOSE, 3/4 to RATIFY — the Constitution is HARD to change on purpose!" Think of it like a video game with two boss levels: First beat Congress (2/3), then beat the states (3/4). Super hard = super protected!', category:'Vocabulary' },
+  { id:'v22', term:'Ratification', answer:'The official approval of a document or law. The Constitution needed 9 of 13 states to ratify it to take effect.\n\n💡 TRICK: "RATIFY = RATS-ify it, make it OFFICIAL!" 9 of 13 states had to say YES. Think: 9 rats in a race, first 9 to finish = Constitution is a GO! Ratification = official stamp of approval.', category:'Vocabulary' },
+  { id:'v23', term:'Bicameral', answer:'A legislature (lawmaking body) with two chambers. Congress is bicameral: the Senate (100 members) and the House of Representatives (435 members).\n\n💡 TRICK: "BI = TWO, like BIcycle has 2 wheels!" Bicameral = two chambers. Senate + House = 2 wheels of the Congress bicycle. Can\'t ride with just one wheel!', category:'Vocabulary' },
+  { id:'v24', term:'Jurisdiction', answer:'The authority of a court to hear and decide a case. Different courts have jurisdiction over different types of cases.\n\n💡 TRICK: "JURIS-diction = JURY + DISTRICT!" Which court has the power (jurisdiction) over your area (district)? Like how your school principal only has power over YOUR school — that\'s their jurisdiction!', category:'Vocabulary' },
+  { id:'v25', term:'Precedent', answer:'A court decision that guides future decisions in similar cases. "Stare decisis" — let the decision stand.\n\n💡 TRICK: "PRECEdent = what came PRECE-ding (before)!" Past decisions SET the standard. Think: if your teacher gives a student extra time, that sets a precedent — everyone expects the same deal!', category:'Vocabulary' },
+];
+
+
+const FOUNDING_DOCS = [
+  { id:'fd1', term:'Declaration of Independence', answer:'Written by Thomas Jefferson in 1776. Declared the 13 colonies independent from Britain. States that "all men are created equal" with natural rights to life, liberty, and the pursuit of happiness.\n\n💡 TRICK: "Jefferson DECLARED it in 1776 with LIFE, LIBERTY, HAPPINESS!" Remember: T.J. wrote it, 1776, and three rights: Life + Liberty + Pursuit of Happiness. LLP — like a law firm of freedom!', category:'Founding Documents' },
+  { id:'fd2', term:'Articles of Confederation', answer:'The first US constitution (1781-1789). Created a VERY weak national government. No power to tax, no executive branch, no national courts. Replaced by the current Constitution.\n\n💡 TRICK: "Articles = AWFUL first attempt!" Think: the Articles were the rough draft that failed. No TAXES, no EXECUTIVE, no COURTS — it was missing everything. The Confederation was a DISASTER on purpose so we\'d know what not to do!', category:'Founding Documents' },
+  { id:'fd3', term:'The Constitution', answer:'The supreme law of the United States (1789). Sets up the structure of government with 3 branches, lists powers of government, and protects rights. Has 27 amendments.\n\n💡 TRICK: "CONSTI-tution = the INSTITUTION that CONSTI-tutes America!" It\'s the rulebook, the owner\'s manual, the cheat code for running the USA. 3 branches + 27 amendments = the whole game!', category:'Founding Documents' },
+  { id:'fd4', term:'Bill of Rights', answer:'The first 10 amendments to the Constitution, added in 1791. Protects individual rights and limits government power. Demanded by Anti-Federalists before ratifying the Constitution.\n\n💡 TRICK: "Bill of Rights = YOUR personal BILL of protections!" Think of it like a bill (invoice) the Founders sent to the government: YOU OWE US these 10 rights. Anti-Federalists said "no Constitution until we get our rights in writing!"', category:'Founding Documents' },
+  { id:'fd5', term:'Federalist Papers', answer:'A series of 85 essays written by Hamilton, Madison, and Jay to convince people to ratify the Constitution. Federalist No. 51 explains checks and balances; No. 10 discusses factions.\n\n💡 TRICK: "HAMilton, MADison, JAY = HaMaJay wrote the Federalist Papers!" Make up a silly name: "HaMaJay." No. 51 = checks and balances (51 = balance point). No. 10 = factions (10 fingers causing trouble)!', category:'Founding Documents' },
+  { id:'fd6', term:'Preamble to the Constitution', answer:'"We the People of the United States, in Order to form a more perfect Union..." Lists 6 goals: form a union, establish justice, ensure tranquility, provide defense, promote welfare, secure liberty.\n\n💡 TRICK: "We JUST Ensure Defense Promotes Security — WEDPS!" Take the first letters of the 6 goals: Union, Justice, Tranquility, Defense, Welfare, Liberty. Or just memorize: the Preamble STARTS with We the People and ENDS with liberty — beginning and end!', category:'Founding Documents' },
+  { id:'fd7', term:'Magna Carta (1215)', answer:'English document that first limited the power of the king. Established that even the king must follow the law — a key influence on American ideas about limited government and due process.\n\n💡 TRICK: "MAGNA = LARGE, CARTA = CARD — the BIG CARD that limited the king!" 1215 — think: 12 barons forced King John to sign it. Even kings must follow rules! This BIG CARD was the ancestor of ALL American freedoms.', category:'Founding Documents' },
+  { id:'fd8', term:'Mayflower Compact (1620)', answer:'First self-governing agreement in the American colonies. The Pilgrims agreed to make "just and equal laws" for the general good — an early example of popular sovereignty and social contract.\n\n💡 TRICK: "MAY-flower = MAYBE the first American democracy blossomed here!" 1620, Pilgrims on a ship, wrote their OWN rules before landing. The FLOWER of democracy was planted on that boat. First social contract in America!', category:'Founding Documents' },
+];
+
+
+const CASES = [
+  {
+    id: 'c1',
+    name: 'Marbury v. Madison',
+    year: 1803,
+    happened: 'William Marbury was appointed as a judge by President Adams, but the new Secretary of State James Madison refused to deliver his commission. Marbury sued.',
+    ruling: 'Chief Justice John Marshall ruled that the Supreme Court had the power to declare laws unconstitutional — but Marbury didn\'t get his job.',
+    matters: 'Established JUDICIAL REVIEW — the Supreme Court\'s power to strike down laws that violate the Constitution. This is one of the most important cases EVER.',
+    category: 'Founding Documents',
+    quizQ: {
+      q: 'What power did Marbury v. Madison (1803) establish for the Supreme Court?',
+      opts: ['The power to make laws', 'Judicial review — the power to declare laws unconstitutional', 'The power to appoint judges', 'The power to veto presidential actions'],
+      ans: 1,
+      explain: 'Marbury v. Madison established judicial review — the Supreme Court\'s ability to strike down laws that violate the Constitution.'
+    }
+  },
+  {
+    id: 'c2',
+    name: 'McCulloch v. Maryland',
+    year: 1819,
+    happened: 'Maryland tried to tax the national Bank of the United States. The bank\'s cashier, McCulloch, refused to pay the tax.',
+    ruling: 'The Supreme Court said (1) Congress has "implied powers" to create a bank even if not specifically listed in the Constitution, and (2) States CANNOT tax the federal government.',
+    matters: 'Established federal supremacy and implied powers. "The power to tax involves the power to destroy." — Chief Justice Marshall.',
+    category: 'Government Policies',
+    quizQ: {
+      q: 'McCulloch v. Maryland (1819) established which important principle?',
+      opts: ['States can tax federal agencies', 'The federal government has implied powers not specifically listed in the Constitution', 'Congress must approve all state laws', 'The President controls the banking system'],
+      ans: 1,
+      explain: 'McCulloch v. Maryland confirmed that Congress has implied powers (from the Necessary and Proper Clause) and that federal law is supreme over state law.'
+    }
+  },
+  {
+    id: 'c3',
+    name: 'Gibbons v. Ogden',
+    year: 1824,
+    happened: 'Two men both had licenses to operate steamboats between New York and New Jersey — one from the state, one from Congress. Who wins?',
+    ruling: 'The Supreme Court said Congress has the power to regulate interstate commerce (trade between states). The federal license wins over the state license.',
+    matters: 'Broadly defined federal power over interstate commerce — which today covers a HUGE amount of business, from airlines to the internet.',
+    category: 'Government Policies',
+    quizQ: {
+      q: 'Gibbons v. Ogden (1824) dealt with which constitutional power?',
+      opts: ['Freedom of speech', 'The right to bear arms', 'Federal power to regulate interstate commerce', 'Due process for criminal defendants'],
+      ans: 2,
+      explain: 'Gibbons v. Ogden established that the federal government has broad power to regulate commerce (trade and transportation) between states.'
+    }
+  },
+  {
+    id: 'c4',
+    name: 'Dred Scott v. Sandford',
+    year: 1857,
+    happened: 'Dred Scott was enslaved and had lived in free states/territories. He sued for his freedom, arguing that living in free territory made him free.',
+    ruling: 'The Supreme Court ruled that African Americans were NOT citizens and had no right to sue in court. Also ruled the Missouri Compromise unconstitutional.',
+    matters: 'One of the WORST Supreme Court decisions ever. It pushed the country closer to Civil War. Later overturned by the 13th and 14th Amendments.',
+    category: 'Rights and Citizens',
+    quizQ: {
+      q: 'The Dred Scott decision (1857) was later overturned by which amendment(s)?',
+      opts: ['The 1st and 2nd Amendments', 'The 13th and 14th Amendments', 'The 15th Amendment alone', 'The 5th Amendment'],
+      ans: 1,
+      explain: 'The 13th Amendment abolished slavery and the 14th Amendment granted citizenship to all people born in the US, directly overturning the Dred Scott ruling.'
+    }
+  },
+  {
+    id: 'c5',
+    name: 'Plessy v. Ferguson',
+    year: 1896,
+    happened: 'Homer Plessy (who was 1/8 Black) sat in a "whites only" railroad car in Louisiana and was arrested. He challenged the law as unconstitutional.',
+    ruling: 'The Supreme Court upheld racial segregation under the "separate but equal" doctrine — separate facilities for Black and white people were legal.',
+    matters: 'This terrible decision allowed Jim Crow laws and segregation for 58 more years — until it was overturned by Brown v. Board of Education in 1954.',
+    category: 'Rights and Citizens',
+    quizQ: {
+      q: 'The "separate but equal" doctrine established in Plessy v. Ferguson (1896) was overturned by which case?',
+      opts: ['Miranda v. Arizona', 'Marbury v. Madison', 'Brown v. Board of Education', 'Tinker v. Des Moines'],
+      ans: 2,
+      explain: 'Brown v. Board of Education (1954) ruled that "separate but equal" was unconstitutional in public schools, overturning Plessy v. Ferguson.'
+    }
+  },
+  {
+    id: 'c6',
+    name: 'Brown v. Board of Education',
+    year: 1954,
+    happened: 'Linda Brown, a Black student in Topeka, Kansas, was forced to attend a segregated school far from her home. Her father sued the school board.',
+    ruling: 'Chief Justice Earl Warren led a unanimous Court in ruling that "separate educational facilities are inherently unequal." School segregation violated the 14th Amendment.',
+    matters: 'Landmark civil rights case that ended official school segregation. Overturned "separate but equal" from Plessy v. Ferguson. Changed America forever.',
+    category: 'Rights and Citizens',
+    quizQ: {
+      q: 'Brown v. Board of Education (1954) ruled that school segregation violated which amendment?',
+      opts: ['The 1st Amendment', 'The 5th Amendment', 'The 14th Amendment (equal protection clause)', 'The 10th Amendment'],
+      ans: 2,
+      explain: 'The Supreme Court ruled that segregated schools violated the Equal Protection Clause of the 14th Amendment, which guarantees all citizens equal protection under the law.'
+    }
+  },
+  {
+    id: 'c7',
+    name: 'Gideon v. Wainwright',
+    year: 1963,
+    happened: 'Clarence Gideon was charged with breaking and entering in Florida. He couldn\'t afford a lawyer and asked the court to appoint one. Florida said no. He represented himself and lost.',
+    ruling: 'The Supreme Court unanimously ruled that states MUST provide lawyers to defendants in criminal cases who cannot afford one.',
+    matters: 'Guaranteed the right to an attorney for everyone, rich or poor. Applied the 6th Amendment right to counsel to state courts through the 14th Amendment.',
+    category: 'Rights and Citizens',
+    quizQ: {
+      q: 'Gideon v. Wainwright (1963) guaranteed which constitutional right?',
+      opts: ['Freedom of speech in courtrooms', 'The right to a speedy trial', 'The right to an attorney even if you cannot afford one', 'Protection against double jeopardy'],
+      ans: 2,
+      explain: 'Gideon v. Wainwright established that states must provide attorneys to criminal defendants who cannot afford one — an important 6th Amendment right.'
+    }
+  },
+  {
+    id: 'c8',
+    name: 'In re Gault',
+    year: 1967,
+    happened: '15-year-old Gerald Gault was accused of making an obscene phone call. Without being told his rights or having a lawyer, he was sentenced to 6 years in a juvenile facility.',
+    ruling: 'The Supreme Court ruled that juveniles (minors) have due process rights just like adults — including the right to notice of charges, a lawyer, and protection against self-incrimination.',
+    matters: 'Established that kids have constitutional rights in juvenile court! Due process protections apply to minors too.',
+    category: 'Rights and Citizens',
+    quizQ: {
+      q: 'In re Gault (1967) established which important principle?',
+      opts: ['Juveniles cannot be tried as adults', 'Juveniles have due process rights in court just like adults', 'Schools can search students\' lockers freely', 'Minors cannot be sentenced to jail'],
+      ans: 1,
+      explain: 'In re Gault established that juveniles have due process constitutional rights (like the right to a lawyer and protection against self-incrimination) in delinquency proceedings.'
+    }
+  },
+  {
+    id: 'c9',
+    name: 'Miranda v. Arizona',
+    year: 1966,
+    happened: 'Ernesto Miranda was arrested and confessed to a crime without being told he had the right to remain silent or have a lawyer. His confession was used against him.',
+    ruling: 'Police MUST inform suspects of their rights before interrogation: right to remain silent, anything said can be used against them, and right to an attorney.',
+    matters: 'Created the famous "Miranda rights" that police must read you when you\'re arrested. Protects the 5th Amendment right against self-incrimination.',
+    category: 'Rights and Citizens',
+    quizQ: {
+      q: 'Miranda v. Arizona (1966) requires police to inform suspects of their rights. This protects which amendment?',
+      opts: ['1st Amendment — freedom of speech', '4th Amendment — protection against unreasonable searches', '5th Amendment — protection against self-incrimination', '8th Amendment — no cruel punishment'],
+      ans: 2,
+      explain: 'Miranda rights protect the 5th Amendment right against self-incrimination. Police must tell you that you can remain silent and have a lawyer before questioning.'
+    }
+  },
+  {
+    id: 'c10',
+    name: 'Tinker v. Des Moines',
+    year: 1969,
+    happened: 'Students in Iowa wore black armbands to school to protest the Vietnam War. School officials suspended them for violating a rule against armbands.',
+    ruling: 'The Supreme Court ruled that students do NOT "shed their constitutional rights at the schoolhouse gate." Students can express political views as long as it doesn\'t disrupt school.',
+    matters: 'Established that students have 1st Amendment free speech rights in school! But speech that "materially disrupts" school can still be regulated.',
+    category: 'Rights and Citizens',
+    quizQ: {
+      q: 'A student is told they cannot wear a protest button at school. Which Supreme Court case would BEST support the student\'s free speech claim?',
+      opts: ['Miranda v. Arizona', 'Tinker v. Des Moines', 'Gideon v. Wainwright', 'McCulloch v. Maryland'],
+      ans: 1,
+      explain: 'Tinker v. Des Moines established that students have 1st Amendment free speech rights in school, as long as their expression doesn\'t materially disrupt the educational environment.'
+    }
+  },
+];
+
+const QUIZ_QUESTIONS = [
+  // Origins & Purposes
+  { q:'Which principle describes the idea that all government power comes from the people?', opts:['Rule of Law','Popular Sovereignty','Federalism','Limited Government'], ans:1, explain:'Popular sovereignty means government power comes from the people — "We the People" in the Constitution shows this.', category:'Origins', difficulty:'low' },
+  { q:'The Preamble to the Constitution lists six goals. Which of the following is NOT one of them?', opts:['Establish justice','Promote the general welfare','Abolish slavery','Ensure domestic tranquility'], ans:2, explain:'The Preamble does NOT mention abolishing slavery. Its six goals are: form a union, establish justice, ensure tranquility, provide for defense, promote welfare, and secure liberty.', category:'Origins', difficulty:'moderate' },
+  { q:'Which Enlightenment idea most influenced the Declaration of Independence?', opts:['Social contract and natural rights','Manifest destiny','Divine right of kings','Mercantilism'], ans:0, explain:'John Locke\'s ideas about natural rights (life, liberty, property) and the social contract directly inspired Jefferson when writing the Declaration of Independence.', category:'Origins', difficulty:'moderate' },
+  { q:'The Magna Carta (1215) is important to American government because it...', opts:['Created the first democracy','Established that even rulers must follow the law','Gave women the right to vote','Created the court system'], ans:1, explain:'The Magna Carta established the principle of limited government — that even kings must follow the law. This idea directly influenced American constitutional government.', category:'Origins', difficulty:'moderate' },
+  { q:'Which document replaced the Articles of Confederation because the national government was too weak?', opts:['The Bill of Rights','The Declaration of Independence','The Federalist Papers','The Constitution'], ans:3, explain:'The Articles of Confederation created a very weak national government. The Constitution replaced it in 1789 with a stronger federal government.', category:'Origins', difficulty:'low' },
+  { q:'Under the Articles of Confederation, what was a major weakness of the national government?', opts:['It had too much power over states','It could not collect taxes','It had too many branches','It could declare war too easily'], ans:1, explain:'Under the Articles of Confederation, Congress could not collect taxes — it could only ask states for money. This made the government very weak and unable to function.', category:'Origins', difficulty:'moderate' },
+
+  // Rights & Citizens
+  { q:'Which amendment abolished slavery in the United States?', opts:['12th Amendment','13th Amendment','14th Amendment','15th Amendment'], ans:1, explain:'The 13th Amendment, ratified in 1865 after the Civil War, abolished slavery and involuntary servitude throughout the United States.', category:'Rights', difficulty:'low' },
+  { q:'The 14th Amendment is MOST important for which of the following?', opts:['Giving women the right to vote','Granting citizenship and equal protection to all Americans','Abolishing poll taxes','Lowering the voting age to 18'], ans:1, explain:'The 14th Amendment has three key parts: citizenship clause, due process clause, and equal protection clause — ensuring all citizens are treated equally under the law.', category:'Rights', difficulty:'low' },
+  { q:'Marcus is arrested. The police forget to read him his Miranda rights before questioning. Which of the following is TRUE?', opts:['His confession can still be used in court','He goes free automatically','His statements made during questioning may not be usable in court','He loses his right to a lawyer'], ans:2, explain:'Miranda v. Arizona established that if police fail to inform suspects of their rights, statements made during questioning may be inadmissible (not usable) in court.', category:'Rights', difficulty:'high' },
+  { q:'A student wears a t-shirt with a political message to school. Under which Supreme Court ruling are students MOST protected?', opts:['Marbury v. Madison','Gideon v. Wainwright','Tinker v. Des Moines','Plessy v. Ferguson'], ans:2, explain:'Tinker v. Des Moines established that students have 1st Amendment rights in school and can express political views as long as it doesn\'t materially disrupt school.', category:'Rights', difficulty:'moderate' },
+  { q:'The "separate but equal" doctrine from Plessy v. Ferguson was MOST directly challenged by...', opts:['The 13th Amendment','Brown v. Board of Education','Gibbons v. Ogden','The Civil Rights Act'], ans:1, explain:'Brown v. Board of Education (1954) directly challenged and overturned the "separate but equal" doctrine, ruling that segregated schools are inherently unequal.', category:'Rights', difficulty:'moderate' },
+  { q:'The right to remain silent (plead the 5th) is protected by which amendment?', opts:['4th Amendment','5th Amendment','6th Amendment','8th Amendment'], ans:1, explain:'The 5th Amendment protects against self-incrimination — you cannot be forced to testify against yourself. That\'s why people say they\'re "pleading the 5th."', category:'Rights', difficulty:'low' },
+  { q:'Jaylen cannot afford a lawyer for his criminal trial. Based on constitutional law, what MUST happen?', opts:['He must represent himself','The judge will dismiss his case','The court must provide him a free attorney','He can only have a lawyer if the crime is serious'], ans:2, explain:'Gideon v. Wainwright (1963) established that states must provide attorneys to criminal defendants who cannot afford one — guaranteed by the 6th Amendment.', category:'Rights', difficulty:'moderate' },
+  { q:'The 26th Amendment was motivated by which argument during the Vietnam War era?', opts:['If you pay taxes, you should vote','If you can fight for your country, you should vote','Young people are smarter voters','The Electoral College needed reform'], ans:1, explain:'The argument "old enough to fight, old enough to vote" drove the 26th Amendment, which lowered the voting age from 21 to 18 in 1971.', category:'Rights', difficulty:'moderate' },
+
+  // Government Policies
+  { q:'Which principle is BEST demonstrated when the Supreme Court rules that a law passed by Congress is unconstitutional?', opts:['Federalism','Popular sovereignty','Judicial review','Separation of powers'], ans:2, explain:'Judicial review is the Supreme Court\'s power to declare laws unconstitutional. This power was established in Marbury v. Madison (1803).', category:'Government Policies', difficulty:'high' },
+  { q:'Congress passes a law. The President vetoes it. Congress votes again and gets 2/3 in both chambers. What happens?', opts:['The President must sign it now','The Supreme Court decides','The veto is overridden and the bill becomes law','The bill is sent back to committee'], ans:2, explain:'A presidential veto can be overridden by a 2/3 vote in BOTH the House and Senate. This is an example of checks and balances.', category:'Government Policies', difficulty:'moderate' },
+  { q:'Which of the following BEST describes federalism?', opts:['The President has more power than Congress','Power is divided between national and state governments','The Supreme Court is the most powerful branch','Citizens vote directly on all laws'], ans:1, explain:'Federalism is the system where power is shared between the national (federal) government and state governments. Some powers are exclusive, some are shared.', category:'Government Policies', difficulty:'low' },
+  { q:'The "Necessary and Proper Clause" (elastic clause) of the Constitution gives Congress the power to...', opts:['Override Supreme Court decisions','Make laws needed to carry out its listed powers','Remove the President from office','Approve treaties with foreign countries'], ans:1, explain:'The Necessary and Proper Clause (Article I) allows Congress to make any laws "necessary and proper" to carry out its listed powers — giving Congress implied powers.', category:'Government Policies', difficulty:'high' },
+  { q:'Maria\'s state passes a law that conflicts with a federal law. According to the Supremacy Clause, what happens?', opts:['The state law wins because states have rights','The federal law wins — it is the "supreme law of the land"','The Supreme Court must vote on it first','Citizens in that state vote to decide'], ans:1, explain:'The Supremacy Clause (Article VI) makes the Constitution and federal laws the "supreme law of the land." When state and federal law conflict, federal law wins.', category:'Government Policies', difficulty:'moderate' },
+  { q:'The Electoral College is used to elect which officials?', opts:['Senators and Representatives','The President and Vice President only','All federal judges','Governors of each state'], ans:1, explain:'The Electoral College consists of 538 electors who formally elect the President and Vice President. Each state gets electors equal to its total congressional representation.', category:'Government Policies', difficulty:'low' },
+
+  // Organization & Function
+  { q:'Which branch of government has the power to declare war?', opts:['The Executive Branch (President)','The Judicial Branch (Supreme Court)','The Legislative Branch (Congress)','The Department of Defense'], ans:2, explain:'Article I of the Constitution gives Congress (Legislative Branch) the power to declare war, even though the President is Commander-in-Chief of the military.', category:'Organization', difficulty:'moderate' },
+  { q:'How many Justices serve on the United States Supreme Court?', opts:['7','8','9','12'], ans:2, explain:'The Supreme Court has 9 Justices: 1 Chief Justice and 8 Associate Justices. They are appointed by the President and confirmed by the Senate.', category:'Organization', difficulty:'low' },
+  { q:'The House of Representatives has 435 members. How is the number of representatives for each state determined?', opts:['Each state gets the same number','Based on the state\'s land area','Based on the state\'s population','Randomly assigned every 10 years'], ans:2, explain:'House representation is based on population. States with more people get more representatives. That\'s why California has many more reps than Wyoming. The census every 10 years determines this.', category:'Organization', difficulty:'moderate' },
+  { q:'Which branch of government is responsible for interpreting laws and the Constitution?', opts:['Legislative Branch','Executive Branch','Judicial Branch','Cabinet'], ans:2, explain:'The Judicial Branch (headed by the Supreme Court) interprets laws and the Constitution. They decide if laws are being applied correctly and if they are constitutional.', category:'Organization', difficulty:'low' },
+  { q:'The Senate has 100 members. How many senators does each state have?', opts:['Varies by population','1 per state','2 per state','3 per state'], ans:2, explain:'Every state, regardless of population, gets exactly 2 senators — for a total of 100 (50 states × 2). This gives smaller states equal voice in the Senate.', category:'Organization', difficulty:'low' },
+  { q:'To become a constitutional amendment, a proposal must be ratified by how many states?', opts:['Simple majority (26 states)','2/3 of states (34 states)','3/4 of states (38 states)','All 50 states'], ans:2, explain:'After Congress proposes an amendment with a 2/3 vote, it must be ratified by 3/4 of states (currently 38 out of 50) to become part of the Constitution.', category:'Organization', difficulty:'moderate' },
+  { q:'Which of the following is an example of checks and balances?', opts:['The President sets tax rates for each state','The Senate has 2 senators per state','Congress can override a presidential veto with a 2/3 vote','The Supreme Court has 9 justices'], ans:2, explain:'Checks and balances means each branch can limit the others. Congress overriding a presidential veto is a perfect example of the legislative branch checking the executive branch.', category:'Organization', difficulty:'moderate' },
+  { q:'The Preamble begins with "We the People" to show which principle?', opts:['Federalism','Separation of powers','Popular sovereignty','Rule of law'], ans:2, explain:'"We the People" shows that the government\'s power comes from the citizens — the principle of popular sovereignty. The people are the ultimate source of governmental authority.', category:'Organization', difficulty:'low' },
+  { q:'What is the main purpose of the Bill of Rights?', opts:['To create the three branches of government','To protect individual freedoms from government overreach','To establish the electoral college','To outline the process for making laws'], ans:1, explain:'The Bill of Rights (1st-10th Amendments) was added to protect individual rights and limit government power. Anti-Federalists insisted on it before ratifying the Constitution.', category:'Organization', difficulty:'low' },
+  { q:'A law is passed that bans all newspapers from criticizing the government. Which amendment does this MOST clearly violate?', opts:['1st Amendment','4th Amendment','10th Amendment','2nd Amendment'], ans:0, explain:'The 1st Amendment protects freedom of the press. A law banning newspapers from criticizing the government would be a direct violation of this fundamental right.', category:'Organization', difficulty:'low' },
+];
+
+// =============================================
+// STATE
+// =============================================
+const LEVELS = [
+  { name:'Citizen Cadet', minXP:0 },
+  { name:'Bill of Rights Buddy', minXP:100 },
+  { name:'Amendment Ace', minXP:300 },
+  { name:'Constitution Captain', minXP:600 },
+  { name:'Supreme Scholar', minXP:1000 },
+  { name:'Chief Justice', minXP:2000 },
+];
+
+const TOPIC_CATS = [
+  { key:'Origins', label:'Origins & Purposes', color:'#6c63ff' },
+  { key:'Rights', label:'Rights & Responsibilities', color:'#22d47a' },
+  { key:'Government Policies', label:'Gov Policies & Processes', color:'#ff8c42' },
+  { key:'Organization', label:'Organization & Function', color:'#ff6b9d' },
+];
+
+function defaultState() {
+  return {
+    xp: 0,
+    streak: 0,
+    lastStudyDate: null,
+    cardsDone: 0,
+    quizzesCompleted: 0,
+    speedBest: 0,
+    fcGot: {},
+    fcLearning: {},
+    topicCorrect: { Origins:0, Rights:0, 'Government Policies':0, Organization:0 },
+    topicTotal: { Origins:0, Rights:0, 'Government Policies':0, Organization:0 },
+    theme: 'dark',
+  };
+}
+
+let state = defaultState();
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('civicsState');
+    if (saved) state = Object.assign(defaultState(), JSON.parse(saved));
+  } catch(e) {}
+}
+
+function saveState() {
+  try { localStorage.setItem('civicsState', JSON.stringify(state)); } catch(e) {}
+}
+
+function addXP(amount, x, y) {
+  const old = state.xp;
+  state.xp += amount;
+  saveState();
+  showXPPopup(amount, x, y);
+  checkLevelUp(old, state.xp);
+  updateHomeUI();
+}
+
+function getLevel(xp) {
+  let lv = 0;
+  for (let i = 0; i < LEVELS.length; i++) {
+    if (xp >= LEVELS[i].minXP) lv = i;
+  }
+  return lv;
+}
+
+function checkLevelUp(oldXP, newXP) {
+  const oldLv = getLevel(oldXP);
+  const newLv = getLevel(newXP);
+  if (newLv > oldLv) {
+    showLevelUp(LEVELS[newLv].name);
+    spawnConfetti();
+  }
+}
+
+function updateStreak() {
+  const today = new Date().toDateString();
+  if (state.lastStudyDate === today) return;
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  if (state.lastStudyDate === yesterday) {
+    state.streak++;
+  } else if (state.lastStudyDate !== today) {
+    state.streak = 1;
+  }
+  state.lastStudyDate = today;
+  saveState();
+}
+
+// =============================================
+// UI UPDATES
+// =============================================
+function updateHomeUI() {
+  const lv = getLevel(state.xp);
+  const level = LEVELS[lv];
+  const nextLv = LEVELS[lv + 1];
+  document.getElementById('home-level-num').textContent = lv + 1;
+  document.getElementById('home-level-name').textContent = level.name;
+  const curMin = level.minXP;
+  const nextMin = nextLv ? nextLv.minXP : state.xp;
+  const pct = nextLv ? Math.min(100, ((state.xp - curMin) / (nextMin - curMin)) * 100) : 100;
+  document.getElementById('home-xp-bar').style.width = pct + '%';
+  document.getElementById('home-xp-cur').textContent = state.xp + ' XP';
+  document.getElementById('home-xp-next').textContent = nextLv ? (nextMin - state.xp) + ' XP to next level' : 'MAX LEVEL! 🏆';
+  document.getElementById('home-streak').textContent = state.streak;
+  document.getElementById('home-cards-done').textContent = state.cardsDone;
+  document.getElementById('home-quizzes').textContent = state.quizzesCompleted;
+  renderTopicProgress();
+}
+
+function renderTopicProgress() {
+  const el = document.getElementById('topic-progress-list');
+  el.innerHTML = '';
+  TOPIC_CATS.forEach(tc => {
+    const total = state.topicTotal[tc.key] || 0;
+    const correct = state.topicCorrect[tc.key] || 0;
+    const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+    el.innerHTML += `<div class="progress-row">
+      <span class="progress-label">${tc.label}</span>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%;background:${tc.color}"></div></div>
+      <span class="progress-pct">${pct}%</span>
+    </div>`;
+  });
+}
+
+// =============================================
+// SCREEN NAVIGATION
+// =============================================
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  document.getElementById('nav-' + name).classList.add('active');
+  if (name === 'home') updateHomeUI();
+  if (name === 'flashcards') initFlashcards();
+  if (name === 'cases') initCases();
+  if (name === 'speed') {
+    document.getElementById('speed-start-view').style.display = '';
+    document.getElementById('speed-game-view').classList.remove('active');
+    document.getElementById('speed-result-view').classList.remove('active');
+    document.getElementById('best-score-display').textContent = state.speedBest;
+  }
+}
+
+// =============================================
+// FLASHCARDS
+// =============================================
+const ALL_CARDS = [...AMENDMENTS, ...VOCABULARY, ...FOUNDING_DOCS];
+const FC_CATEGORIES = ['All', 'Amendments', 'Vocabulary', 'Founding Documents'];
+
+let fcState = {
+  category: 'All',
+  deck: [],
+  index: 0,
+  flipped: false,
+  got: 0,
+  learning: 0,
+};
+
+function buildDeck(category) {
+  let cards = category === 'All' ? [...ALL_CARDS] : ALL_CARDS.filter(c => c.category === category);
+  // Spaced repetition: put "learning" cards in more often
+  let deck = [...cards];
+  cards.forEach(c => {
+    if (state.fcLearning[c.id]) {
+      deck.push(c); // appears twice
+    }
+  });
+  return shuffle(deck);
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function initFlashcards() {
+  // Render category chips
+  const catEl = document.getElementById('fc-cats');
+  catEl.innerHTML = FC_CATEGORIES.map(c =>
+    `<button class="cat-chip ${c === fcState.category ? 'active' : ''}" onclick="setFCCategory('${c}')">${c}</button>`
+  ).join('');
+  fcState.deck = buildDeck(fcState.category);
+  fcState.index = 0;
+  fcState.got = Object.keys(state.fcGot).length;
+  fcState.learning = Object.keys(state.fcLearning).length;
+  renderFC();
+}
+
+function setFCCategory(cat) {
+  fcState.category = cat;
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+  event.target.classList.add('active');
+  fcState.deck = buildDeck(cat);
+  fcState.index = 0;
+  fcState.flipped = false;
+  renderFC();
+}
+
+function renderFC() {
+  if (fcState.deck.length === 0) return;
+  const card = fcState.deck[fcState.index];
+  document.getElementById('fc-term').textContent = card.term;
+  document.getElementById('fc-answer').textContent = card.answer;
+  document.getElementById('fc-cat-label').textContent = card.category;
+  document.getElementById('fc-counter').textContent = `Card ${fcState.index + 1} of ${fcState.deck.length}`;
+  document.getElementById('fc-got').textContent = fcState.got;
+  document.getElementById('fc-learning').textContent = fcState.learning;
+  const total = fcState.got + fcState.learning;
+  document.getElementById('fc-bar').style.width = (total > 0 ? Math.round((fcState.got / (fcState.got + fcState.learning)) * 100) : 0) + '%';
+  // Reset flip
+  if (fcState.flipped) {
+    const fc = document.getElementById('flip-card');
+    fc.style.transition = 'none';
+    fc.classList.remove('flipped');
+    setTimeout(() => { fc.style.transition = ''; }, 50);
+    fcState.flipped = false;
+  }
+  document.getElementById('fc-actions').classList.remove('visible');
+}
+
+function flipCard() {
+  if (fcState.flipped) return;
+  document.getElementById('flip-card').classList.add('flipped');
+  fcState.flipped = true;
+  document.getElementById('fc-actions').classList.add('visible');
+}
+
+function fcNext() {
+  fcState.index = (fcState.index + 1) % fcState.deck.length;
+  fcState.flipped = false;
+  renderFC();
+}
+
+function fcGotIt() {
+  const card = fcState.deck[fcState.index];
+  if (!state.fcGot[card.id]) {
+    state.fcGot[card.id] = true;
+    delete state.fcLearning[card.id];
+    fcState.got++;
+    state.cardsDone++;
+    addXP(10);
+    saveState();
+  }
+  showFeedback('🎉', randomChoice(['Nailed it!', 'You got it!', 'Awesome! 🔥', 'That\'s right!', 'Keep it up! 💪']));
+  fcNext();
+}
+
+function fcStillLearning() {
+  const card = fcState.deck[fcState.index];
+  if (!state.fcGot[card.id]) {
+    state.fcLearning[card.id] = true;
+    fcState.learning = Object.keys(state.fcLearning).length;
+    saveState();
+  }
+  fcNext();
+}
+
+// =============================================
+// QUIZ
+// =============================================
+let quizState = {
+  questions: [],
+  index: 0,
+  score: 0,
+  answered: false,
+  streak: 0,
+};
+
+function startQuiz() {
+  updateStreak();
+  showScreen('quiz');
+  document.getElementById('quiz-start-view').style.display = 'none';
+  document.getElementById('quiz-game-view').style.display = 'block';
+  document.getElementById('quiz-result-view').style.display = 'none';
+  quizState.questions = shuffle([...QUIZ_QUESTIONS]).slice(0, 10);
+  quizState.index = 0;
+  quizState.score = 0;
+  quizState.streak = 0;
+  renderQuizQ();
+}
+
+function renderQuizQ() {
+  const q = quizState.questions[quizState.index];
+  quizState.answered = false;
+  document.getElementById('quiz-q-num').textContent = `Question ${quizState.index + 1} of ${quizState.questions.length}`;
+  document.getElementById('quiz-progress-fill').style.width = ((quizState.index + 1) / quizState.questions.length * 100) + '%';
+  document.getElementById('quiz-question').textContent = q.q;
+  document.getElementById('quiz-score-live').textContent = `Score: ${quizState.score}`;
+  const optsEl = document.getElementById('quiz-options');
+  optsEl.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'q-option';
+    btn.textContent = opt;
+    btn.onclick = () => answerQuiz(i, btn);
+    optsEl.appendChild(btn);
+  });
+  document.getElementById('quiz-explanation').classList.remove('show');
+  document.getElementById('quiz-explanation').textContent = '';
+  document.getElementById('quiz-next-btn').style.display = 'none';
+}
+
+function answerQuiz(chosen, btn) {
+  if (quizState.answered) return;
+  quizState.answered = true;
+  const q = quizState.questions[quizState.index];
+  const correct = chosen === q.ans;
+  const opts = document.querySelectorAll('.q-option');
+  opts.forEach((o, i) => {
+    o.disabled = true;
+    if (i === q.ans) o.classList.add('correct');
+    else if (i === chosen && !correct) o.classList.add('wrong');
+  });
+  // Track topic
+  const cat = q.category;
+  state.topicTotal[cat] = (state.topicTotal[cat] || 0) + 1;
+  if (correct) {
+    state.topicCorrect[cat] = (state.topicCorrect[cat] || 0) + 1;
+    quizState.score++;
+    quizState.streak++;
+    let xpGain = 10;
+    if (quizState.streak >= 3) xpGain += 5; // streak bonus
+    addXP(xpGain, btn.getBoundingClientRect().x, btn.getBoundingClientRect().y);
+    showFeedback('✅', randomChoice(['Correct! 🎉', 'That\'s right! 💪', 'Boom! 🔥', 'You know your civics!', 'Nailed it! ⭐']));
+  } else {
+    quizState.streak = 0;
+    showFeedback('❌', randomChoice(['Not quite...', 'Keep trying! 📚', 'You\'ll get it next time!', 'Almost!']));
+  }
+  saveState();
+  const expEl = document.getElementById('quiz-explanation');
+  expEl.textContent = '💡 ' + q.explain;
+  expEl.classList.add('show');
+  document.getElementById('quiz-next-btn').style.display = 'block';
+}
+
+function quizNext() {
+  quizState.index++;
+  if (quizState.index >= quizState.questions.length) {
+    finishQuiz();
+  } else {
+    renderQuizQ();
+  }
+}
+
+function finishQuiz() {
+  state.quizzesCompleted++;
+  addXP(25); // completion bonus
+  saveState();
+  document.getElementById('quiz-game-view').style.display = 'none';
+  document.getElementById('quiz-result-view').style.display = 'block';
+  const score = quizState.score;
+  const total = quizState.questions.length;
+  document.getElementById('result-score').textContent = `${score}/${total}`;
+  let emoji = '😤', msg = 'Keep studying, you got this!';
+  if (score >= 9) { emoji = '🏆'; msg = 'AMAZING! You\'re a civics champion! 🎉'; }
+  else if (score >= 7) { emoji = '🌟'; msg = 'Great job! You really know your stuff!'; }
+  else if (score >= 5) { emoji = '👍'; msg = 'Nice work! Keep reviewing and you\'ll ace it!'; }
+  else if (score >= 3) { emoji = '📚'; msg = 'Keep studying! You\'re getting there!'; }
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-msg').textContent = msg;
+  if (score >= 8) spawnConfetti();
+}
+
+// =============================================
+// CASES SCREEN
+// =============================================
+function initCases() {
+  const el = document.getElementById('cases-list');
+  el.innerHTML = '';
+  CASES.forEach(c => {
+    el.innerHTML += `<div class="case-card" id="case-${c.id}" onclick="toggleCase('${c.id}', this)">
+      <div class="case-header">
+        <span class="case-year">${c.year}</span>
+        <span class="case-name">${c.name}</span>
+        <span class="case-expand">▼</span>
+      </div>
+      <div class="case-body">
+        <div class="case-section">
+          <div class="case-section-title">📖 What Happened</div>
+          <div class="case-section-text">${c.happened}</div>
+        </div>
+        <div class="case-section">
+          <div class="case-section-title">⚖️ The Ruling</div>
+          <div class="case-section-text">${c.ruling}</div>
+        </div>
+        <div class="case-section case-matters">
+          <div class="case-section-title">⭐ Why It Matters</div>
+          <div class="case-section-text">${c.matters}</div>
+        </div>
+      </div>
+    </div>`;
+  });
+}
+
+function toggleCase(id, el) {
+  el.classList.toggle('open');
+}
+
+function startCasesQuiz() {
+  updateStreak();
+  showScreen('quiz');
+  document.getElementById('quiz-start-view').style.display = 'none';
+  document.getElementById('quiz-game-view').style.display = 'block';
+  document.getElementById('quiz-result-view').style.display = 'none';
+  const caseQs = CASES.map(c => ({
+    q: c.quizQ.q,
+    opts: c.quizQ.opts,
+    ans: c.quizQ.ans,
+    explain: c.quizQ.explain,
+    category: c.category === 'Founding Documents' ? 'Origins' : c.category === 'Government Policies' ? 'Government Policies' : 'Rights',
+    difficulty: 'moderate',
+  }));
+  quizState.questions = shuffle(caseQs).slice(0, 10);
+  quizState.index = 0;
+  quizState.score = 0;
+  quizState.streak = 0;
+  renderQuizQ();
+}
+
+// =============================================
+// SPEED ROUND
+// =============================================
+const SPEED_QUESTIONS = [...QUIZ_QUESTIONS, ...CASES.map(c => ({
+  q: c.quizQ.q,
+  opts: c.quizQ.opts,
+  ans: c.quizQ.ans,
+  explain: c.quizQ.explain,
+  category: 'Rights',
+  difficulty: 'moderate',
+}))];
+
+let speedState = {
+  timer: null,
+  timeLeft: 60,
+  correct: 0,
+  deck: [],
+  qi: 0,
+  locked: false,
+  missed: [],
+};
+
+function startSpeedRound() {
+  updateStreak();
+  document.getElementById('speed-start-view').style.display = 'none';
+  document.getElementById('speed-result-view').classList.remove('active');
+  document.getElementById('speed-game-view').classList.add('active');
+  speedState.deck = shuffle([...SPEED_QUESTIONS]);
+  speedState.qi = 0;
+  speedState.correct = 0;
+  speedState.timeLeft = 60;
+  speedState.locked = false;
+  speedState.missed = [];
+  renderSpeedQ();
+  document.getElementById('speed-timer-bar').style.width = '100%';
+  clearInterval(speedState.timer);
+  speedState.timer = setInterval(() => {
+    speedState.timeLeft--;
+    const timerEl = document.getElementById('speed-timer');
+    timerEl.textContent = speedState.timeLeft;
+    timerEl.className = 'speed-timer' + (speedState.timeLeft <= 10 ? ' urgent' : '');
+    document.getElementById('speed-timer-bar').style.width = (speedState.timeLeft / 60 * 100) + '%';
+    if (speedState.timeLeft <= 0) {
+      clearInterval(speedState.timer);
+      endSpeedRound();
+    }
+  }, 1000);
+}
+
+function renderSpeedQ() {
+  if (speedState.qi >= speedState.deck.length) {
+    speedState.deck = shuffle([...SPEED_QUESTIONS]);
+    speedState.qi = 0;
+  }
+  const q = speedState.deck[speedState.qi];
+  document.getElementById('speed-q').textContent = q.q;
+  const optsEl = document.getElementById('speed-opts');
+  optsEl.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'speed-opt';
+    btn.textContent = opt;
+    btn.onclick = () => answerSpeed(i, btn);
+    optsEl.appendChild(btn);
+  });
+  speedState.locked = false;
+}
+
+function answerSpeed(chosen, btn) {
+  if (speedState.locked) return;
+  speedState.locked = true;
+  const q = speedState.deck[speedState.qi];
+  const correct = chosen === q.ans;
+  if (correct) {
+    speedState.correct++;
+    btn.classList.add('flash-correct');
+    addXP(5);
+  } else {
+    btn.classList.add('flash-wrong');
+    document.querySelectorAll('.speed-opt')[q.ans].classList.add('flash-correct');
+    speedState.missed.push({ q: q.q, yourAnswer: q.opts[chosen], correctAnswer: q.opts[q.ans], explain: q.explain });
+  }
+  document.getElementById('speed-correct-live').textContent = speedState.correct;
+  speedState.qi++;
+  setTimeout(() => {
+    if (speedState.timeLeft > 0) renderSpeedQ();
+  }, 350);
+}
+
+function endSpeedRound() {
+  document.getElementById('speed-game-view').classList.remove('active');
+  document.getElementById('speed-result-view').classList.add('active');
+  document.getElementById('speed-final-score').textContent = speedState.correct;
+  const isNewBest = speedState.correct > state.speedBest;
+  if (isNewBest) {
+    state.speedBest = speedState.correct;
+    document.getElementById('speed-new-best').textContent = '🏆 New Best Score!';
+    spawnConfetti();
+  } else {
+    document.getElementById('speed-new-best').textContent = `Best: ${state.speedBest} correct`;
+  }
+  let msg = 'Keep practicing!';
+  if (speedState.correct >= 20) msg = 'INCREDIBLE! You\'re a speed demon! ⚡🏆';
+  else if (speedState.correct >= 15) msg = 'Wow, so fast! 🔥';
+  else if (speedState.correct >= 10) msg = 'Nice speed! You know this stuff!';
+  else if (speedState.correct >= 5) msg = 'Good start! Keep practicing!';
+  document.getElementById('speed-result-msg').textContent = msg;
+  // Render missed questions review
+  const reviewEl = document.getElementById('speed-review');
+  if (speedState.missed.length === 0) {
+    reviewEl.innerHTML = '<div style="text-align:center;padding:12px;color:var(--green);font-weight:700;">Perfect round! No mistakes! 🎉</div>';
+  } else {
+    reviewEl.innerHTML = '<div style="font-size:14px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;text-align:center;">📚 Learn from your mistakes</div>' +
+      speedState.missed.map((m, i) => `<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;">
+        <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;">${i+1}. ${m.q}</div>
+        <div style="font-size:13px;margin-bottom:4px;"><span style="color:var(--red);font-weight:700;">✗ You said:</span> ${m.yourAnswer}</div>
+        <div style="font-size:13px;margin-bottom:8px;"><span style="color:var(--green);font-weight:700;">✓ Correct:</span> ${m.correctAnswer}</div>
+        <div style="font-size:13px;color:var(--text2);background:var(--bg3);padding:10px;border-radius:8px;">💡 ${m.explain}</div>
+      </div>`).join('');
+  }
+  state.quizzesCompleted++;
+  saveState();
+}
+
+// =============================================
+// FEEDBACK / ANIMATIONS
+// =============================================
+let feedbackTimeout;
+function showFeedback(emoji, text) {
+  clearTimeout(feedbackTimeout);
+  const el = document.getElementById('feedback-overlay');
+  document.getElementById('feedback-emoji').textContent = emoji;
+  document.getElementById('feedback-text').textContent = text;
+  el.classList.add('show');
+  feedbackTimeout = setTimeout(() => el.classList.remove('show'), 1200);
+}
+
+function showXPPopup(amount, x, y) {
+  const el = document.createElement('div');
+  el.className = 'xp-popup';
+  el.textContent = '+' + amount + ' XP';
+  el.style.left = (x || window.innerWidth / 2 - 30) + 'px';
+  el.style.top = (y || window.innerHeight / 2) + 'px';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1300);
+}
+
+function showLevelUp(name) {
+  document.getElementById('levelup-name').textContent = name;
+  const banner = document.getElementById('levelup-banner');
+  banner.classList.add('show');
+  setTimeout(() => banner.classList.remove('show'), 3000);
+}
+
+function spawnConfetti() {
+  const container = document.getElementById('confetti-container');
+  const colors = ['#6c63ff','#ff8c42','#22d47a','#ffd166','#ff6b9d','#06d6a0','#ff4d6d'];
+  for (let i = 0; i < 60; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    p.style.width = (6 + Math.random() * 8) + 'px';
+    p.style.height = (6 + Math.random() * 8) + 'px';
+    p.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+    p.style.animationDelay = (Math.random() * 0.5) + 's';
+    container.appendChild(p);
+    setTimeout(() => p.remove(), 3500);
+  }
+}
+
+function toggleTheme() {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  document.getElementById('theme-btn').textContent = isLight ? '🌙' : '☀️';
+  state.theme = isLight ? 'dark' : 'light';
+  saveState();
+}
+
+function randomChoice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+
+function toggleStudyTips() {
+  document.getElementById('study-tips-card').classList.toggle('open');
+}
+// =============================================
+// INIT
+// =============================================
+loadState();
+if (state.theme === 'light') {
+  document.documentElement.setAttribute('data-theme', 'light');
+  document.getElementById('theme-btn').textContent = '☀️';
+}
+updateStreak();
+updateHomeUI();
+initCases();
+
+// Pre-render
+document.getElementById('best-score-display').textContent = state.speedBest;
+</script>
+</body>
+</html>
+                                                                         
